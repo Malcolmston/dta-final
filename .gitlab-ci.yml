@@ -1,0 +1,8 @@
+test-job: 
+    stage: test
+    
+    script:
+        - echo "echo $Node env"
+        - pip install unittest
+        - python3 testAdd.py
+    

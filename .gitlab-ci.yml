@@ -1,8 +1,33 @@
+
+stages:
+  - build
+  - test
+
+before_script:
+  - echo "Running before_script..."
+  - apt-get update -y && apt-get install -y curl
+
+
 test-job: 
     stage: test
     
+    variables:
+      - Node: "dev"
+    
     script:
         - echo "echo $Node env"
-        - pip install unittest
+        - pip3 install unittest
         - python3 testAdd.py
     
+build-job:
+  stage: build
+  
+  variables:
+      - Node: "dev"
+  
+  script: 
+        - echo "echo $Node env"
+        - pip3 install unittest
+        - python3 testAdd.py
+        - python3 add.py
+        

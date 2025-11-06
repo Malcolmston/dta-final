@@ -4,6 +4,8 @@ import 'reflect-metadata';
 import { DataSource } from 'typeorm';
 import { User } from '../entities/User';
 import { Subscription } from '../entities/Subscription';
+import { Team } from '../entities/Team';
+import { TeamMember } from '../entities/TeamMember';
 
 // Database configuration from environment variables
 const dbConfig = {
@@ -21,7 +23,7 @@ export const AppDataSource = new DataSource({
   username: dbConfig.username,
   password: dbConfig.password,
   database: dbConfig.database,
-  entities: [User, Subscription],
+  entities: [User, Subscription, Team, TeamMember],
   synchronize: false, // Don't auto-sync in production
   logging: process.env.NODE_ENV === 'development',
   migrations: ['src/migrations/**/*.ts'],

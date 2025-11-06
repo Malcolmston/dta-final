@@ -1,0 +1,89 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cloud-convert-app
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_USER=root
+      - DB_PASSWORD=password
+      - DB_NAME=cloud_convert
+      - REDIS_URL=redis://redis:6379
+    env_file:
+      - .env.local
+    depends_on:
+      - db
+      - redis
+    networks:
+      - app_network
+    volumes:
+      - .:/app
+      - /app/node_modules
+    restart: unless-stopped
+
+  db:
+    image: mysql:8.0
+    container_name: cloud-convert-db
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=cloud_convert
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - app_network
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: cloud-convert-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - app_network
+    restart: unless-stopped
+
+  db-gui:
+    image: phpmyadmin:latest
+    container_name: cloud-convert-phpmyadmin
+    ports:
+      - "8080:80"
+    environment:
+      - PMA_HOST=db
+      - PMA_USER=root
+      - PMA_PASSWORD=password
+    depends_on:
+      - db
+    networks:
+      - app_network
+    restart: unless-stopped
+
+  stripe-cli:
+    image: stripe/stripe-cli:latest
+    container_name: cloud-convert-stripe-cli
+    command: listen --api-key ${STRIPE_SECRET_KEY} --forward-to app:3000/webhook
+    env_file:
+      - .env.local
+    depends_on:
+      - app
+    networks:
+      - app_network
+    restart: unless-stopped
+
+networks:
+  app_network:
+    driver: bridge
+
+volumes:
+  db_data:
+  redis_data:

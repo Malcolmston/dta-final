@@ -1,0 +1,2956 @@
+openapi: 3.0.3
+info:
+  title: DigitalOcean API
+  description: |
+    The DigitalOcean API allows you to programmatically manage your Droplets, Kubernetes clusters, databases, load balancers, and other cloud resources via HTTP requests.
+
+    ## Authentication
+    All API requests require a Personal Access Token (PAT) passed in the `Authorization` header:
+    ```
+    Authorization: Bearer YOUR_TOKEN
+    ```
+  version: 1.0.0
+  contact:
+    name: DigitalOcean API Support
+    url: https://docs.digitalocean.com/reference/api/
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://api.digitalocean.com
+    description: Production server
+
+tags:
+  - name: Droplets
+    description: Virtual private servers
+  - name: Kubernetes
+    description: Managed Kubernetes clusters
+  - name: Databases
+    description: Managed databases
+  - name: Load Balancers
+    description: Load balancing resources
+  - name: Spaces
+    description: Object storage
+  - name: Images
+    description: Droplet images and snapshots
+  - name: Volumes
+    description: Block storage volumes
+  - name: SSH Keys
+    description: SSH key management
+  - name: Domains
+    description: DNS management
+  - name: Firewalls
+    description: Cloud firewall rules
+  - name: Tags
+    description: Resource tagging
+  - name: Accounts
+    description: Account information
+
+paths:
+  # Account Endpoints
+  /v2/account:
+    get:
+      tags:
+        - Account
+      summary: Get Account Information
+      description: Returns the authenticated user's account information.
+      operationId: getAccount
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+
+  /v2/account/keys:
+    get:
+      tags:
+        - Account
+      summary: List All SSH Keys
+      description: Returns a list of all SSH keys in your account.
+      operationId: listSSHKeys
+      parameters:
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Page'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SSHKeys'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      tags:
+        - Account
+      summary: Create SSH Key
+      description: Creates a new SSH key in your account.
+      operationId: createSSHKey
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SSHKeyCreate'
+      responses:
+        '201':
+          description: SSH key created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SSHKey'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          description: Validation failed
+          $ref: '#/components/responses/UnprocessableEntity'
+
+  /v2/account/keys/{ssh_key_identifier}:
+    get:
+      tags:
+        - Account
+      summary: Get SSH Key
+      description: Returns a single SSH key by its ID or fingerprint.
+      operationId: getSSHKey
+      parameters:
+        - name: ssh_key_identifier
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID or fingerprint of the SSH key.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SSHKey'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Not found
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags:
+        - Account
+      summary: Update SSH Key
+      description: Updates an SSH key's name.
+      operationId: updateSSHKey
+      parameters:
+        - name: ssh_key_identifier
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID or fingerprint of the SSH key.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SSHKeyUpdate'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SSHKey'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+    delete:
+      tags:
+        - Account
+      summary: Delete SSH Key
+      description: Deletes an SSH key from your account.
+      operationId: deleteSSHKey
+      parameters:
+        - name: ssh_key_identifier
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID or fingerprint of the SSH key.
+      responses:
+        '204':
+          description: SSH key deleted
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Not found
+          $ref: '#/components/responses/NotFound'
+
+  # Droplet Endpoints
+  /v2/droplets:
+    get:
+      tags:
+        - Droplets
+      summary: List All Droplets
+      description: Returns a list of all Droplets in your account.
+      operationId: listDroplets
+      parameters:
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Page'
+        - name: tag_name
+          in: query
+          schema:
+            type: string
+          description: Filter by tag
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Droplets'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      tags:
+        - Droplets
+      summary: Create Droplet
+      description: Creates a new Droplet.
+      operationId: createDroplet
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DropletCreate'
+      responses:
+        '202':
+          description: Droplet created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DropletCreateResponse'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          description: Validation failed
+          $ref: '#/components/responses/UnprocessableEntity'
+
+  /v2/droplets/{droplet_id}:
+    get:
+      tags:
+        - Droplets
+      summary: Get Droplet
+      description: Returns information about a specific Droplet.
+      operationId: getDroplet
+      parameters:
+        - name: droplet_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The unique ID of the Droplet.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Droplet'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Not found
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags:
+        - Droplets
+      summary: Delete Droplet
+      description: Deletes a Droplet.
+      operationId: deleteDroplet
+      parameters:
+        - name: droplet_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The unique ID of the Droplet.
+      responses:
+        '204':
+          description: Droplet deleted
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+
+  /v2/droplets/{droplet_id}/actions:
+    get:
+      tags:
+        - Droplets
+      summary: List Droplet Actions
+      description: Returns a list of actions that have been executed on a Droplet.
+      operationId: listDropletActions
+      parameters:
+        - name: droplet_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The unique ID of the Droplet.
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Page'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Actions'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      tags:
+        - Droplets
+      summary: Create Droplet Action
+      description: Creates an action on a Droplet (e.g., reboot, shutdown, resize).
+      operationId: createDropletAction
+      parameters:
+        - name: droplet_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The unique ID of the Droplet.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DropletAction'
+      responses:
+        '201':
+          description: Action created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Action'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+
+  /v2/droplets/{droplet_id}/backups:
+    get:
+      tags:
+        - Droplets
+      summary: Enable Backups
+      description: Enables backups for a Droplet.
+      operationId: enableDropletBackups
+      parameters:
+        - name: droplet_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The unique ID of the Droplet.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  enum: [enable_backups]
+      responses:
+        '201':
+          description: Action created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Action'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+
+  /v2/droplets/{droplet_id}/snapshots:
+    get:
+      tags:
+        - Droplets
+      summary: List Droplet Snapshots
+      description: Lists all snapshots for a Droplet.
+      operationId: listDropletSnapshots
+      parameters:
+        - name: droplet_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The unique ID of the Droplet.
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Page'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Snapshots'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      tags:
+        - Droplets
+      summary: Create Droplet Snapshot
+      description: Creates a snapshot of a Droplet.
+      operationId: createDropletSnapshot
+      parameters:
+        - name: droplet_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The unique ID of the Droplet.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SnapshotCreate'
+      responses:
+        '201':
+          description: Snapshot created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Action'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+
+  # Kubernetes Endpoints
+  /v2/kubernetes/clusters:
+    get:
+      tags:
+        - Kubernetes
+      summary: List Kubernetes Clusters
+      description: Returns a list of all Kubernetes clusters in your account.
+      operationId: listKubernetesClusters
+      parameters:
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Page'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KubernetesClusters'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      tags:
+        - Kubernetes
+      summary: Create Kubernetes Cluster
+      description: Creates a new Kubernetes cluster.
+      operationId: createKubernetesCluster
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KubernetesClusterCreate'
+      responses:
+        '201':
+          description: Cluster created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KubernetesCluster'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          description: Validation failed
+          $ref: '#/components/responses/UnprocessableEntity'
+
+  /v2/kubernetes/clusters/{cluster_id}:
+    get:
+      tags:
+        - Kubernetes
+      summary: Get Kubernetes Cluster
+      description: Returns information about a specific Kubernetes cluster.
+      operationId: getKubernetesCluster
+      parameters:
+        - name: cluster_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The unique ID of the Kubernetes cluster.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KubernetesCluster'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Not found
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags:
+        - Kubernetes
+      summary: Delete Kubernetes Cluster
+      description: Deletes a Kubernetes cluster.
+      operationId: deleteKubernetesCluster
+      parameters:
+        - name: cluster_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The unique ID of the Kubernetes cluster.
+      responses:
+        '204':
+          description: Cluster deleted
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+
+  /v2/kubernetes/clusters/{cluster_id}/node_pools:
+    get:
+      tags:
+        - Kubernetes
+      summary: List Node Pools
+      description: Returns a list of all node pools in a Kubernetes cluster.
+      operationId: listKubernetesNodePools
+      parameters:
+        - name: cluster_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The unique ID of the Kubernetes cluster.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KubernetesNodePools'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      tags:
+        - Kubernetes
+      summary: Create Node Pool
+      description: Creates a new node pool in a Kubernetes cluster.
+      operationId: createKubernetesNodePool
+      parameters:
+        - name: cluster_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The unique ID of the Kubernetes cluster.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KubernetesNodePoolCreate'
+      responses:
+        '201':
+          description: Node pool created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KubernetesNodePool'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+
+  # Database Endpoints
+  /v2/databases:
+    get:
+      tags:
+        - Databases
+      summary: List All Databases
+      description: Returns a list of all database clusters in your account.
+      operationId: listDatabases
+      parameters:
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Page'
+        - name: tag_name
+          in: query
+          schema:
+            type: string
+          description: Filter by tag
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Databases'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      tags:
+        - Databases
+      summary: Create Database Cluster
+      description: Creates a new database cluster.
+      operationId: createDatabase
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DatabaseCreate'
+      responses:
+        '202':
+          description: Database cluster created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Database'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          description: Validation failed
+          $ref: '#/components/responses/UnprocessableEntity'
+
+  /v2/databases/{database_uuid}:
+    get:
+      tags:
+        - Databases
+      summary: Get Database Cluster
+      description: Returns information about a specific database cluster.
+      operationId: getDatabase
+      parameters:
+        - name: database_uuid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The unique ID of the database cluster.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Database'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Not found
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags:
+        - Databases
+      summary: Delete Database Cluster
+      description: Deletes a database cluster.
+      operationId: deleteDatabase
+      parameters:
+        - name: database_uuid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The unique ID of the database cluster.
+      responses:
+        '204':
+          description: Database cluster deleted
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+
+  /v2/databases/{database_uuid}/users:
+    get:
+      tags:
+        - Databases
+      summary: List Database Users
+      description: Returns a list of users for a database cluster.
+      operationId: listDatabaseUsers
+      parameters:
+        - name: database_uuid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The unique ID of the database cluster.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatabaseUsers'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      tags:
+        - Databases
+      summary: Create Database User
+      description: Creates a new user in a database cluster.
+      operationId: createDatabaseUser
+      parameters:
+        - name: database_uuid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The unique ID of the database cluster.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DatabaseUserCreate'
+      responses:
+        '201':
+          description: User created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatabaseUser'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+
+  /v2/databases/{database_uuid}/databases:
+    get:
+      tag:
+        - Databases
+      summary: List Databases
+      description: Returns a list of databases in a cluster.
+      operationId: listClusterDatabases
+      parameters:
+        - name: database_uuid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The unique ID of the database cluster.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClusterDatabases'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      tags:
+        - Databases
+      summary: Create Database
+      description: Creates a new database in a cluster.
+      operationId: createClusterDatabase
+      parameters:
+        - name: database_uuid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The unique ID of the database cluster.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DatabaseCreate'
+      responses:
+        '201':
+          description: Database created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClusterDatabase'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+
+  # Load Balancer Endpoints
+  /v2/load_balancers:
+    get:
+      tags:
+        - Load Balancers
+      summary: List Load Balancers
+      description: Returns a list of all load balancers in your account.
+      operationId: listLoadBalancers
+      parameters:
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Page'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoadBalancers'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      tags:
+        - Load Balancers
+      summary: Create Load Balancer
+      description: Creates a new load balancer.
+      operationId: createLoadBalancer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoadBalancerCreate'
+      responses:
+        '201':
+          description: Load balancer created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoadBalancer'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          description: Validation failed
+          $ref: '#/components/responses/UnprocessableEntity'
+
+  /v2/load_balancers/{load_balancer_id}:
+    get:
+      tags:
+        - Load Balancers
+      summary: Get Load Balancer
+      description: Returns information about a specific load balancer.
+      operationId: getLoadBalancer
+      parameters:
+        - name: load_balancer_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The unique ID of the load balancer.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoadBalancer'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Not found
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags:
+        - Load Balancers
+      summary: Update Load Balancer
+      description: Updates a load balancer's configuration.
+      operationId: updateLoadBalancer
+      parameters:
+        - name: load_balancer_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The unique ID of the load balancer.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoadBalancerUpdate'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoadBalancer'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+    delete:
+      tags:
+        - Load Balancers
+      summary: Delete Load Balancer
+      description: Deletes a load balancer.
+      operationId: deleteLoadBalancer
+      parameters:
+        - name: load_balancer_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The unique ID of the load balancer.
+      responses:
+        '204':
+          description: Load balancer deleted
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+
+  # Spaces Endpoints
+  /v2/spaces:
+    get:
+      tags:
+        - Spaces
+      summary: List Spaces
+      description: Returns a list of all Spaces in your account.
+      operationId: listSpaces
+      parameters:
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Page'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Spaces'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      tags:
+        - Spaces
+      summary: Create Space
+      description: Creates a new Space.
+      operationId: createSpace
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpaceCreate'
+      responses:
+        '201':
+          description: Space created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Space'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+
+  /v2/spaces/{space_name}:
+    get:
+      tags:
+        - Spaces
+      summary: Get Space
+      description: Returns information about a specific Space.
+      operationId: getSpace
+      parameters:
+        - name: space_name
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The name of the Space.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Space'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+    delete:
+      tags:
+        - Spaces
+      summary: Delete Space
+      description: Deletes a Space.
+      operationId: deleteSpace
+      parameters:
+        - name: space_name
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The name of the Space.
+      responses:
+        '204':
+          description: Space deleted
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+
+  # Images Endpoints
+  /v2/images:
+    get:
+      tags:
+        - Images
+      summary: List Images
+      description: Returns a list of all images in your account.
+      operationId: listImages
+      parameters:
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Page'
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum: [application, base, snapshot]
+          description: Filter by image type
+        - name: tag_name
+          in: query
+          schema:
+            type: string
+          description: Filter by tag
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Images'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+
+  /v2/images/{image_id}:
+    get:
+      tags:
+        - Images
+      summary: Get Image
+      description: Returns information about a specific image.
+      operationId: getImage
+      parameters:
+        - name: image_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID or slug of the image.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Image'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Not found
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags:
+        - Images
+      summary: Delete Image
+      description: Deletes a custom image.
+      operationId: deleteImage
+      parameters:
+        - name: image_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID or slug of the image.
+      responses:
+        '204':
+          description: Image deleted
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+
+  # Volumes Endpoints
+  /v2/volumes:
+    get:
+      tags:
+        - Volumes
+      summary: List Volumes
+      description: Returns a list of all volumes in your account.
+      operationId: listVolumes
+      parameters:
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Page'
+        - name: region
+          in: query
+          schema:
+            type: string
+          description: Filter by region
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Volumes'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      tags:
+        - Volumes
+      summary: Create Volume
+      description: Creates a new volume.
+      operationId: createVolume
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VolumeCreate'
+      responses:
+        '201':
+          description: Volume created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Volume'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          description: Validation failed
+          $ref: '#/components/responses/UnprocessableEntity'
+
+  /v2/volumes/{volume_id}:
+    get:
+      tags:
+        - Volumes
+      summary: Get Volume
+      description: Returns information about a specific volume.
+      operationId: getVolume
+      parameters:
+        - name: volume_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID or name of the volume.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Volume'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Not found
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags:
+        - Volumes
+      summary: Delete Volume
+      description: Deletes a volume.
+      operationId: deleteVolume
+      parameters:
+        - name: volume_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID or name of the volume.
+      responses:
+        '204':
+          description: Volume deleted
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+
+  # Domains Endpoints
+  /v2/domains:
+    get:
+      tags:
+        - Domains
+      summary: List Domains
+      description: Returns a list of all domains in your account.
+      operationId: listDomains
+      parameters:
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Page'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Domains'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      tags:
+        - Domains
+      summary: Create Domain
+      description: Creates a new domain.
+      operationId: createDomain
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DomainCreate'
+      responses:
+        '201':
+          description: Domain created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Domain'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          description: Validation failed
+          $ref: '#/components/responses/UnprocessableEntity'
+
+  /v2/domains/{domain_name}:
+    get:
+      tags:
+        - Domains
+      summary: Get Domain
+      description: Returns information about a specific domain.
+      operationId: getDomain
+      parameters:
+        - name: domain_name
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The domain name.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Domain'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Not found
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags:
+        - Domains
+      summary: Delete Domain
+      description: Deletes a domain.
+      operationId: deleteDomain
+      parameters:
+        - name: domain_name
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The domain name.
+      responses:
+        '204':
+          description: Domain deleted
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+
+  /v2/domains/{domain_name}/records:
+    get:
+      tags:
+        - Domains
+      summary: List Domain Records
+      description: Returns all DNS records for a domain.
+      operationId: listDomainRecords
+      parameters:
+        - name: domain_name
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The domain name.
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Page'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DomainRecords'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      tags:
+        - Domains
+      summary: Create Domain Record
+      description: Creates a new DNS record for a domain.
+      operationId: createDomainRecord
+      parameters:
+        - name: domain_name
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The domain name.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DomainRecordCreate'
+      responses:
+        '201':
+          description: Record created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DomainRecord'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+
+  /v2/domains/{domain_name}/records/{record_id}:
+    get:
+      tags:
+        - Domains
+      summary: Get Domain Record
+      description: Returns a specific DNS record.
+      operationId: getDomainRecord
+      parameters:
+        - name: domain_name
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The domain name.
+        - name: record_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The ID of the record.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DomainRecord'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Not found
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags:
+        - Domains
+      summary: Update Domain Record
+      description: Updates a DNS record.
+      operationId: updateDomainRecord
+      parameters:
+        - name: domain_name
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The domain name.
+        - name: record_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The ID of the record.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DomainRecordUpdate'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DomainRecord'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+    delete:
+      tags:
+        - Domains
+      summary: Delete Domain Record
+      description: Deletes a DNS record.
+      operationId: deleteDomainRecord
+      parameters:
+        - name: domain_name
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The domain name.
+        - name: record_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The ID of the record.
+      responses:
+        '204':
+          description: Record deleted
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+
+  # Firewalls Endpoints
+  /v2/firewalls:
+    get:
+      tags:
+        - Firewalls
+      summary: List Firewalls
+      description: Returns a list of all firewalls in your account.
+      operationId: listFirewalls
+      parameters:
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Page'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Firewalls'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      tags:
+        - Firewalls
+      summary: Create Firewall
+      description: Creates a new firewall.
+      operationId: createFirewall
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FirewallCreate'
+      responses:
+        '201':
+          description: Firewall created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Firewall'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          description: Validation failed
+          $ref: '#/components/responses/UnprocessableEntity'
+
+  /v2/firewalls/{firewall_id}:
+    get:
+      tags:
+        - Firewalls
+      summary: Get Firewall
+      description: Returns information about a specific firewall.
+      operationId: getFirewall
+      parameters:
+        - name: firewall_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The unique ID of the firewall.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Firewall'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Not found
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags:
+        - Firewalls
+      summary: Update Firewall
+      description: Updates a firewall's configuration.
+      operationId: updateFirewall
+      parameters:
+        - name: firewall_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The unique ID of the firewall.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FirewallUpdate'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Firewall'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+    delete:
+      tags:
+        - Firewalls
+      summary: Delete Firewall
+      description: Deletes a firewall.
+      operationId: deleteFirewall
+      parameters:
+        - name: firewall_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The unique ID of the firewall.
+      responses:
+        '204':
+          description: Firewall deleted
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+
+  # Tags Endpoints
+  /v2/tags:
+    get:
+      tags:
+        - Tags
+      summary: List Tags
+      description: Returns a list of all tags in your account.
+      operationId: listTags
+      parameters:
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Page'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tags'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      tags:
+        - Tags
+      summary: Create Tag
+      description: Creates a new tag.
+      operationId: createTag
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TagCreate'
+      responses:
+        '201':
+          description: Tag created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          description: Validation failed
+          $ref: '#/components/responses/UnprocessableEntity'
+
+  /v2/tags/{tag_name}:
+    get:
+      tags:
+        - Tags
+      summary: Get Tag
+      description: Returns information about a specific tag.
+      operationId: getTag
+      parameters:
+        - name: tag_name
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The name of the tag.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Not found
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags:
+        - Tags
+      summary: Delete Tag
+      description: Deletes a tag.
+      operationId: deleteTag
+      parameters:
+        - name: tag_name
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The name of the tag.
+      responses:
+        '204':
+          description: Tag deleted
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+
+  /v2/tags/{tag_name}/resources:
+    post:
+      tags:
+        - Tags
+      summary: Tag Resources
+      description: Assign a tag to resources.
+      operationId: tagResources
+      parameters:
+        - name: tag_name
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The name of the tag.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TagResources'
+      responses:
+        '204':
+          description: Resources tagged
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+    delete:
+      tags:
+        - Tags
+      summary: Untag Resources
+      description: Remove a tag from resources.
+      operationId: untagResources
+      parameters:
+        - name: tag_name
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The name of the tag.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TagResources'
+      responses:
+        '204':
+          description: Resources untagged
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+
+  # Actions Endpoints
+  /v2/actions:
+    get:
+      tags:
+        - Actions
+      summary: List All Actions
+      description: Returns a list of all actions in your account.
+      operationId: listActions
+      parameters:
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Page'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Actions'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+
+  /v2/actions/{action_id}:
+    get:
+      tags:
+        - Actions
+      summary: Get Action
+      description: Returns information about a specific action.
+      operationId: getAction
+      parameters:
+        - name: action_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The unique ID of the action.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Action'
+        '401':
+          description: Unauthorized
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Not found
+          $ref: '#/components/responses/NotFound'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: Personal Access Token
+
+  security:
+    - bearerAuth: []
+
+  parameters:
+    PerPage:
+      name: per_page
+      in: query
+      schema:
+        type: integer
+        default: 25
+        maximum: 200
+      description: Number of items per page
+    Page:
+      name: page
+      in: query
+      schema:
+        type: integer
+        default: 1
+      description: Page number
+
+  responses:
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    UnprocessableEntity:
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+  schemas:
+    # Account Schemas
+    Account:
+      type: object
+      properties:
+        account:
+          $ref: '#/components/schemas/AccountDetails'
+
+    AccountDetails:
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: The unique universal identifier for the account.
+        email:
+          type: string
+          description: The email address of the account.
+        name:
+          type: string
+          description: The full name of the account owner.
+        droplet_limit:
+          type: integer
+          description: The maximum number of Droplets allowed in the account.
+        floating_ip_limit:
+          type: integer
+          description: The maximum number of floating IPs allowed in the account.
+        volume_limit:
+          type: integer
+          description: The maximum number of block storage volumes allowed in the account.
+        email_verified:
+          type: boolean
+          description: Whether the account's email has been verified.
+        status:
+          type: string
+          enum: [active, warning, locked]
+          description: The status of the account.
+        status_message:
+          type: string
+          description: A message providing additional details about the account status.
+
+    # SSH Key Schemas
+    SSHKeys:
+      type: object
+      properties:
+        ssh_keys:
+          type: array
+          items:
+            $ref: '#/components/schemas/SSHKey'
+
+    SSHKey:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The unique ID of the SSH key.
+        fingerprint:
+          type: string
+          description: The fingerprint of the SSH key.
+        public_key:
+          type: string
+          description: The full public key string.
+        name:
+          type: string
+          description: The name of the SSH key.
+
+    SSHKeyCreate:
+      type: object
+      required:
+        - name
+        - public_key
+      properties:
+        name:
+          type: string
+          description: The name to give the new SSH key.
+        public_key:
+          type: string
+          description: The public key string.
+
+    SSHKeyUpdate:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: The new name for the SSH key.
+
+    # Droplet Schemas
+    Droplets:
+      type: object
+      properties:
+        droplets:
+          type: array
+          items:
+            $ref: '#/components/schemas/Droplet'
+
+    Droplet:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The unique ID of the Droplet.
+        name:
+          type: string
+          description: The name of the Droplet.
+        memory:
+          type: integer
+          description: The RAM of the Droplet in MB.
+        vcpus:
+          type: integer
+          description: The number of virtual CPUs.
+        disk:
+          type: integer
+          description: The size of the disk in GB.
+        locked:
+          type: boolean
+          description: Whether the Droplet is locked.
+        status:
+          type: string
+          enum: [new, active, off, archived]
+          description: The status of the Droplet.
+        created_at:
+          type: string
+          format: date-time
+          description: The creation date and time of the Droplet.
+        features:
+          type: array
+          items:
+            type: string
+          description: Array of enabled features.
+        tags:
+          type: array
+          items:
+            type: string
+          description: Array of tags applied to the Droplet.
+        region:
+          $ref: '#/components/schemas/Region'
+        image:
+          $ref: '#/components/schemas/Image'
+        size:
+          $ref: '#/components/schemas/Size'
+        networks:
+          $ref: '#/components/schemas/Networks'
+        kernel:
+          $ref: '#/components/schemas/Kernel'
+
+    DropletCreate:
+      type: object
+      required:
+        - name
+        - size
+        - image
+        - region
+      properties:
+        name:
+          type: string
+          description: The name of the new Droplet.
+        size:
+          type: string
+          description: The size slug of the Droplet.
+        image:
+          type: string
+          description: The image ID or slug.
+        region:
+          type: string
+          description: The region slug.
+        ssh_keys:
+          type: array
+          items:
+            type: integer
+          description: Array of SSH key IDs.
+        backups:
+          type: boolean
+          default: false
+          description: Whether to enable backups.
+        ipv6:
+          type: boolean
+          default: false
+          description: Whether to enable IPv6.
+        private_networking:
+          type: boolean
+          default: false
+          description: Whether to enable private networking.
+        tags:
+          type: array
+          items:
+            type: string
+          description: Array of tags to apply.
+        user_data:
+          type: string
+          description: Cloud-init user data.
+        monitoring:
+          type: boolean
+          default: false
+          description: Whether to install the monitoring agent.
+
+    DropletCreateResponse:
+      type: object
+      properties:
+        droplet:
+          $ref: '#/components/schemas/Droplet'
+        links:
+          $ref: '#/components/schemas/Links'
+
+    DropletAction:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum:
+            - enable_backups
+            - disable_backups
+            - reboot
+            - power_off
+            - power_on
+            - shutdown
+            - reset_root_password
+            - resize
+            - restore
+            - rebuild
+            - rename
+            - change_kernel
+            - enable_ipv6
+            - disable_ipv6
+            - create_snapshot
+            - restore_snapshot
+          description: The type of action to perform.
+        size:
+          type: string
+          description: The size slug when resizing.
+        name:
+          type: string
+          description: The new name when renaming.
+        image:
+          type: string
+          description: The image ID or slug when rebuilding.
+
+    # Kubernetes Schemas
+    KubernetesClusters:
+      type: object
+      properties:
+        kubernetes_clusters:
+          type: array
+          items:
+            $ref: '#/components/schemas/KubernetesCluster'
+
+    KubernetesCluster:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique ID of the cluster.
+        name:
+          type: string
+          description: The name of the cluster.
+        region:
+          type: string
+          description: The region of the cluster.
+        version:
+          type: string
+          description: The Kubernetes version.
+        cluster_subnet:
+          type: string
+          description: The cluster subnet CIDR.
+        service_subnet:
+          type: string
+          description: The service subnet CIDR.
+        node_pools:
+          type: array
+          items:
+            $ref: '#/components/schemas/KubernetesNodePool'
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        endpoint:
+          type: string
+          description: The API server endpoint.
+        tags:
+          type: array
+          items:
+            type: string
+
+    KubernetesClusterCreate:
+      type: object
+      required:
+        - name
+        - region
+        - version
+        - node_pools
+      properties:
+        name:
+          type: string
+          description: The name for the cluster.
+        region:
+          type: string
+          description: The region where the cluster will be created.
+        version:
+          type: string
+          description: The Kubernetes version.
+        node_pools:
+          type: array
+          items:
+            $ref: '#/components/schemas/KubernetesNodePoolCreate'
+
+    KubernetesNodePools:
+      type: object
+      properties:
+        node_pools:
+          type: array
+          items:
+            $ref: '#/components/schemas/KubernetesNodePool'
+
+    KubernetesNodePool:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique ID of the node pool.
+        name:
+          type: string
+          description: The name of the node pool.
+        size:
+          type: string
+          description: The size slug of nodes.
+        count:
+          type: integer
+          description: The number of nodes in the pool.
+        tags:
+          type: array
+          items:
+            type: string
+        nodes:
+          type: array
+          items:
+            $ref: '#/components/schemas/KubernetesNode'
+
+    KubernetesNodePoolCreate:
+      type: object
+      required:
+        - name
+        - size
+        - count
+      properties:
+        name:
+          type: string
+          description: The name for the node pool.
+        size:
+          type: string
+          description: The size of nodes.
+        count:
+          type: integer
+          description: The number of nodes.
+        tags:
+          type: array
+          items:
+            type: string
+
+    KubernetesNode:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        status:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+
+    # Database Schemas
+    Databases:
+      type: object
+      properties:
+        databases:
+          type: array
+          items:
+            $ref: '#/components/schemas/Database'
+
+    Database:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique ID of the database cluster.
+        name:
+          type: string
+          description: The name of the database cluster.
+        engine:
+          type: string
+          description: The database engine.
+        version:
+          type: string
+          description: The database engine version.
+        num_nodes:
+          type: integer
+          description: The number of nodes in the cluster.
+        region:
+          type: string
+          description: The region.
+        status:
+          type: string
+          description: The status of the cluster.
+        created_at:
+          type: string
+          format: date-time
+        tags:
+          type: array
+          items:
+            type: string
+
+    DatabaseCreate:
+      type: object
+      required:
+        - name
+        - engine
+        - version
+        - region
+        - num_nodes
+        - size
+      properties:
+        name:
+          type: string
+          description: The name for the database cluster.
+        engine:
+          type: string
+          description: The database engine.
+        version:
+          type: string
+          description: The database engine version.
+        region:
+          type: string
+          description: The region.
+        num_nodes:
+          type: integer
+          description: The number of nodes.
+        size:
+          type: string
+          description: The size slug.
+        tags:
+          type: array
+          items:
+            type: string
+
+    DatabaseUsers:
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseUser'
+
+    DatabaseUser:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+        role:
+          type: string
+
+    DatabaseUserCreate:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: The username for the new user.
+        password:
+          type: string
+          description: The password for the new user.
+
+    ClusterDatabases:
+      type: object
+      properties:
+        databases:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClusterDatabase'
+
+    ClusterDatabase:
+      type: object
+      properties:
+        name:
+          type: string
+        engine:
+          type: string
+
+    # Load Balancer Schemas
+    LoadBalancers:
+      type: object
+      properties:
+        load_balancers:
+          type: array
+          items:
+            $ref: '#/components/schemas/LoadBalancer'
+
+    LoadBalancer:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        ip:
+          type: string
+        algorithm:
+          type: string
+        status:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        forwarding_rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/ForwardingRule'
+        health_check:
+          $ref: '#/components/schemas/HealthCheck'
+        sticky_sessions:
+          $ref: '#/components/schemas/StickySessions'
+        region:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+
+    LoadBalancerCreate:
+      type: object
+      required:
+        - name
+        - region
+        - forwarding_rules
+      properties:
+        name:
+          type: string
+        region:
+          type: string
+        forwarding_rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/ForwardingRule'
+        health_check:
+          $ref: '#/components/schemas/HealthCheck'
+        sticky_sessions:
+          $ref: '#/components/schemas/StickySessions'
+        tags:
+          type: array
+          items:
+            type: string
+
+    LoadBalancerUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        algorithm:
+          type: string
+        forwarding_rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/ForwardingRule'
+        health_check:
+          $ref: '#/components/schemas/HealthCheck'
+        sticky_sessions:
+          $ref: '#/components/schemas/StickySessions'
+
+    ForwardingRule:
+      type: object
+      properties:
+        entry_protocol:
+          type: string
+        target_protocol:
+          type: string
+        entry_port:
+          type: integer
+        target_port:
+          type: integer
+        certificate_id:
+          type: string
+        tls_passthrough:
+          type: boolean
+
+    HealthCheck:
+      type: object
+      properties:
+        protocol:
+          type: string
+        port:
+          type: integer
+        path:
+          type: string
+        check_interval_seconds:
+          type: integer
+        response_timeout_seconds:
+          type: integer
+        healthy_threshold:
+          type: integer
+        unhealthy_threshold:
+          type: integer
+
+    StickySessions:
+      type: object
+      properties:
+        type:
+          type: string
+        cookie_name:
+          type: string
+
+    # Spaces Schemas
+    Spaces:
+      type: object
+      properties:
+        spaces:
+          type: array
+          items:
+            $ref: '#/components/schemas/Space'
+
+    Space:
+      type: object
+      properties:
+        name:
+          type: string
+        bucket:
+          type: string
+        region:
+          type: string
+        public:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+
+    SpaceCreate:
+      type: object
+      required:
+        - name
+        - region
+      properties:
+        name:
+          type: string
+        region:
+          type: string
+        acl:
+          type: string
+        cors:
+          type: array
+          items:
+            type: object
+
+    # Image Schemas
+    Images:
+      type: object
+      properties:
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/Image'
+
+    Image:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        type:
+          type: string
+        distribution:
+          type: string
+        slug:
+          type: string
+        public:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        min_disk_size:
+          type: integer
+        size_gigabytes:
+          type: integer
+        description:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+
+    # Volume Schemas
+    Volumes:
+      type: object
+      properties:
+        volumes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Volume'
+
+    Volume:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        size_gigabytes:
+          type: integer
+        region:
+          type: string
+        droplet_ids:
+          type: array
+          items:
+            type: integer
+        created_at:
+          type: string
+          format: date-time
+
+    VolumeCreate:
+      type: object
+      required:
+        - name
+        - size_gigabytes
+        - region
+      properties:
+        name:
+          type: string
+        size_gigabytes:
+          type: integer
+        region:
+          type: string
+        description:
+          type: string
+        filesystem_type:
+          type: string
+
+    # Domain Schemas
+    Domains:
+      type: object
+      properties:
+        domains:
+          type: array
+          items:
+            $ref: '#/components/schemas/Domain'
+
+    Domain:
+      type: object
+      properties:
+        name:
+          type: string
+        ttl:
+          type: integer
+        zone_file:
+          type: string
+
+    DomainCreate:
+      type: object
+      required:
+        - name
+        - ip_address
+      properties:
+        name:
+          type: string
+        ip_address:
+          type: string
+
+    DomainRecords:
+      type: object
+      properties:
+        domain_records:
+          type: array
+          items:
+            $ref: '#/components/schemas/DomainRecord'
+
+    DomainRecord:
+      type: object
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+        name:
+          type: string
+        data:
+          type: string
+        priority:
+          type: integer
+        port:
+          type: integer
+        ttl:
+          type: integer
+
+    DomainRecordCreate:
+      type: object
+      required:
+        - type
+        - name
+        - data
+      properties:
+        type:
+          type: string
+          enum: [A, AAAA, CNAME, MX, TXT, NS, SRV]
+        name:
+          type: string
+        data:
+          type: string
+        priority:
+          type: integer
+        port:
+          type: integer
+        ttl:
+          type: integer
+
+    DomainRecordUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        data:
+          type: string
+        priority:
+          type: integer
+        port:
+          type: integer
+        ttl:
+          type: integer
+
+    # Firewall Schemas
+    Firewalls:
+      type: object
+      properties:
+        firewalls:
+          type: array
+          items:
+            $ref: '#/components/schemas/Firewall'
+
+    Firewall:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        inbound_rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/FirewallRule'
+        outbound_rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/FirewallRule'
+        droplet_ids:
+          type: array
+          items:
+            type: integer
+        tags:
+          type: array
+          items:
+            type: string
+        created_at:
+          type: string
+          format: date-time
+
+    FirewallCreate:
+      type: object
+      required:
+        - name
+        - inbound_rules
+        - outbound_rules
+      properties:
+        name:
+          type: string
+        inbound_rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/FirewallRule'
+        outbound_rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/FirewallRule'
+        droplet_ids:
+          type: array
+          items:
+            type: integer
+        tags:
+          type: array
+          items:
+            type: string
+
+    FirewallUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        inbound_rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/FirewallRule'
+        outbound_rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/FirewallRule'
+        droplet_ids:
+          type: array
+          items:
+            type: integer
+        tags:
+          type: array
+          items:
+            type: string
+
+    FirewallRule:
+      type: object
+      properties:
+        protocol:
+          type: string
+          enum: [tcp, udp, icmp]
+        ports:
+          type: string
+        sources:
+          type: object
+        destinations:
+          type: object
+
+    # Tag Schemas
+    Tags:
+      type: object
+      properties:
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+
+    Tag:
+      type: object
+      properties:
+        name:
+          type: string
+        resources:
+          $ref: '#/components/schemas/TaggedResources'
+
+    TagCreate:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+
+    TagResources:
+      type: object
+      required:
+        - resources
+      properties:
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resource'
+
+    TaggedResources:
+      type: object
+      properties:
+        count:
+          type: integer
+        last_tagged_at:
+          type: string
+          format: date-time
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resource'
+
+    Resource:
+      type: object
+      properties:
+        resource_id:
+          type: string
+        resource_type:
+          type: string
+
+    # Action Schemas
+    Actions:
+      type: object
+      properties:
+        actions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Action'
+
+    Action:
+      type: object
+      properties:
+        id:
+          type: integer
+        status:
+          type: string
+          enum: [in-progress, completed,_errored]
+        type:
+          type: string
+        started_at:
+          type: string
+          format: date-time
+        completed_at:
+          type: string
+          format: date-time
+        resource_id:
+          type: integer
+        resource_type:
+          type: string
+
+    # Snapshot Schemas
+    Snapshots:
+      type: object
+      properties:
+        snapshots:
+          type: array
+          items:
+            $ref: '#/components/schemas/Snapshot'
+
+    Snapshot:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        resource_id:
+          type: integer
+        resource_type:
+          type: string
+        min_disk_size:
+          type: integer
+        size_gigabytes:
+          type: integer
+
+    SnapshotCreate:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+
+    # Supporting Schemas
+    Region:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        available:
+          type: boolean
+
+    Size:
+      type: object
+      properties:
+        slug:
+          type: string
+        available:
+          type: boolean
+        price_monthly:
+          type: number
+        price_hourly:
+          type: number
+        vcpus:
+          type: integer
+        memory:
+          type: integer
+        disk:
+          type: integer
+        transfer:
+          type: number
+
+    Networks:
+      type: object
+      properties:
+        v4:
+          type: array
+          items:
+            $ref: '#/components/schemas/NetworkV4'
+        v6:
+          type: array
+          items:
+            $ref: '#/components/schemas/NetworkV6'
+
+    NetworkV4:
+      type: object
+      properties:
+        ip_address:
+          type: string
+        netmask:
+          type: string
+        gateway:
+          type: string
+        type:
+          type: string
+
+    NetworkV6:
+      type: object
+      properties:
+        ip_address:
+          type: string
+        netmask:
+          type: string
+        gateway:
+          type: string
+        type:
+          type: string
+
+    Kernel:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        version:
+          type: string
+
+    Links:
+      type: object
+      properties:
+        pages:
+          $ref: '#/components/schemas/PageLinks'
+
+    PageLinks:
+      type: object
+      properties:
+        pages:
+          type: object
+          properties:
+            first:
+              type: string
+            prev:
+              type: string
+            next:
+              type: string
+            last:
+              type: string
+
+    Error:
+      type: object
+      properties:
+        id:
+          type: string
+        message:
+          type: string
+        request_id:
+          type: string

@@ -1,0 +1,14 @@
+yfinance
+requests
+pandas
+pyyaml
+websockets
+websocket-client
+pandas-ta
+vectorbt
+quantstats
+
+# dev / CI
+pytest
+pytest-cov
+ruff

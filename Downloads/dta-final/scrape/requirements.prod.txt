@@ -1,0 +1,6 @@
+yfinance
+requests
+pandas
+pyyaml
+websockets
+websocket-client

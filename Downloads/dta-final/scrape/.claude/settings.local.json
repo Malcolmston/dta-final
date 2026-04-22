@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:en.wikipedia.org)",
+      "Bash(pip install:*)",
+      "Bash(python build_tickers_csv.py)",
+      "Bash(python:*)",
+      "Bash(pip show:*)",
+      "Bash(grep -v \"^--$\")"
+    ]
+  }
+}

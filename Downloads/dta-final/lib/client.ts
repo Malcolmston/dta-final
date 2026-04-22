@@ -76,6 +76,10 @@ export interface SignalsData {
   macd_cross: string | null;
   sma: number | null;
   sma_2: number | null;
+  cci: number | null;
+  willr: number | null;
+  stoch_k: number | null;
+  stoch_d: number | null;
 }
 
 export interface MomentumData {
@@ -116,6 +120,10 @@ interface RawSignalsData {
   macd_cross: string | null;
   sma: number | null;
   sma_2: number | null;
+  cci?: number;
+  willr?: number;
+  stoch_k?: number;
+  stoch_d?: number;
 }
 
 interface RawMomentumData {
@@ -377,6 +385,10 @@ function mapSignalsFields(d: RawSignalsData): SignalsData {
     macd_cross: d.macd_cross,
     sma: d.sma,
     sma_2: d.sma_2,
+    cci: d.cci ?? null,
+    willr: d.willr ?? null,
+    stoch_k: d.stoch_k ?? null,
+    stoch_d: d.stoch_d ?? null,
   };
 }
 

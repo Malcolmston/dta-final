@@ -3,6 +3,8 @@
 import { useState, useEffect, useMemo } from "react";
 import { fetchQuote } from "@/lib/client";
 import { useColorPalette } from "../context/ColorPaletteContext";
+import Card from "./Card";
+import StatCard from "./StatCard";
 
 interface Holding {
   id: string;
@@ -332,26 +334,26 @@ export default function PortfolioManager() {
       {activeTab === "holdings" && (
         <div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-            <div className="p-4 rounded-lg bg-gray-50 flex flex-col justify-between" style={{ minHeight: '80px' }}>
-              <p className="text-sm text-gray-600">Total Cost Basis</p>
-              <p className="text-xl font-bold text-gray-800">{formatCurrency(totals.totalCostBasis)}</p>
-            </div>
-            <div className="p-4 rounded-lg bg-gray-50 flex flex-col justify-between" style={{ minHeight: '80px' }}>
-              <p className="text-sm text-gray-600">Current Value</p>
-              <p className="text-xl font-bold text-gray-800">{formatCurrency(totals.totalCurrentValue)}</p>
-            </div>
-            <div className="p-4 rounded-lg bg-gray-50 flex flex-col justify-between" style={{ minHeight: '80px' }}>
-              <p className="text-sm text-gray-600">Total Gain/Loss</p>
-              <p className={`text-xl font-bold ${totals.totalGain >= 0 ? "text-green-600" : "text-red-600"}`}>
-                {formatCurrency(totals.totalGain)}
-              </p>
-            </div>
-            <div className="p-4 rounded-lg bg-gray-50 flex flex-col justify-between" style={{ minHeight: '80px' }}>
-              <p className="text-sm text-gray-600">Return</p>
-              <p className={`text-xl font-bold ${totals.totalGainPercent >= 0 ? "text-green-600" : "text-red-600"}`}>
-                {formatPercent(totals.totalGainPercent)}
-              </p>
-            </div>
+            <StatCard
+              label="Total Cost Basis"
+              value={formatCurrency(totals.totalCostBasis)}
+            />
+            <StatCard
+              label="Current Value"
+              value={formatCurrency(totals.totalCurrentValue)}
+            />
+            <StatCard
+              label="Total Gain/Loss"
+              value={formatCurrency(totals.totalGain)}
+              change={formatCurrency(totals.totalGain)}
+              trend={totals.totalGain >= 0 ? "up" : "down"}
+            />
+            <StatCard
+              label="Return"
+              value={formatPercent(totals.totalGainPercent)}
+              change={formatPercent(totals.totalGainPercent)}
+              trend={totals.totalGainPercent >= 0 ? "up" : "down"}
+            />
           </div>
 
           <div className="mb-4">

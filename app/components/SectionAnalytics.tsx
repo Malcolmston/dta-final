@@ -1,6 +1,8 @@
 "use client";
 
 import { DashboardSection } from "./DashboardTabs";
+import Card from "./Card";
+import StatCard from "./StatCard";
 
 interface SectionAnalyticsProps {
   section: DashboardSection;
@@ -98,28 +100,23 @@ export default function SectionAnalytics({ section }: SectionAnalyticsProps) {
   const data = analyticsData[section];
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 mb-6">
+    <Card className="mb-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="font-semibold text-gray-900">{data.title}</h3>
-        <span className="text-xs text-gray-400">Real-time</span>
+        <h3 className="font-semibold" style={{ color: 'inherit' }}>{data.title}</h3>
+        <span className="text-xs" style={{ opacity: 0.5 }}>Real-time</span>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {data.metrics.map((metric, index) => (
-          <div key={index} className="p-3 rounded-lg bg-gray-50 flex flex-col justify-between" style={{ minHeight: '90px' }}>
-            <p className="text-xs text-gray-500">{metric.label}</p>
-            <p className="text-lg font-bold text-gray-900">{metric.value}</p>
-            <span
-              className={`inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full ${getTrendColor(
-                metric.trend
-              )}`}
-            >
-              <span>{getTrendIcon(metric.trend)}</span>
-              {metric.change}
-            </span>
-          </div>
+          <StatCard
+            key={index}
+            label={metric.label}
+            value={metric.value}
+            change={metric.change}
+            trend={metric.trend}
+          />
         ))}
       </div>
-    </div>
+    </Card>
   );
 }

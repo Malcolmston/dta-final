@@ -1,0 +1,34 @@
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: dta-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  app:
+    build: .
+    container_name: dta-app
+    ports:
+      - "3001:3000"
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./app:/app/app
+
+    command: node server.js
+
+volumes:
+  redis-data:

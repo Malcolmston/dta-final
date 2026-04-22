@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<problems>
+  <problem id="problem-1" status="resolved">
+    <title>Stock Market Complexity for Beginners</title>
+    <description>
+      Individual investors with limited knowledge of how stocks work struggle to understand
+      market trends, patterns, and fluctuations. The existing dashboard is too advanced
+      with complex 3D visualizations and technical jargon that intimidates new users.
+    </description>
+    <solution-implemented>
+      - Added Simple Mode with beginner-friendly language
+      - Added Detailed Mode for advanced users
+      - Toggle button to switch between modes
+    </solution-implemented>
+  </problem>
+
+  <problem id="problem-2" status="resolved">
+    <title>Lack of Contextual Understanding</title>
+    <description>
+      Charts display data without explaining what's happening or why it matters.
+      Users see numbers and visualizations but lack the framework to interpret them.
+    </description>
+    <solution-implemented>
+      - Added ChartAnalysis component below each chart
+      - Each chart has simple explanation (Simple Mode)
+      - Each chart has detailed explanation (Detailed Mode)
+      - explain.xml documents all chart explanations
+    </solution-implemented>
+  </problem>
+
+  <problem id="problem-3" status="resolved">
+    <title>No Mode Differentiation</title>
+    <description>
+      The dashboard provides the same content to all users regardless of their
+      expertise level. There's no simple mode for beginners and no detailed mode
+      for advanced users.
+    </description>
+    <solution-implemented>
+      - Simple Mode: 1 chart per tab initially (now 4)
+      - Detailed Mode: All advanced charts (4 per tab)
+      - Different language for each mode
+      - Each tab has minimum 4 charts in both modes
+    </solution-implemented>
+  </problem>
+
+  <problem id="problem-4" status="resolved">
+    <title>Insufficient Charts in Simple Mode</title>
+    <description>
+      Initial Simple Mode implementation only had 1-2 charts per tab, making
+      the dashboard feel incomplete compared to Detailed Mode.
+    </description>
+    <solution-implemented>
+      - All tabs now have 4 charts in both modes
+      - Consistent chart count across Simple and Detailed modes
+    </solution-implemented>
+  </problem>
+</problems>

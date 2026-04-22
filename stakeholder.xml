@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<stakeholders>
+  <stakeholder id="beginner-investor">
+    <name>Beginner Investor</name>
+    <profile>
+      - Owns a larger stock portfolio
+      - Has limited knowledge of how stocks work
+      - Wants to understand trends, patterns, and fluctuations
+      - Needs simple, jargon-free explanations
+    </profile>
+    <needs>
+      - Simple language explanations
+      - Educational content about market factors
+      - Guided interpretation of charts
+      - Gradual complexity increase
+    </needs>
+    <pain-points status="resolved">
+      - Intimidated by complex 3D visualizations -> RESOLVED: Simple Mode available
+      - Confused by technical jargon -> RESOLVED: Plain language explanations
+      - Don't understand what charts show -> RESOLVED: ChartAnalysis component
+      - No way to switch to simpler view -> RESOLVED: Toggle button added
+    </pain-points>
+  </stakeholder>
+
+  <stakeholder id="advanced-trader">
+    <name>Advanced Trader</name>
+    <profile>
+      - Experienced with technical analysis
+      - Uses multiple indicators and charts
+      - Needs detailed data and metrics
+      - Wants comprehensive analytical tools
+    </profile>
+    <needs>
+      - Detailed technical indicators
+      - Multiple chart types and views
+      - Performance metrics and backtesting
+      - Professional terminology
+    </needs>
+    <pain-points status="resolved">
+      - Frustrated by oversimplified interfaces -> RESOLVED: Detailed Mode available
+      - Need more data, not less -> RESOLVED: All 4 charts per tab in Detailed Mode
+      - Want advanced visualization options -> RESOLVED: 3D charts, Network, etc.
+    </pain-points>
+  </stakeholder>
+
+  <stakeholder id="educator">
+    <name>Financial Educator</name>
+    <profile>
+      - Teaches investing concepts
+      - Needs clear examples and visualizations
+      - Wants to show both simple and complex views
+      - Uses dashboard for teaching
+    </profile>
+    <needs>
+      - Toggle between simple and detailed modes
+      - Educational explanations for each chart
+      - Ability to highlight key concepts
+      - Professional presentation
+    </needs>
+    <needs-status>
+      - Toggle between modes -> RESOLVED: Simple/Detailed toggle
+      - Educational explanations -> RESOLVED: ChartAnalysis component
+      - Highlight concepts -> RESOLVED: Each chart has explanation box
+      - Professional presentation -> RESOLVED: Clean UI
+    </needs-status>
+  </stakeholder>
+
+  <stakeholder id="casual-observer">
+    <name>Casual Market Observer</name>
+    <profile>
+      - Interested in market trends
+      - Not actively trading
+      - Wants general understanding
+      - Prefers quick overview
+    </profile>
+    <needs>
+      - High-level market summary
+      - Easy to digest visualizations
+      - Quick insights without complexity
+    </needs>
+    <needs-status>
+      - High-level summary -> RESOLVED: Overview tab in Simple Mode
+      - Easy visualizations -> RESOLVED: 4 charts per tab
+      - Quick insights -> RESOLVED: SectionAnalytics at top
+    </needs-status>
+  </stakeholder>
+</stakeholders>

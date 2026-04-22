@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<explanations>
+  <chart id="MarketPredictor">
+    <simple>
+      This shows which stocks are popular right now and how experts think they might perform.
+      Green means experts think it's a good buy, red means they think you should sell.
+    </simple>
+    <detailed>
+      Real-time market sentiment analysis based on multiple technical indicators including
+      RSI, MACD, and moving average crossovers. Signal strength indicates conviction level.
+    </detailed>
+    <purpose>Help users understand current market mood and expert consensus</purpose>
+  </chart>
+
+  <chart id="PortfolioPieChart">
+    <simple>
+      This pie chart shows how your money is spread out across different types of investments.
+      A balanced portfolio means if one type does poorly, the others might help balance it out.
+    </simple>
+    <detailed>
+      Portfolio allocation breakdown by sector weighting. Diversification metrics and
+      concentration risk analysis. Rebalancing recommendations based on target allocation.
+    </detailed>
+    <purpose>Visualize portfolio diversity and risk distribution</purpose>
+  </chart>
+
+  <chart id="Candlestick3DChart">
+    <simple>
+      These 3D bars show how stock prices moved over time. The tall green bars mean
+      the price went up a lot that day. The short red bars mean the price stayed fairly flat.
+    </simple>
+    <detailed>
+      3D candlestick visualization displaying OHLCV data with volume-weighted price action.
+      Supports rotation and zoom for temporal pattern analysis.
+    </detailed>
+    <purpose>Understand price movement patterns over time</purpose>
+  </chart>
+
+  <chart id="PriceRibbon3D">
+    <simple>
+      These colored lines show different averages of the stock price over time.
+      When the short-term average crosses above the long-term average, that's often a good sign.
+    </simple>
+    <detailed>
+      Multi-timeframe moving average ribbon visualization. Golden cross and death cross
+      signals, trend strength indicators, and support/resistance levels.
+    </detailed>
+    <purpose>Identify trend changes and key price levels</purpose>
+  </chart>
+
+  <chart id="Volume3DBars">
+    <simple>
+      These bars show how many shares were traded each day. Big bars mean lots of
+      people were buying or selling that day - something important might be happening.
+    </simple>
+    <detailed>
+      Volume profile analysis with volume-at-price indicators. Unusual volume detection
+      and institutional activity estimation.
+    </detailed>
+    <purpose>See trading activity and market interest</purpose>
+  </chart>
+
+  <chart id="CandlestickChart">
+    <simple>
+      This 2D chart shows the same price information as the 3D version but in a
+      simpler format. Green means the price went up, red means it went down.
+    </simple>
+    <detailed>
+      Traditional candlestick charting with configurable timeframes. Pattern recognition
+      for doji, hammer, engulfing patterns, and other technical formations.
+    </detailed>
+    <purpose>Simple price trend visualization</purpose>
+  </chart>
+
+  <chart id="MarketFactors">
+    <simple>
+      These are the main things that affect how stock prices change. Understanding
+      these helps you make better decisions about when to buy or sell.
+    </simple>
+    <detailed>
+      Comprehensive market factor analysis including fundamental, technical, and sentiment
+      indicators. Real-time correlation matrix for factor exposures.
+    </detailed>
+    <purpose>Educational overview of market drivers</purpose>
+  </chart>
+
+  <chart id="Heatmap">
+    <simple>
+      This map shows how different groups of stocks are doing. Green groups are doing well,
+      red groups are doing poorly. Bigger squares mean more money is in those stocks.
+    </simple>
+    <detailed>
+      Sector and industry performance heatmap with market cap weighting. Relative strength
+      rankings and sector rotation analysis.
+    </detailed>
+    <purpose>Quick overview of market sector performance</purpose>
+  </chart>
+
+  <chart id="Treemap">
+    <simple>
+      This box picture shows which parts of the market are biggest and how they're performing.
+      Bigger boxes are larger companies, colors show if they're up or down.
+    </simple>
+    <detailed>
+      Hierarchical market capitalization treemap with performance overlays. Sector
+      drill-down capabilities and relative performance metrics.
+    </detailed>
+    <purpose>Visualize market segments by size and performance</purpose>
+  </chart>
+
+  <chart id="Treemap3DBoxes">
+    <simple>
+      This 3D version gives you a cool view of the same information. You can rotate it
+      around to see which areas of the market are biggest.
+    </simple>
+    <detailed>
+      Interactive 3D treemap visualization with depth cues and spatial navigation.
+      Market structure analysis and sector allocation visualization.
+    </detailed>
+    <purpose>3D view of market structure</purpose>
+  </chart>
+
+  <chart id="Streamgraph">
+    <simple>
+      This flowing chart shows how different groups of stocks have performed over time.
+      It's like watching the popularity of different types of investments change.
+    </simple>
+    <detailed>
+      Stacked area visualization showing sector performance over time. Sector rotation
+      patterns and momentum transition analysis.
+    </detailed>
+    <purpose>Track sector performance over time</purpose>
+  </chart>
+
+  <chart id="AnalysisTabs">
+    <simple>
+      These tabs let you see different types of analysis. Think of it like getting
+      different expert opinions on the same stock.
+    </simple>
+    <detailed>
+      Multi-panel technical analysis with RSI, MACD, Stochastic, Williams %R, and CCI
+      indicators. Signal compilation and confluence analysis.
+    </detailed>
+    <purpose>Comprehensive technical indicator analysis</purpose>
+  </chart>
+
+  <chart id="TechnicalAnalysis">
+    <simple>
+      This shows technical indicators - mathematical ways to predict where the price
+      might go. Think of it like weather prediction but for stocks.
+    </simple>
+    <detailed>
+      Comprehensive technical indicator dashboard with RSI, MACD, Bollinger Bands, ATR,
+      and custom indicators. Backtested signal performance.
+    </detailed>
+    <purpose>Deep dive into technical indicators</purpose>
+  </chart>
+
+  <chart id="NetworkGraph">
+    <simple>
+      This shows how different stocks move together. Stocks connected by lines tend
+      to go up and down at similar times.
+    </simple>
+    <detailed>
+      Stock correlation network visualization with adjustable correlation thresholds.
+      Sector clustering and co-movement analysis.
+    </detailed>
+    <purpose>See how stocks are related to each other</purpose>
+  </chart>
+
+  <chart id="ConfusionMatrixPlot">
+    <simple>
+      This shows how good our predictions have been. The bigger the colored squares,
+      the more accurate our predictions were.
+    </simple>
+    <detailed>
+      Machine learning model performance visualization. Precision, recall, F1-score
+      metrics for forecast accuracy evaluation.
+    </detailed>
+    <purpose>Evaluate prediction accuracy</purpose>
+  </chart>
+
+  <chart id="LagCorrelationPlot">
+    <simple>
+      This shows how changes in one thing might predict changes in another. It helps
+      find patterns that happen before big price moves.
+    </simple>
+    <detailed>
+      Temporal correlation analysis with configurable lag periods. Leading indicator
+      discovery and causal relationship mapping.
+    </detailed>
+    <purpose>Find predictive patterns</purpose>
+  </chart>
+
+  <chart id="DualAxisPlot">
+    <simple>
+      This chart compares two different things at once. It helps you see if there's
+      a relationship between them.
+    </simple>
+    <detailed>
+      Dual-axis charting with correlation coefficients. Multi-variable analysis
+      and regression statistics.
+    </detailed>
+    <purpose>Compare two metrics</purpose>
+  </chart>
+</explanations>

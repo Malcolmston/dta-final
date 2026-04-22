@@ -1,0 +1,70 @@
+# Dependencies
+node_modules
+npm-debug.log
+
+# Next.js
+.next
+out
+
+# Build outputs
+dist
+build
+
+# Testing
+coverage
+
+# Misc
+.DS_Store
+*.pem
+
+# Debug
+npm-debug.log*
+
+# Local env files
+.env
+.env*.local
+
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# IDE
+.idea
+.vscode
+
+# Git
+.git
+.gitignore
+
+# Documentation
+README.md
+docs
+*.md
+
+# CI/CD
+.github
+.gitlab-ci.yml
+.bitbucket
+
+# Docker
+docker-compose*.yml
+Dockerfile*
+
+# Test files
+__tests__
+test
+*.test.ts
+*.spec.ts
+tests
+*.test.js
+*.spec.js
+jest.config.js
+jest.setup.js
+
+# Misc
+*.lock
+yarn.lock
+pnpm-lock.yaml

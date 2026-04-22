@@ -1,0 +1,85 @@
+stages:
+  - lint
+  - test
+  - coverage
+  - deploy
+  - release
+
+default:
+  image: python:3.13
+
+before_script:
+  - pip install -r requirements.txt -q
+  - pip install pytest pytest-cov ruff -q
+
+# ── Node.js Setup ──────────────────────────────────────────────────────────────
+
+.nodejs:
+  image: node:20
+  before_script:
+    - npm install
+    - npm ci
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - node_modules/
+
+
+lint:
+  stage: lint
+  script:
+    - ruff check main.py build_tickers_csv.py
+    - ruff format --check main.py build_tickers_csv.py
+  allow_failure: false
+
+
+test:unit:
+  stage: test
+  script:
+    - pytest -m "not integration" -q
+  coverage: '/Required test coverage of \d+ reached. Total coverage: (\d+\.\d+)%/'
+  artifacts:
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage/coverage.xml
+    paths:
+      - coverage/
+    expire_in: 7 days
+
+test:integration:
+  stage: test
+  when: manual
+  script:
+    - pytest -m integration -q
+  allow_failure: true
+
+coverage:report:
+  stage: coverage
+  needs: [test:unit]
+  script:
+    - pytest -m "not integration" --cov=main --cov-report=term-missing --cov-report=html:coverage -q
+    - echo "Coverage report available in coverage/"
+  artifacts:
+    paths:
+      - coverage/
+    expire_in: 30 days
+
+# ── Jest Tests ─────────────────────────────────────────────────────────────────
+
+test:jest:
+  stage: test
+  extends: .nodejs
+  needs: [test:unit]
+  when: manual
+  allow_failure: false
+  script:
+    - pip install websockets yfinance -q
+    - python server.py &
+    - sleep 3
+    - npm run test -- --forceExit
+  coverage: '/All files\\s+\\d+\s+\d+\s+([\\d\\.]+)%/'
+  artifacts:
+    reports:
+      junit: junit.xml
+    expire_in: 7 days

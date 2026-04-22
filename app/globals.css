@@ -2,20 +2,27 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
-}
+  --foreground: #1f2937;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Palette colors for components */
+  --palette-primary: #3b82f6;
+  --palette-secondary: #6366f1;
+  --palette-accent: #f59e0b;
+  --palette-grid: #e5e7eb;
+  --palette-positive: #22c55e;
+  --palette-negative: #ef4444;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #1f2937;
+    --foreground: #f9fafb;
+    --palette-primary: #60a5fa;
+    --palette-secondary: #818cf8;
+    --palette-accent: #fbbf24;
+    --palette-grid: #374151;
+    --palette-positive: #4ade80;
+    --palette-negative: #f87171;
   }
 }
 
@@ -24,3 +31,8 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Utility classes that use palette - fall back to CSS vars */
+.bg-palette { background-color: var(--palette-primary); }
+.text-palette { color: var(--foreground); }
+.border-palette { border-color: var(--palette-grid); }

@@ -914,7 +914,8 @@ export default function TechnicalAnalysis({ isSimpleMode = false }: TechnicalAna
               setCurrentAnimationIndex(0);
               setIsPlaying(false);
             }}
-            className="px-4 py-2 font-medium rounded-lg bg-gray-200 palette.text hover:bg-gray-300"
+            className="px-4 py-2 font-medium rounded-lg transition"
+            style={{ backgroundColor: palette.gridLines, color: palette.text }}
           >
             ↺ Reset
           </button>

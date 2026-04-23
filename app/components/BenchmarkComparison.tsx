@@ -286,31 +286,31 @@ export default function BenchmarkComparison() {
       <div ref={containerRef} className="relative w-full">
         {loading && (
           <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-75">
-            <p className="text-gray-500">Loading benchmark data...</p>
+            <p className="palette.text">Loading benchmark data...</p>
           </div>
         )}
         <svg ref={svgRef} className="w-full" />
       </div>
 
       {/* Performance Summary */}
-      <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-        <h3 className="font-semibold text-gray-800 mb-3">How to Interpret This Chart</h3>
+      <div className="mt-6 p-4 bg-transparent rounded-lg">
+        <h3 className="font-semibold palette.text mb-3">How to Interpret This Chart</h3>
         <div className="grid md:grid-cols-2 gap-4 text-sm">
           <div>
-            <p className="font-medium text-gray-700">Above the Zero Line</p>
-            <p className="text-gray-600">The benchmark has gained value since the start of the period.</p>
+            <p className="font-medium palette.text">Above the Zero Line</p>
+            <p className="palette.text">The benchmark has gained value since the start of the period.</p>
           </div>
           <div>
-            <p className="font-medium text-gray-700">Below the Zero Line</p>
-            <p className="text-gray-600">The benchmark has lost value since the start of the period.</p>
+            <p className="font-medium palette.text">Below the Zero Line</p>
+            <p className="palette.text">The benchmark has lost value since the start of the period.</p>
           </div>
           <div>
-            <p className="font-medium text-gray-700">Steep Upward Slope</p>
-            <p className="text-gray-600">Strong positive performance during that period.</p>
+            <p className="font-medium palette.text">Steep Upward Slope</p>
+            <p className="palette.text">Strong positive performance during that period.</p>
           </div>
           <div>
-            <p className="font-medium text-gray-700">Comparing Lines</p>
-            <p className="text-gray-600">Higher lines performed better; lower lines performed worse.</p>
+            <p className="font-medium palette.text">Comparing Lines</p>
+            <p className="palette.text">Higher lines performed better; lower lines performed worse.</p>
           </div>
         </div>
       </div>

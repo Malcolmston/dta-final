@@ -392,15 +392,15 @@ export default function PortfolioAgeAnimation() {
     <div className="w-full max-w-5xl mx-auto p-6 bg-white rounded-xl shadow-lg">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
         <div>
-          <h2 className="text-2xl font-bold text-gray-800">Portfolio Allocation by Age</h2>
-          <p className="text-sm text-gray-500 mt-1">
+          <h2 className="text-2xl font-bold palette.text">Portfolio Allocation by Age</h2>
+          <p className="text-sm palette.text mt-1">
             Watch how portfolio allocations shift as people age
           </p>
         </div>
         <div className="flex items-center gap-3 mt-4 sm:mt-0">
           <button
             onClick={() => setIsAnimating(!isAnimating)}
-            className="px-4 py-2 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 transition flex items-center gap-2"
+            className="px-4 py-2 bg-transparent palette.text font-medium rounded-lg hover:bg-gray-200 transition flex items-center gap-2"
           >
             {isAnimating ? (
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -421,11 +421,11 @@ export default function PortfolioAgeAnimation() {
       <div className="mb-6">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-3">
-            <span className="text-sm font-medium text-gray-600">Age</span>
-            <span className="text-3xl font-bold text-gray-800">{currentAge}</span>
+            <span className="text-sm font-medium palette.text">Age</span>
+            <span className="text-3xl font-bold palette.text">{currentAge}</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-xs text-gray-400">20</span>
+            <span className="text-xs palette.text">20</span>
             <div className="relative w-48 h-2 bg-gray-200 rounded-full overflow-hidden">
               <div
                 className="absolute top-0 left-0 h-full rounded-full transition-all duration-300 ease-out"
@@ -435,7 +435,7 @@ export default function PortfolioAgeAnimation() {
                 }}
               />
             </div>
-            <span className="text-xs text-gray-400">70</span>
+            <span className="text-xs palette.text">70</span>
           </div>
         </div>
 
@@ -460,11 +460,11 @@ export default function PortfolioAgeAnimation() {
       <div className="flex items-center justify-center gap-6 mb-4">
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 rounded-full" style={{ backgroundColor: "#06b6d4" }} />
-          <span className="text-xs text-gray-600">Age 20 (Young)</span>
+          <span className="text-xs palette.text">Age 20 (Young)</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 rounded-full" style={{ backgroundColor: "#ec4899" }} />
-          <span className="text-xs text-gray-600">Age 70 (Older)</span>
+          <span className="text-xs palette.text">Age 70 (Older)</span>
         </div>
       </div>
 
@@ -475,22 +475,22 @@ export default function PortfolioAgeAnimation() {
         {/* Tooltip */}
         <div
           ref={tooltipRef}
-          className="absolute bg-white border border-gray-200 rounded-lg px-3 py-2 shadow-lg text-xs pointer-events-none z-10"
+          className="absolute bg-white border border-transparent rounded-lg px-3 py-2 shadow-lg text-xs pointer-events-none z-10"
           style={{ visibility: "hidden" }}
         />
       </div>
 
       {/* Selected Point Details */}
       {selectedPoint && (
-        <div className="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+        <div className="mt-4 p-4 bg-transparent rounded-lg border border-transparent">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="font-semibold text-gray-800">Selected Portfolio</h3>
-              <p className="text-sm text-gray-500">Age: {selectedPoint.age}</p>
+              <h3 className="font-semibold palette.text">Selected Portfolio</h3>
+              <p className="text-sm palette.text">Age: {selectedPoint.age}</p>
             </div>
             <button
               onClick={() => setSelectedPoint(null)}
-              className="text-gray-400 hover:text-gray-600"
+              className="palette.text hover:palette.text"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -503,25 +503,25 @@ export default function PortfolioAgeAnimation() {
             return (
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-3">
                 <div>
-                  <div className="text-xs text-gray-500">Stocks</div>
+                  <div className="text-xs palette.text">Stocks</div>
                   <div className="text-lg font-semibold" style={{ color: "#3b82f6" }}>
                     {portfolio.stocks.toFixed(1)}%
                   </div>
                 </div>
                 <div>
-                  <div className="text-xs text-gray-500">CDs</div>
+                  <div className="text-xs palette.text">CDs</div>
                   <div className="text-lg font-semibold" style={{ color: "#8b5cf6" }}>
                     {portfolio.cds.toFixed(1)}%
                   </div>
                 </div>
                 <div>
-                  <div className="text-xs text-gray-500">Bonds</div>
+                  <div className="text-xs palette.text">Bonds</div>
                   <div className="text-lg font-semibold" style={{ color: "#22c55e" }}>
                     {portfolio.bonds.toFixed(1)}%
                   </div>
                 </div>
                 <div>
-                  <div className="text-xs text-gray-500">Crypto</div>
+                  <div className="text-xs palette.text">Crypto</div>
                   <div className="text-lg font-semibold" style={{ color: "#f97316" }}>
                     {portfolio.crypto.toFixed(1)}%
                   </div>
@@ -529,9 +529,9 @@ export default function PortfolioAgeAnimation() {
               </div>
             );
           })()}
-          <div className="mt-3 pt-3 border-t border-gray-200">
-            <span className="text-sm text-gray-600">Total Value: </span>
-            <span className="text-sm font-semibold text-gray-800">
+          <div className="mt-3 pt-3 border-t border-transparent">
+            <span className="text-sm palette.text">Total Value: </span>
+            <span className="text-sm font-semibold palette.text">
               ${selectedPoint.totalValue.toLocaleString()}
             </span>
           </div>
@@ -539,7 +539,7 @@ export default function PortfolioAgeAnimation() {
       )}
 
       {/* Description */}
-      <div className="mt-4 text-sm text-gray-500">
+      <div className="mt-4 text-sm palette.text">
         <p>
           Each dot represents one person. Dots are colored by age: cyan (young) to pink (older).
           Dots cluster in group areas based on their dominant allocation (highest %). As age increases,

@@ -538,7 +538,7 @@ export default function NetworkGraph() {
 
       <div className="flex flex-wrap gap-4 mb-4">
         <div className="flex-1 min-w-[250px]">
-          <label className="block text-sm font-medium text-gray-800 mb-2">
+          <label className="block text-sm font-medium palette.text mb-2">
             Enter Ticker Symbols
           </label>
           <TickerInput
@@ -550,7 +550,7 @@ export default function NetworkGraph() {
           />
         </div>
         <div className="w-full sm:w-auto">
-          <label className="block text-sm font-medium text-gray-800 mb-2">
+          <label className="block text-sm font-medium palette.text mb-2">
             Correlation Threshold
           </label>
           <input
@@ -575,7 +575,7 @@ export default function NetworkGraph() {
             className={`px-3 py-1.5 text-sm font-medium rounded-lg transition focus:ring-2 focus:ring-blue-500 focus:outline-none ${
               period === range.value
                 ? "bg-blue-600 text-white"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                : "bg-transparent palette.text hover:bg-gray-200"
             }`}
           >
             {range.label}
@@ -594,7 +594,7 @@ export default function NetworkGraph() {
         <button
           onClick={() => setViewMode("chart")}
           className={`px-3 py-1.5 text-sm font-medium rounded-lg transition focus:ring-2 focus:ring-blue-500 focus:outline-none ${
-            viewMode === "chart" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+            viewMode === "chart" ? "bg-blue-600 text-white" : "bg-transparent palette.text hover:bg-gray-200"
           }`}
         >
           Chart View
@@ -602,14 +602,14 @@ export default function NetworkGraph() {
         <button
           onClick={() => setViewMode("table")}
           className={`px-3 py-1.5 text-sm font-medium rounded-lg transition focus:ring-2 focus:ring-blue-500 focus:outline-none ${
-            viewMode === "table" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+            viewMode === "table" ? "bg-blue-600 text-white" : "bg-transparent palette.text hover:bg-gray-200"
           }`}
         >
           Table View
         </button>
       </div>
 
-      <p className="text-xs text-gray-500 mb-2">
+      <p className="text-xs palette.text mb-2">
         Use arrow keys to navigate between nodes. Press Enter to select.
       </p>
 
@@ -622,9 +622,9 @@ export default function NetworkGraph() {
           <table className="w-full text-sm border-collapse">
             <thead>
               <tr>
-                <th className="p-2 text-left font-medium text-gray-600 border-b">Symbol</th>
-                <th className="p-2 text-right font-medium text-gray-600 border-b">Performance</th>
-                <th className="p-2 text-center font-medium text-gray-600 border-b">Correlations</th>
+                <th className="p-2 text-left font-medium palette.text border-b">Symbol</th>
+                <th className="p-2 text-right font-medium palette.text border-b">Performance</th>
+                <th className="p-2 text-center font-medium palette.text border-b">Correlations</th>
               </tr>
             </thead>
             <tbody>
@@ -648,7 +648,7 @@ export default function NetworkGraph() {
                     <td className={`p-2 text-right border-b ${perf >= 0 ? "text-green-600" : "text-red-600"}`}>
                       {perf >= 0 ? "+" : ""}{perf.toFixed(2)}%
                     </td>
-                    <td className="p-2 text-center border-b text-gray-600">
+                    <td className="p-2 text-center border-b palette.text">
                       {correlations} stocks
                     </td>
                   </tr>
@@ -659,7 +659,7 @@ export default function NetworkGraph() {
         </div>
       )}
 
-      <div className="mt-4 flex flex-wrap gap-6 text-sm text-gray-500">
+      <div className="mt-4 flex flex-wrap gap-6 text-sm palette.text">
         <div className="flex items-center gap-2">
           <div className="w-4 h-1 bg-green-500 rounded"></div>
           <span>Positive Correlation</span>
@@ -678,7 +678,7 @@ export default function NetworkGraph() {
         </div>
       </div>
 
-      <p className="mt-4 text-sm text-gray-500">
+      <p className="mt-4 text-sm palette.text">
         Drag nodes to rearrange. Scroll to zoom. Hover over nodes/edges for details.
       </p>
     </div>

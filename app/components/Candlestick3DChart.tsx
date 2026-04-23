@@ -196,16 +196,16 @@ export default function Candlestick3DChart({ ticker: initialTicker = "AAPL" }: {
     <div ref={containerRef} className="w-full max-w-5xl mx-auto">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h2 className="text-2xl font-bold text-gray-800">Candlestick Chart</h2>
-          <p className="text-sm text-gray-500">OHLCV data</p>
+          <h2 className="text-2xl font-bold palette.text">Candlestick Chart</h2>
+          <p className="text-sm palette.text">OHLCV data</p>
         </div>
         <span className="px-3 py-1 bg-indigo-100 text-indigo-700 text-sm font-medium rounded-full">
           {ticker}
         </span>
       </div>
 
-      <div className="mb-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
-        <p className="text-sm text-gray-600">
+      <div className="mb-4 p-4 bg-transparent rounded-lg border border-transparent">
+        <p className="text-sm palette.text">
           <span className="text-green-600 font-medium">Green</span> = Bullish (close ≥ open) |{" "}
           <span className="text-red-600 font-medium">Red</span> = Bearish (close &lt; open). Bottom bars show volume.
         </p>
@@ -213,7 +213,7 @@ export default function Candlestick3DChart({ ticker: initialTicker = "AAPL" }: {
 
       <div className="flex flex-wrap gap-3 mb-4">
         <div className="flex-1 min-w-[200px]">
-          <label className="block text-sm font-medium text-gray-800 mb-2">
+          <label className="block text-sm font-medium palette.text mb-2">
             Enter Ticker Symbol
           </label>
           <TickerInput
@@ -230,7 +230,7 @@ export default function Candlestick3DChart({ ticker: initialTicker = "AAPL" }: {
               key={range.value}
               onClick={() => setPeriod(range.value)}
               className={`px-3 py-1.5 text-sm font-medium rounded-lg transition ${
-                period === range.value ? "bg-indigo-600 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                period === range.value ? "bg-indigo-600 text-white" : "bg-transparent palette.text hover:bg-gray-200"
               }`}
             >
               {range.label}
@@ -241,11 +241,11 @@ export default function Candlestick3DChart({ ticker: initialTicker = "AAPL" }: {
 
       {error && <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700">{error}</div>}
 
-      <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
+      <div className="bg-white rounded-xl shadow-lg border border-transparent overflow-hidden">
         <svg ref={svgRef} className="w-full" style={{ height: "400px" }} />
       </div>
 
-      <div className="mt-3 flex items-center gap-6 text-sm text-gray-500">
+      <div className="mt-3 flex items-center gap-6 text-sm palette.text">
         <div className="flex items-center gap-2">
           <div className="w-4 h-4 bg-green-500 rounded-sm"></div>
           <span>Bullish</span>

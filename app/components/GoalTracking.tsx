@@ -277,7 +277,7 @@ export default function GoalTracking() {
         </p>
       )}
 
-      <div className="mt-4 pt-4 border-t border-gray-200">
+      <div className="mt-4 pt-4 border-t border-transparent">
         <p className="text-xs text-gray text-center">
           Tip: Set realistic target dates and adjust your monthly savings to meet your goals.
         </p>

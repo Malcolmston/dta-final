@@ -406,11 +406,11 @@ export default function LagCorrelationPlot() {
 
   return (
     <div className="w-full max-w-5xl mx-auto p-6 bg-white rounded-xl shadow-lg">
-      <h2 className="text-2xl font-bold mb-2 text-gray-800">Lag Correlation Plot</h2>
-      <p className="text-sm text-gray-500 mb-6">Autocorrelation analysis for time series forecasting</p>
+      <h2 className="text-2xl font-bold mb-2 palette.text">Lag Correlation Plot</h2>
+      <p className="text-sm palette.text mb-6">Autocorrelation analysis for time series forecasting</p>
 
-      <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
-        <p className="text-sm text-gray-700">
+      <div className="mb-6 p-4 bg-transparent rounded-lg border border-transparent">
+        <p className="text-sm palette.text">
           <strong>What is lag correlation?</strong> This plot shows how each day&apos;s price correlates with prices at different time lags.
           <span className="text-green-600 font-medium"> Positive lags</span> (right side) show how past prices relate to current price,
           while <span className="text-blue-600 font-medium"> negative lags</span> (left side) show how current price relates to future prices.
@@ -421,7 +421,7 @@ export default function LagCorrelationPlot() {
 
       <div className="flex flex-wrap gap-4 mb-4">
         <div className="flex-1 min-w-[200px]">
-          <label className="block text-sm font-medium text-gray-800 mb-2">
+          <label className="block text-sm font-medium palette.text mb-2">
             Enter Ticker Symbol
           </label>
           <TickerInput
@@ -433,7 +433,7 @@ export default function LagCorrelationPlot() {
           />
         </div>
         <div className="flex-1 min-w-[200px]">
-          <label className="block text-sm font-medium text-gray-800 mb-2">
+          <label className="block text-sm font-medium palette.text mb-2">
             Lag Range (days)
           </label>
           <select
@@ -469,7 +469,7 @@ export default function LagCorrelationPlot() {
         <svg ref={svgRef} className="w-full" style={{ minHeight: "400px" }} />
       </div>
 
-      <div className="mt-4 flex flex-wrap gap-4 text-sm text-gray-500">
+      <div className="mt-4 flex flex-wrap gap-4 text-sm palette.text">
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 rounded-full bg-green-500 opacity-60"></div>
           <span>Significant positive correlation</span>

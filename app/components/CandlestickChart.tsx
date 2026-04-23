@@ -519,11 +519,11 @@ export default function CandlestickChart({ ticker: initialTicker = "AAPL" }: Can
         </div>
       )}
 
-      <div ref={containerRef} className="relative w-full">
+      <div ref={containerRef} className="relative w-full overflow-hidden">
         <svg
           ref={svgRef}
-          className="w-full"
-          style={{ minHeight: "500px" }}
+          className="w-full block"
+          style={{ height: "500px", display: "block" }}
           role="img"
           aria-label={`Candlestick chart for ${ticker} showing price movements over ${period}`}
         >

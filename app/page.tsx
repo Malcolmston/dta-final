@@ -10,6 +10,8 @@ import Treemap from "./components/Treemap";
 import NetworkGraph from "./components/NetworkGraph";
 import Streamgraph from "./components/Streamgraph";
 import PriceRibbon3D from "./components/PriceRibbon3D";
+import Candlestick3DChart from "./components/Candlestick3DChart";
+import Volume3DBars from "./components/Volume3DBars";
 import AnalysisTabs from "./components/AnalysisTabs";
 import PortfolioPieChart from "./components/PortfolioPieChart";
 import PortfolioManager from "./components/PortfolioManager";
@@ -309,6 +311,16 @@ export default function Home() {
               <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Moving Average Ribbon</h3>
               <PriceRibbon3D />
               <ChartAnalysis chartType="PriceRibbon3D" isSimpleMode={isSimpleMode} />
+            </div>
+            <div className="mb-6">
+              <h3 className="font-semibold mb-2" style={{ color: palette.text }}>3D Volume Bars</h3>
+              <Volume3DBars />
+              <ChartAnalysis chartType="Volume3DBars" isSimpleMode={isSimpleMode} />
+            </div>
+            <div className="mb-6">
+              <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Interactive 3D Candlestick</h3>
+              <Candlestick3DChart />
+              <ChartAnalysis chartType="Candlestick3DChart" isSimpleMode={isSimpleMode} />
             </div>
           </>
         );

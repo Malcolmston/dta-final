@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import * as d3 from "d3";
 import { fetchHistory, StockHistory } from "@/lib/client";
+import { useColorPalette } from "../context/ColorPaletteContext";
 import TickerInput from "./TickerInput";
 
 interface CandlestickData {

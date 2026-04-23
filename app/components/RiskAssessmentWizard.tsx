@@ -50,16 +50,16 @@ export default function RiskAssessmentWizard({ onComplete }: RiskAssessmentWizar
         <div className="h-2 bg-gray-200 rounded-full">
           <div className="h-2 bg-blue-600 rounded-full transition-all" style={{ width: `${(step / 4) * 100}%` }} />
         </div>
-        <p className="text-sm text-gray-500 mt-2">Step {step} of 4</p>
+        <p className="text-sm palette.text mt-2">Step {step} of 4</p>
       </div>
 
       {step === 1 && (
         <div>
           <h2 className="text-2xl font-bold mb-4">Investment Profile</h2>
-          <p className="text-gray-600 mb-6">To provide appropriate recommendations, we need to understand your situation better.</p>
+          <p className="palette.text mb-6">To provide appropriate recommendations, we need to understand your situation better.</p>
 
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2">What is your age?</label>
+            <label className="block text-sm font-medium palette.text mb-2">What is your age?</label>
             <input
               type="number"
               value={profile.age}
@@ -71,7 +71,7 @@ export default function RiskAssessmentWizard({ onComplete }: RiskAssessmentWizar
           </div>
 
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Annual Income</label>
+            <label className="block text-sm font-medium palette.text mb-2">Annual Income</label>
             <select
               value={profile.income}
               onChange={(e) => updateProfile({ income: parseInt(e.target.value) })}
@@ -95,7 +95,7 @@ export default function RiskAssessmentWizard({ onComplete }: RiskAssessmentWizar
       {step === 2 && (
         <div>
           <h2 className="text-2xl font-bold mb-4">Investment Goals</h2>
-          <p className="text-gray-600 mb-6">What are you trying to achieve?</p>
+          <p className="palette.text mb-6">What are you trying to achieve?</p>
 
           <div className="space-y-3 mb-6">
             {[
@@ -104,7 +104,7 @@ export default function RiskAssessmentWizard({ onComplete }: RiskAssessmentWizar
               { id: "income", label: "Income Generation", desc: "Regular dividend income" },
               { id: "preservation", label: "Wealth Preservation", desc: "Protect existing assets" },
             ].map(goal => (
-              <label key={goal.id} className="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50">
+              <label key={goal.id} className="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-transparent">
                 <input
                   type="checkbox"
                   checked={profile.goals.includes(goal.id)}
@@ -113,14 +113,14 @@ export default function RiskAssessmentWizard({ onComplete }: RiskAssessmentWizar
                 />
                 <div className="ml-3">
                   <div className="font-medium">{goal.label}</div>
-                  <div className="text-sm text-gray-500">{goal.desc}</div>
+                  <div className="text-sm palette.text">{goal.desc}</div>
                 </div>
               </label>
             ))}
           </div>
 
           <div className="flex gap-3">
-            <button onClick={() => setStep(1)} className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+            <button onClick={() => setStep(1)} className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-transparent">
               Back
             </button>
             <button onClick={() => setStep(3)} className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
@@ -133,34 +133,34 @@ export default function RiskAssessmentWizard({ onComplete }: RiskAssessmentWizar
       {step === 3 && (
         <div>
           <h2 className="text-2xl font-bold mb-4">Risk Tolerance</h2>
-          <p className="text-gray-600 mb-6">How do you feel about investment risk?</p>
+          <p className="palette.text mb-6">How do you feel about investment risk?</p>
 
           <div className="space-y-3 mb-6">
             <button
               onClick={() => updateProfile({ riskTolerance: "conservative" })}
-              className={`w-full p-4 border rounded-lg text-left ${profile.riskTolerance === "conservative" ? "border-blue-500 bg-blue-50" : "hover:bg-gray-50"}`}
+              className={`w-full p-4 border rounded-lg text-left ${profile.riskTolerance === "conservative" ? "border-blue-500 bg-blue-50" : "hover:bg-transparent"}`}
             >
               <div className="font-medium">Conservative</div>
-              <div className="text-sm text-gray-500">Preserve capital, accept lower returns for less risk</div>
+              <div className="text-sm palette.text">Preserve capital, accept lower returns for less risk</div>
             </button>
             <button
               onClick={() => updateProfile({ riskTolerance: "moderate" })}
-              className={`w-full p-4 border rounded-lg text-left ${profile.riskTolerance === "moderate" ? "border-blue-500 bg-blue-50" : "hover:bg-gray-50"}`}
+              className={`w-full p-4 border rounded-lg text-left ${profile.riskTolerance === "moderate" ? "border-blue-500 bg-blue-50" : "hover:bg-transparent"}`}
             >
               <div className="font-medium">Moderate</div>
-              <div className="text-sm text-gray-500">Balance between growth and stability</div>
+              <div className="text-sm palette.text">Balance between growth and stability</div>
             </button>
             <button
               onClick={() => updateProfile({ riskTolerance: "aggressive" })}
-              className={`w-full p-4 border rounded-lg text-left ${profile.riskTolerance === "aggressive" ? "border-blue-500 bg-blue-50" : "hover:bg-gray-50"}`}
+              className={`w-full p-4 border rounded-lg text-left ${profile.riskTolerance === "aggressive" ? "border-blue-500 bg-blue-50" : "hover:bg-transparent"}`}
             >
               <div className="font-medium">Aggressive</div>
-              <div className="text-sm text-gray-500">Maximize growth, accept significant volatility</div>
+              <div className="text-sm palette.text">Maximize growth, accept significant volatility</div>
             </button>
           </div>
 
           <div className="flex gap-3">
-            <button onClick={() => setStep(2)} className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+            <button onClick={() => setStep(2)} className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-transparent">
               Back
             </button>
             <button onClick={() => setStep(4)} className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
@@ -173,10 +173,10 @@ export default function RiskAssessmentWizard({ onComplete }: RiskAssessmentWizar
       {step === 4 && (
         <div>
           <h2 className="text-2xl font-bold mb-4">Time Horizon</h2>
-          <p className="text-gray-600 mb-6">How long do you plan to keep your investments?</p>
+          <p className="palette.text mb-6">How long do you plan to keep your investments?</p>
 
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Investment Time Horizon (years)</label>
+            <label className="block text-sm font-medium palette.text mb-2">Investment Time Horizon (years)</label>
             <input
               type="range"
               min={1}
@@ -202,7 +202,7 @@ export default function RiskAssessmentWizard({ onComplete }: RiskAssessmentWizar
           </div>
 
           <div className="flex gap-3">
-            <button onClick={() => setStep(3)} className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+            <button onClick={() => setStep(3)} className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-transparent">
               Back
             </button>
             <button onClick={handleComplete} className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">

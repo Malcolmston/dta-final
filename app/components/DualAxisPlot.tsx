@@ -570,7 +570,7 @@ export default function DualAxisPlot({ ticker: initialTicker = "AAPL" }: DualAxi
 
       <div className="flex flex-wrap gap-4 mb-4">
         <div className="flex-1 min-w-[200px]">
-          <label className="block text-sm font-medium text-gray-800 mb-2">
+          <label className="block text-sm font-medium palette.text mb-2">
             Enter Ticker Symbol
           </label>
           <TickerInput
@@ -623,7 +623,7 @@ export default function DualAxisPlot({ ticker: initialTicker = "AAPL" }: DualAxi
         <svg ref={svgRef} className="w-full" style={{ minHeight: "450px" }} />
       </div>
 
-      <p className="mt-4 text-sm text-gray-500">
+      <p className="mt-4 text-sm palette.text">
         Hover over the chart to see actual vs predicted values at each point.
       </p>
     </div>

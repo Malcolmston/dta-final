@@ -599,7 +599,7 @@ export default function MarketPredictor() {
 
       {error && (
         <div className="mb-4 p-4 rounded-lg" style={{ backgroundColor: palette.negative + "20", border: `1px solid ${palette.negative}` }}>
-          <span style={{ color: palette.negative }}>{error}
+          <span style={{ color: palette.negative }}>{error}</span>
         </div>
       )}
 

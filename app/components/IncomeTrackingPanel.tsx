@@ -163,7 +163,7 @@ export default function IncomeTrackingPanel({ onClose }: IncomeTrackingPanelProp
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-gray-600 mb-1">Div/Share ($)</label>
+            <label className="block text-xs font-medium palette.text mb-1">Div/Share ($)</label>
             <input
               type="number"
               value={newDividend}
@@ -174,7 +174,7 @@ export default function IncomeTrackingPanel({ onClose }: IncomeTrackingPanelProp
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-gray-600 mb-1">Frequency</label>
+            <label className="block text-xs font-medium palette.text mb-1">Frequency</label>
             <select
               value={newFrequency}
               onChange={(e) => setNewFrequency(e.target.value as "monthly" | "quarterly" | "annually")}
@@ -235,12 +235,12 @@ export default function IncomeTrackingPanel({ onClose }: IncomeTrackingPanelProp
           </table>
         </div>
       ) : (
-        <div className="text-center py-8 text-gray-500">
+        <div className="text-center py-8 palette.text">
           No income sources added yet. Add your dividend-paying stocks above.
         </div>
       )}
 
-      <p className="mt-4 text-xs text-gray-500 text-center">
+      <p className="mt-4 text-xs palette.text text-center">
         Note: Dividends are not guaranteed and may change. This is for estimation purposes only.
       </p>
     </div>

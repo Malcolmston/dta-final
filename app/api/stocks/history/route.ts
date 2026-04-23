@@ -27,17 +27,24 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    // Try to get from Redis cache first
+    // Try to get from Redis cache first (if Redis is available)
     const redis = await getRedisClient();
     const cacheKey = `stock:${symbol.toUpperCase()}:${period}`;
-    const cachedData = await redis.get(cacheKey);
 
-    if (cachedData) {
-      // Track this search for analytics
-      await redis.incr(`search:${symbol.toUpperCase()}`);
-      await redis.expire(`search:${symbol.toUpperCase()}`, 86400);
+    if (redis) {
+      const cachedData = await redis.get(cacheKey);
 
-      return NextResponse.json({ data: JSON.parse(cachedData), cached: true });
+      if (cachedData) {
+        // Track this search for analytics
+        try {
+          await redis.incr(`search:${symbol.toUpperCase()}`);
+          await redis.expire(`search:${symbol.toUpperCase()}`, 86400);
+        } catch (e) {
+          // Ignore analytics errors
+        }
+
+        return NextResponse.json({ data: JSON.parse(cachedData), cached: true });
+      }
     }
 
     const rangeMap: Record<string, number> = {
@@ -96,16 +103,22 @@ export async function GET(request: NextRequest) {
       }))
       .filter((d) => d.close > 0);
 
-    // Cache in Redis for 5 minutes
-    await redis.setEx(cacheKey, 300, JSON.stringify(data));
+    // Cache in Redis for 5 minutes (if available)
+    if (redis) {
+      try {
+        await redis.setEx(cacheKey, 300, JSON.stringify(data));
 
-    // Track this search for analytics
-    await redis.incr(`search:${symbol.toUpperCase()}`);
-    await redis.expire(`search:${symbol.toUpperCase()}`, 86400);
+        // Track this search for analytics
+        await redis.incr(`search:${symbol.toUpperCase()}`);
+        await redis.expire(`search:${symbol.toUpperCase()}`, 86400);
 
-    // Track page view
-    await redis.incr(`page_view:${symbol.toUpperCase()}`);
-    await redis.expire(`page_view:${symbol.toUpperCase()}`, 3600);
+        // Track page view
+        await redis.incr(`page_view:${symbol.toUpperCase()}`);
+        await redis.expire(`page_view:${symbol.toUpperCase()}`, 3600);
+      } catch (e) {
+        // Ignore caching errors
+      }
+    }
 
     return NextResponse.json({ data });
   } catch (error) {

@@ -343,7 +343,7 @@ export default function Streamgraph() {
 
       <div className="flex flex-wrap gap-4 mb-4">
         <div className="flex-1 min-w-[250px]">
-          <label className="block text-sm font-medium text-gray-800 mb-2">
+          <label className="block text-sm font-medium mb-2" style={{ color: palette.text }}>
             Enter Ticker Symbols
           </label>
           <TickerInput
@@ -385,7 +385,7 @@ export default function Streamgraph() {
         <svg ref={svgRef} className="w-full" />
       </div>
 
-      <p className="mt-4 text-sm text-gray-500">
+      <p className="mt-4 text-sm palette.text">
         Streamgraph shows stacked cumulative performance of each ticker over time. Values are normalized as percentage change from the start of the period. Hover over the chart to see exact values.
       </p>
     </div>

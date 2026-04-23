@@ -104,25 +104,19 @@ export default function RiskAssessmentWizard({ onComplete }: RiskAssessmentWizar
               { id: "income", label: "Income Generation", desc: "Regular dividend income" },
               { id: "preservation", label: "Wealth Preservation", desc: "Protect existing assets" },
             ].map(goal => (
-              <div key={goal.id} className="flex items-center justify-between p-4 border rounded-lg" style={{ borderColor: palette.gridLines }}>
+              <div key={goal.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
                 <div>
-                  <div className="font-medium" style={{ color: palette.text }}>{goal.label}</div>
-                  <div className="text-sm" style={{ color: palette.text, opacity: 0.6 }}>{goal.desc}</div>
+                  <div className="font-medium text-gray-900">{goal.label}</div>
+                  <div className="text-sm text-gray-500">{goal.desc}</div>
                 </div>
                 <button
                   type="button"
                   onClick={() => handleGoalToggle(goal.id)}
-                  className="relative inline-flex h-7 w-14 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none"
-                  style={{
-                    backgroundColor: profile.goals.includes(goal.id) ? palette.primary : palette.gridLines,
-                  }}
+                  className={`relative inline-flex h-7 w-14 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${profile.goals.includes(goal.id) ? 'bg-blue-600' : 'bg-gray-300'}`}
                 >
                   <span
                     aria-hidden="true"
-                    className="pointer-events-none inline-block h-6 w-6 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
-                    style={{
-                      transform: profile.goals.includes(goal.id) ? 'translateX(24px)' : 'translateX(0)',
-                    }}
+                    className={`pointer-events-none inline-block h-6 w-6 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${profile.goals.includes(goal.id) ? 'translate-x-6' : 'translate-x-0'}`}
                   />
                 </button>
               </div>

@@ -196,9 +196,9 @@ export default function PriceTrendsTab({ ticker, refreshKey, colors }: PriceTren
       </div>
 
       {/* Insights */}
-      <div className="bg-gradient-to-r from-slate-50 to-slate-100 rounded-xl p-5 border border-slate-200 mb-6">
-        <h4 className="font-semibold text-slate-800 mb-3 flex items-center gap-2">
-          <span className="w-6 h-6 rounded-full bg-slate-800 text-white text-xs flex items-center justify-center">i</span>
+      <div className="rounded-xl p-5 mb-6" style={{ backgroundColor: palette.primary + '10', border: `1px solid ${palette.gridLines}` }}>
+        <h4 className="font-semibold mb-3 flex items-center gap-2" style={{ color: palette.text }}>
+          <span className="w-6 h-6 rounded-full flex items-center justify-center text-xs" style={{ backgroundColor: palette.primary, color: '#ffffff' }}>i</span>
           Key Insights
         </h4>
         <ul className="space-y-2" style={{ color: palette.text, opacity: 0.7 }}>

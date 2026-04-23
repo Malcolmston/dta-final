@@ -532,7 +532,7 @@ export default function CandlestickChart({ ticker: initialTicker = "AAPL" }: Can
         </svg>
       </div>
 
-      <p className="mt-4 text-sm text-gray-500">
+      <p className="mt-4 text-sm palette.text">
         Scroll to zoom, drag to pan. Hover over candles to see OHLC values. Green indicates bullish (close &gt; open), red indicates bearish (close &lt; open).
       </p>
     </div>

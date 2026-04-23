@@ -1,0 +1,16 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/pull",
+      "schedule": "*/5 * * * *"
+    },
+    {
+      "path": "/api/cron/storage",
+      "schedule": "0 * * * *"
+    },
+    {
+      "path": "/api/cron/lookup",
+      "schedule": "*/10 * * * *"
+    }
+  ]
+}

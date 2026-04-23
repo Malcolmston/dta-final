@@ -847,24 +847,31 @@ export default function TechnicalAnalysis({ isSimpleMode = false }: TechnicalAna
         <div className="flex flex-wrap gap-2 mb-4">
           <button
             onClick={() => setActiveTab("signals")}
-            className={`px-4 py-2 font-medium rounded-lg ${
-              activeTab === "signals" ? "bg-blue-600 text-white" : "bg-transparent palette.text hover:bg-gray-200"
-            }`}
+            className="px-4 py-2 font-medium rounded-lg transition"
+            style={{
+              backgroundColor: activeTab === "signals" ? palette.primary : palette.background,
+              color: activeTab === "signals" ? "#ffffff" : palette.text,
+              border: `1px solid ${palette.gridLines}`,
+            }}
           >
             Trading Signals
           </button>
           <button
             onClick={() => setActiveTab("momentum")}
-            className={`px-4 py-2 font-medium rounded-lg ${
-              activeTab === "momentum" ? "bg-blue-600 text-white" : "bg-transparent palette.text hover:bg-gray-200"
-            }`}
+            className="px-4 py-2 font-medium rounded-lg transition"
+            style={{
+              backgroundColor: activeTab === "momentum" ? palette.primary : palette.background,
+              color: activeTab === "momentum" ? "#ffffff" : palette.text,
+              border: `1px solid ${palette.gridLines}`,
+            }}
           >
             Momentum
           </button>
           <select
             value={period}
             onChange={(e) => setPeriod(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg ml-auto"
+            className="px-4 py-2 rounded-lg ml-auto"
+            style={{ backgroundColor: palette.background, color: palette.text, border: `1px solid ${palette.gridLines}` }}
           >
             <option value="1mo">1 Month</option>
             <option value="3mo">3 Months</option>
@@ -877,17 +884,13 @@ export default function TechnicalAnalysis({ isSimpleMode = false }: TechnicalAna
       {/* Indicator Toggles (for Momentum tab) - hide in Simple Mode */}
       {activeTab === "momentum" && !isSimpleMode && (
         <div className="flex flex-wrap gap-2 mb-4 p-3 bg-transparent rounded-lg">
-          <span className="text-sm font-medium palette.text mr-2">Indicators:</span>
+          <span className="text-sm font-medium mr-2" style={{ color: palette.text }}>Indicators:</span>
           {indicators.map((ind) => (
             <button
               key={ind.key}
               onClick={() => toggleIndicator(ind.key)}
-              className={`px-3 py-1 text-xs font-medium rounded-full transition-colors ${
-                ind.enabled
-                  ? `bg-${ind.color.replace("#", "")} text-white`
-                  : "bg-gray-200 palette.text"
-              }`}
-              style={ind.enabled ? { backgroundColor: ind.color, color: "white" } : {}}
+              className="px-3 py-1 text-xs font-medium rounded-full transition-colors"
+              style={ind.enabled ? { backgroundColor: ind.color, color: "white" } : { backgroundColor: palette.gridLines, color: palette.text }}
             >
               {ind.title} {ind.enabled ? "✓" : ""}
             </button>

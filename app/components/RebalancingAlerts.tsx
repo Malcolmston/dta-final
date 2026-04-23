@@ -273,7 +273,7 @@ export default function RebalancingAlerts() {
         </ul>
       </div>
 
-      <p className="mt-4 text-xs text-gray-500 text-center">
+      <p className="mt-4 text-xs text-center" style={{ color: palette.text, opacity: 0.6 }}>
         This is for educational purposes. Consult a financial advisor for personalized rebalancing advice.
       </p>
     </div>

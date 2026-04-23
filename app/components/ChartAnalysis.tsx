@@ -1,5 +1,7 @@
 "use client";
 
+import { useColorPalette } from "@/app/context/ColorPaletteContext";
+
 interface ChartAnalysisProps {
   chartType: string;
   isSimpleMode: boolean;
@@ -86,23 +88,24 @@ const analyses: Record<string, { simple: string; detailed: string }> = {
 };
 
 export default function ChartAnalysis({ chartType, isSimpleMode, data }: ChartAnalysisProps) {
+  const { palette } = useColorPalette();
   const analysis = analyses[chartType] || analyses["default"];
 
   return (
-    <div className={`mt-4 p-4 rounded-lg ${isSimpleMode ? "bg-blue-50 border border-blue-100" : "bg-gray-50 border border-gray-200"}`}>
+    <div className="mt-4 p-4 rounded-lg border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
       <div className="flex items-start gap-2">
-        <span className={`font-semibold ${isSimpleMode ? "text-blue-600" : "text-gray-600"}`}>
+        <span className="font-semibold" style={{ color: palette.primary }}>
           {isSimpleMode ? "Simple" : "Detailed"}
         </span>
         <div>
-          <p className={`text-sm ${isSimpleMode ? "text-blue-800" : "text-gray-700"}`}>
+          <p className="text-sm" style={{ color: palette.text, opacity: 0.8 }}>
             {isSimpleMode ? analysis.simple : analysis.detailed}
           </p>
           {data && (
-            <div className={`mt-2 text-xs ${isSimpleMode ? "text-blue-600" : "text-gray-500"}`}>
+            <div className="mt-2 text-xs" style={{ color: palette.text, opacity: 0.6 }}>
               Current: <span className="font-semibold">{data.value}</span>
               {data.change && (
-                <span className={`ml-2 ${data.trend === "up" ? "text-green-600" : data.trend === "down" ? "text-red-600" : ""}`}>
+                <span className="ml-2" style={{ color: data.trend === "up" ? palette.positive : data.trend === "down" ? palette.negative : palette.text }}>
                   {data.trend === "up" ? "+" : data.trend === "down" ? "-" : ""} {data.change}
                 </span>
               )}

@@ -126,6 +126,7 @@ export default function Treemap() {
     const legendHeight_px = 60;
     const height = 500;
     const treemapHeight = height - margin.top - margin.bottom - legendHeight_px;
+    const textColor = palette.text || "#1f2937";
 
     const svg = d3.select(svgRef.current);
     svg.selectAll("*").remove();
@@ -202,12 +203,12 @@ export default function Treemap() {
       .attr("fill", (d: any) => colorScale(d.data.performance))
       .attr("rx", 4)
       .attr("ry", 4)
-      .attr("stroke", "#fff")
+      .attr("stroke", palette.background)
       .attr("stroke-width", 1)
       .style("cursor", "pointer")
       .on("mouseover", (event, d: any) => {
         const data = d.data;
-        const performanceColor = data.performance >= 0 ? "#22c55e" : "#ef4444";
+        const performanceColor = data.performance >= 0 ? palette.positive : palette.negative;
         const performanceSign = data.performance >= 0 ? "+" : "";
 
         tooltip
@@ -232,7 +233,7 @@ export default function Treemap() {
       .append("text")
       .attr("x", 6)
       .attr("y", 18)
-      .attr("fill", "#1f2937")
+      .attr("fill", textColor)
       .attr("font-size", "14px")
       .attr("font-weight", "600")
       .text((d: any) => {
@@ -244,7 +245,7 @@ export default function Treemap() {
       .append("text")
       .attr("x", 6)
       .attr("y", 34)
-      .attr("fill", "#4b5563")
+      .attr("fill", textColor)
       .attr("font-size", "11px")
       .text((d: any) => {
         const width = d.x1 - d.x0;
@@ -297,9 +298,6 @@ export default function Treemap() {
       .attr("height", legendBoxHeight)
       .attr("rx", 3)
       .attr("fill", "url(#treemap-gradient)");
-
-    // Get text color from palette
-    const textColor = palette.text || "#1f2937";
 
     // Legend labels
     legendGroup
@@ -426,7 +424,7 @@ export default function Treemap() {
         </button>
       </div>
 
-      <p className="text-xs text-gray-500 mb-2">
+      <p className="text-xs mb-2" style={{ color: palette.text, opacity: 0.6 }}>
         Use arrow keys to navigate between stocks.
       </p>
 
@@ -439,27 +437,28 @@ export default function Treemap() {
           <table className="w-full text-sm border-collapse">
             <thead>
               <tr>
-                <th className="p-2 text-left font-medium text-gray-600 border-b">Symbol</th>
-                <th className="p-2 text-right font-medium text-gray-600 border-b">Price</th>
-                <th className="p-2 text-right font-medium text-gray-600 border-b">Performance</th>
+                <th className="p-2 text-left font-medium border-b" style={{ color: palette.text, borderColor: palette.gridLines }}>Symbol</th>
+                <th className="p-2 text-right font-medium border-b" style={{ color: palette.text, borderColor: palette.gridLines }}>Price</th>
+                <th className="p-2 text-right font-medium border-b" style={{ color: palette.text, borderColor: palette.gridLines }}>Performance</th>
               </tr>
             </thead>
             <tbody>
               {treemapData.map((item, idx) => (
                 <tr
                   key={item.symbol}
-                  className={idx === selectedIndex ? "bg-blue-50" : ""}
+                  className="border-b"
+                  style={{ borderColor: palette.gridLines, backgroundColor: idx === selectedIndex ? palette.primary + "15" : "transparent" }}
                   tabIndex={0}
                   onClick={() => setSelectedIndex(idx)}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ") setSelectedIndex(idx);
                   }}
                 >
-                  <td className={`p-2 font-medium border-b ${idx === selectedIndex ? "ring-2 ring-blue-500" : ""}`}>
+                  <td className="p-2 font-medium border-b" style={{ color: palette.text, borderColor: palette.gridLines }}>
                     {item.symbol}
                   </td>
-                  <td className="p-2 text-right border-b">${item.value.toFixed(2)}</td>
-                  <td className={`p-2 text-right border-b ${item.performance >= 0 ? "text-green-600" : "text-red-600"}`}>
+                  <td className="p-2 text-right border-b" style={{ color: palette.text, borderColor: palette.gridLines }}>${item.value.toFixed(2)}</td>
+                  <td className="p-2 text-right border-b" style={{ color: item.performance >= 0 ? palette.positive : palette.negative, borderColor: palette.gridLines }}>
                     {item.performance >= 0 ? "+" : ""}{item.performance.toFixed(2)}%
                   </td>
                 </tr>

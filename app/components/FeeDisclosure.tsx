@@ -167,7 +167,7 @@ export default function FeeDisclosure() {
       {showDetails && (
         <div className="mt-4 overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="bg-gray-50">
+            <thead className="bg-transparent">
               <tr>
                 <th className="px-4 py-2 text-left font-medium" style={{ color: palette.text }}>Category</th>
                 <th className="px-4 py-2 text-left font-medium" style={{ color: palette.text }}>Type</th>
@@ -177,7 +177,7 @@ export default function FeeDisclosure() {
             </thead>
             <tbody>
               {feeItems.map((fee, idx) => (
-                <tr key={idx} className="border-t border-gray-100">
+                <tr key={idx} className="border-t border-transparent">
                   <td className="px-4 py-2" style={{ color: palette.text }}>{fee.category}</td>
                   <td className="px-4 py-2" style={{ color: palette.text, opacity: 0.7 }}>{fee.type}</td>
                   <td className="px-4 py-2 text-right" style={{ color: palette.text }}>{fee.cost.toFixed(2)}%</td>
@@ -213,44 +213,44 @@ export default function FeeDisclosure() {
 
           <div className="grid md:grid-cols-3 gap-4">
             <div className="p-3 bg-white rounded-lg border border-blue-200">
-              <p className="text-sm text-gray-600">Without Fees (Gross)</p>
+              <p className="text-sm palette.text">Without Fees (Gross)</p>
               <p className="text-lg font-bold text-green-600">${longTermImpact.gross.toLocaleString(undefined, { maximumFractionDigits: 0 })}</p>
             </div>
             <div className="p-3 bg-white rounded-lg border border-blue-200">
-              <p className="text-sm text-gray-600">With {totalWithAdvisory.toFixed(2)}% Fees (Net)</p>
+              <p className="text-sm palette.text">With {totalWithAdvisory.toFixed(2)}% Fees (Net)</p>
               <p className="text-lg font-bold text-blue-600">${longTermImpact.net.toLocaleString(undefined, { maximumFractionDigits: 0 })}</p>
             </div>
             <div className="p-3 bg-white rounded-lg border border-blue-200">
-              <p className="text-sm text-gray-600">Lost to Fees</p>
+              <p className="text-sm palette.text">Lost to Fees</p>
               <p className="text-lg font-bold text-red-600">${longTermImpact.lostToFees.toLocaleString(undefined, { maximumFractionDigits: 0 })}</p>
             </div>
           </div>
 
-          <p className="text-xs text-gray-500 mt-4">
+          <p className="text-xs palette.text mt-4">
             * This is a hypothetical example for educational purposes. Actual returns will vary. The example assumes constant 7% annual return and constant fees.
           </p>
         </div>
       )}
 
       {/* Fee Comparison Reference */}
-      <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-        <h3 className="font-semibold text-gray-800 mb-3">Fee Comparison Reference</h3>
+      <div className="mt-6 p-4 bg-transparent rounded-lg">
+        <h3 className="font-semibold palette.text mb-3">Fee Comparison Reference</h3>
         <div className="grid md:grid-cols-2 gap-4 text-sm">
           <div>
-            <p className="font-medium text-gray-700">Low-Cost Index Funds</p>
-            <p className="text-gray-600">0.03% - 0.15% annual expense ratio</p>
+            <p className="font-medium palette.text">Low-Cost Index Funds</p>
+            <p className="palette.text">0.03% - 0.15% annual expense ratio</p>
           </div>
           <div>
-            <p className="font-medium text-gray-700">Robo-Advisors</p>
-            <p className="text-gray-600">0.25% - 0.50% annual advisory fee</p>
+            <p className="font-medium palette.text">Robo-Advisors</p>
+            <p className="palette.text">0.25% - 0.50% annual advisory fee</p>
           </div>
           <div>
-            <p className="font-medium text-gray-700">Traditional Advisors</p>
-            <p className="text-gray-600">0.75% - 1.50% annual advisory fee</p>
+            <p className="font-medium palette.text">Traditional Advisors</p>
+            <p className="palette.text">0.75% - 1.50% annual advisory fee</p>
           </div>
           <div>
-            <p className="font-medium text-gray-700">Actively Managed Funds</p>
-            <p className="text-gray-600">0.50% - 2.00%+ annual expense ratio</p>
+            <p className="font-medium palette.text">Actively Managed Funds</p>
+            <p className="palette.text">0.50% - 2.00%+ annual expense ratio</p>
           </div>
         </div>
       </div>

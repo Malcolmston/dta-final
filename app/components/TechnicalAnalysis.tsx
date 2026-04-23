@@ -808,14 +808,14 @@ export default function TechnicalAnalysis({ isSimpleMode = false }: TechnicalAna
             </p>
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <p className="font-bold text-lg text-gray-800">Trading Signals</p>
-                <p className="text-gray-600">
+                <p className="font-bold text-lg palette.text">Trading Signals</p>
+                <p className="palette.text">
                   Shows when to <em className="text-green-600 font-medium">BUY</em> (oversold), <em className="text-red-600 font-medium">SELL</em> (overbought), or <em className="text-yellow-600 font-medium">HOLD</em> based on RSI indicator.
                 </p>
               </div>
               <div>
-                <p className="font-bold text-lg text-gray-800">Momentum</p>
-                <p className="text-gray-600">
+                <p className="font-bold text-lg palette.text">Momentum</p>
+                <p className="palette.text">
                   Shows if a stock is gaining or losing momentum using 4 different indicators.
                 </p>
               </div>
@@ -826,7 +826,7 @@ export default function TechnicalAnalysis({ isSimpleMode = false }: TechnicalAna
 
       <div className="flex flex-wrap gap-4 mb-4">
         <div className="flex-1 min-w-[200px]">
-          <label className="block text-sm font-medium text-gray-800 mb-2">
+          <label className="block text-sm font-medium palette.text mb-2">
             Enter Ticker Symbols
           </label>
           <TickerInput
@@ -848,7 +848,7 @@ export default function TechnicalAnalysis({ isSimpleMode = false }: TechnicalAna
           <button
             onClick={() => setActiveTab("signals")}
             className={`px-4 py-2 font-medium rounded-lg ${
-              activeTab === "signals" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+              activeTab === "signals" ? "bg-blue-600 text-white" : "bg-transparent palette.text hover:bg-gray-200"
             }`}
           >
             Trading Signals
@@ -856,7 +856,7 @@ export default function TechnicalAnalysis({ isSimpleMode = false }: TechnicalAna
           <button
             onClick={() => setActiveTab("momentum")}
             className={`px-4 py-2 font-medium rounded-lg ${
-              activeTab === "momentum" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+              activeTab === "momentum" ? "bg-blue-600 text-white" : "bg-transparent palette.text hover:bg-gray-200"
             }`}
           >
             Momentum
@@ -876,8 +876,8 @@ export default function TechnicalAnalysis({ isSimpleMode = false }: TechnicalAna
 
       {/* Indicator Toggles (for Momentum tab) - hide in Simple Mode */}
       {activeTab === "momentum" && !isSimpleMode && (
-        <div className="flex flex-wrap gap-2 mb-4 p-3 bg-gray-50 rounded-lg">
-          <span className="text-sm font-medium text-gray-600 mr-2">Indicators:</span>
+        <div className="flex flex-wrap gap-2 mb-4 p-3 bg-transparent rounded-lg">
+          <span className="text-sm font-medium palette.text mr-2">Indicators:</span>
           {indicators.map((ind) => (
             <button
               key={ind.key}
@@ -885,7 +885,7 @@ export default function TechnicalAnalysis({ isSimpleMode = false }: TechnicalAna
               className={`px-3 py-1 text-xs font-medium rounded-full transition-colors ${
                 ind.enabled
                   ? `bg-${ind.color.replace("#", "")} text-white`
-                  : "bg-gray-200 text-gray-600"
+                  : "bg-gray-200 palette.text"
               }`}
               style={ind.enabled ? { backgroundColor: ind.color, color: "white" } : {}}
             >
@@ -897,7 +897,7 @@ export default function TechnicalAnalysis({ isSimpleMode = false }: TechnicalAna
 
       {/* Play/Pause Animation (for Momentum tab) - hide in Simple Mode */}
       {activeTab === "momentum" && !isSimpleMode && (
-        <div className="flex items-center gap-3 mb-4 p-3 bg-gray-50 rounded-lg">
+        <div className="flex items-center gap-3 mb-4 p-3 bg-transparent rounded-lg">
           <button
             onClick={() => setIsPlaying(!isPlaying)}
             className={`px-4 py-2 font-medium rounded-lg ${
@@ -911,7 +911,7 @@ export default function TechnicalAnalysis({ isSimpleMode = false }: TechnicalAna
               setCurrentAnimationIndex(0);
               setIsPlaying(false);
             }}
-            className="px-4 py-2 font-medium rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300"
+            className="px-4 py-2 font-medium rounded-lg bg-gray-200 palette.text hover:bg-gray-300"
           >
             ↺ Reset
           </button>
@@ -928,7 +928,7 @@ export default function TechnicalAnalysis({ isSimpleMode = false }: TechnicalAna
               className="w-full"
             />
           </div>
-          <span className="text-sm text-gray-600">
+          <span className="text-sm palette.text">
             {currentAnimationIndex + 1} / {momentumData[selectedTicker || Object.keys(momentumData)[0]]?.length || 0}
           </span>
         </div>
@@ -969,12 +969,12 @@ export default function TechnicalAnalysis({ isSimpleMode = false }: TechnicalAna
             }}
           >
             {tooltipData.ticker && (
-              <p className="font-bold text-gray-800">{tooltipData.ticker}</p>
+              <p className="font-bold palette.text">{tooltipData.ticker}</p>
             )}
             {tooltipData.data.map((d, i) => (
               <div key={i} className="text-sm">
-                <p className="text-gray-600">{d.date.toLocaleDateString()}</p>
-                <p className="text-gray-800">
+                <p className="palette.text">{d.date.toLocaleDateString()}</p>
+                <p className="palette.text">
                   Value: <span className="font-medium">{d.value?.toFixed(2)}</span>
                 </p>
                 {d.signal && (
@@ -999,9 +999,9 @@ export default function TechnicalAnalysis({ isSimpleMode = false }: TechnicalAna
 
         {/* Selected Data Point Display */}
         {selectedDataPoint && activeTab === "momentum" && (
-          <div className="absolute top-2 right-2 p-2 bg-white border border-gray-200 rounded-lg shadow text-xs">
-            <p className="text-gray-500">Selected:</p>
-            <p className="font-medium text-gray-800">
+          <div className="absolute top-2 right-2 p-2 bg-white border border-transparent rounded-lg shadow text-xs">
+            <p className="palette.text">Selected:</p>
+            <p className="font-medium palette.text">
               {selectedDataPoint.date.toLocaleDateString()}
             </p>
             <p className="text-blue-600 font-bold">
@@ -1013,7 +1013,7 @@ export default function TechnicalAnalysis({ isSimpleMode = false }: TechnicalAna
 
       {/* Simplified legend for Simple Mode */}
       {isSimpleMode ? (
-        <div className="mt-4 flex gap-4 text-sm text-gray-600">
+        <div className="mt-4 flex gap-4 text-sm palette.text">
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded-full bg-green-500" />
             <span>Going Up (Buy)</span>
@@ -1024,7 +1024,7 @@ export default function TechnicalAnalysis({ isSimpleMode = false }: TechnicalAna
           </div>
         </div>
       ) : (
-        <div className="mt-4 flex gap-4 text-sm text-gray-600">
+        <div className="mt-4 flex gap-4 text-sm palette.text">
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded-full bg-green-500" />
             <span>BUY (Educational Only)</span>
@@ -1037,7 +1037,7 @@ export default function TechnicalAnalysis({ isSimpleMode = false }: TechnicalAna
             <div className="w-3 h-3 rounded-full bg-red-500" />
             <span>SELL (Educational Only)</span>
           </div>
-          <div className="ml-auto text-xs text-gray-400">
+          <div className="ml-auto text-xs palette.text">
             Click points for details • Drag to zoom • Use brush to select range
           </div>
         </div>

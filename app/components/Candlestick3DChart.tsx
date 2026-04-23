@@ -39,6 +39,7 @@ function processCandlestickData(data: StockHistory[]): CandlestickData[] {
 }
 
 export default function Candlestick3DChart({ ticker: initialTicker = "AAPL" }: { ticker?: string }) {
+  const { palette, isDarkMode } = useColorPalette();
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -230,9 +231,12 @@ export default function Candlestick3DChart({ ticker: initialTicker = "AAPL" }: {
             <button
               key={range.value}
               onClick={() => setPeriod(range.value)}
-              className={`px-3 py-1.5 text-sm font-medium rounded-lg transition ${
-                period === range.value ? "bg-indigo-600 text-white" : "bg-transparent palette.text hover:bg-gray-200"
-              }`}
+              className="px-3 py-1.5 text-sm font-medium rounded-lg transition"
+              style={{
+                backgroundColor: period === range.value ? palette.primary : palette.background,
+                color: period === range.value ? "#ffffff" : palette.text,
+                border: `1px solid ${palette.gridLines}`,
+              }}
             >
               {range.label}
             </button>
@@ -240,19 +244,19 @@ export default function Candlestick3DChart({ ticker: initialTicker = "AAPL" }: {
         </div>
       </div>
 
-      {error && <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700">{error}</div>}
+      {error && <div className="mb-4 p-3 rounded-lg" style={{ backgroundColor: palette.negative + "20", border: `1px solid ${palette.negative}`, color: palette.negative }}>{error}</div>}
 
-      <div className="bg-white rounded-xl shadow-lg border border-transparent overflow-hidden">
+      <div className="rounded-xl shadow-lg border border-transparent overflow-hidden" style={{ backgroundColor: palette.background }}>
         <svg ref={svgRef} className="w-full" style={{ height: "400px" }} />
       </div>
 
-      <div className="mt-3 flex items-center gap-6 text-sm palette.text">
+      <div className="mt-3 flex items-center gap-6 text-sm" style={{ color: palette.text }}>
         <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-green-500 rounded-sm"></div>
+          <div className="w-4 h-4 rounded-sm" style={{ backgroundColor: palette.positive }}></div>
           <span>Bullish</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-red-500 rounded-sm"></div>
+          <div className="w-4 h-4 rounded-sm" style={{ backgroundColor: palette.negative }}></div>
           <span>Bearish</span>
         </div>
       </div>

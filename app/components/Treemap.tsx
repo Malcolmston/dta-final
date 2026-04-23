@@ -382,11 +382,12 @@ export default function Treemap() {
               // Fetch new data after period change
               setTimeout(fetchData, 0);
             }}
-            className={`px-3 py-1.5 text-sm font-medium rounded-lg transition focus:ring-2 focus:ring-blue-500 focus:outline-none ${
-              period === range.value
-                ? "bg-blue-600 text-white"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-            }`}
+            className="px-3 py-1.5 text-sm font-medium rounded-lg transition"
+            style={{
+              backgroundColor: period === range.value ? palette.primary : palette.background,
+              color: period === range.value ? "#ffffff" : palette.text,
+              border: `1px solid ${palette.gridLines}`,
+            }}
           >
             {range.label}
           </button>
@@ -394,8 +395,8 @@ export default function Treemap() {
       </div>
 
       {error && (
-        <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
-          {error}
+        <div className="mb-4 p-4 rounded-lg" style={{ backgroundColor: palette.negative + "20", border: `1px solid ${palette.negative}` }}>
+          <span style={{ color: palette.negative }}>{error}</span>
         </div>
       )}
 
@@ -403,17 +404,23 @@ export default function Treemap() {
       <div className="flex gap-2 mb-4">
         <button
           onClick={() => setViewMode("chart")}
-          className={`px-3 py-1.5 text-sm font-medium rounded-lg transition focus:ring-2 focus:ring-blue-500 focus:outline-none ${
-            viewMode === "chart" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-          }`}
+          className="px-3 py-1.5 text-sm font-medium rounded-lg transition"
+          style={{
+            backgroundColor: viewMode === "chart" ? palette.primary : palette.background,
+            color: viewMode === "chart" ? "#ffffff" : palette.text,
+            border: `1px solid ${palette.gridLines}`,
+          }}
         >
           Chart View
         </button>
         <button
           onClick={() => setViewMode("table")}
-          className={`px-3 py-1.5 text-sm font-medium rounded-lg transition focus:ring-2 focus:ring-blue-500 focus:outline-none ${
-            viewMode === "table" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-          }`}
+          className="px-3 py-1.5 text-sm font-medium rounded-lg transition"
+          style={{
+            backgroundColor: viewMode === "table" ? palette.primary : palette.background,
+            color: viewMode === "table" ? "#ffffff" : palette.text,
+            border: `1px solid ${palette.gridLines}`,
+          }}
         >
           Table View
         </button>

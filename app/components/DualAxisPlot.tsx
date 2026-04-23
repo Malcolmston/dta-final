@@ -585,7 +585,11 @@ export default function DualAxisPlot({ ticker: initialTicker = "AAPL" }: DualAxi
           <button
             onClick={fetchData}
             disabled={loading}
-            className="px-6 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition"
+            className="px-6 py-2 font-medium rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
+            style={{
+              backgroundColor: loading ? palette.gridLines : palette.primary,
+              color: "#ffffff",
+            }}
           >
             {loading ? "Loading..." : "Load Chart"}
           </button>
@@ -597,11 +601,12 @@ export default function DualAxisPlot({ ticker: initialTicker = "AAPL" }: DualAxi
           <button
             key={range.value}
             onClick={() => setPeriod(range.value)}
-            className={`px-3 py-1.5 text-sm font-medium rounded-lg transition ${
-              period === range.value
-                ? "bg-blue-600 text-white"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-            }`}
+            className="px-3 py-1.5 text-sm font-medium rounded-lg transition"
+            style={{
+              backgroundColor: period === range.value ? palette.primary : palette.background,
+              color: period === range.value ? "#ffffff" : palette.text,
+              border: `1px solid ${palette.gridLines}`,
+            }}
           >
             {range.label}
           </button>
@@ -609,8 +614,8 @@ export default function DualAxisPlot({ ticker: initialTicker = "AAPL" }: DualAxi
       </div>
 
       {error && (
-        <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
-          {error}
+        <div className="mb-4 p-4 rounded-lg" style={{ backgroundColor: palette.negative + "20", border: `1px solid ${palette.negative}` }}>
+          <span style={{ color: palette.negative }}>{error}</span>
         </div>
       )}
 

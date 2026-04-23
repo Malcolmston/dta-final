@@ -164,11 +164,11 @@ export default function TaxAwareFeatures() {
       {/* Expandable Account Details */}
       <button
         onClick={() => setExpanded(!expanded)}
-        className="flex items-center justify-between w-full p-4 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+        className="flex items-center justify-between w-full p-4 bg-transparent rounded-lg hover:bg-gray-200 transition-colors"
       >
-        <span className="font-medium text-gray-800">View Account Details</span>
+        <span className="font-medium palette.text">View Account Details</span>
         <svg
-          className={`w-5 h-5 text-gray-600 transition-transform ${expanded ? "rotate-180" : ""}`}
+          className={`w-5 h-5 palette.text transition-transform ${expanded ? "rotate-180" : ""}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -186,9 +186,9 @@ export default function TaxAwareFeatures() {
             const unrealizedGain = accountValue - accountCostBasis;
 
             return (
-              <div key={account.name} className="border border-gray-200 rounded-lg overflow-hidden">
+              <div key={account.name} className="border border-transparent rounded-lg overflow-hidden">
                 <div
-                  className="p-4 bg-gray-50 cursor-pointer hover:bg-gray-100"
+                  className="p-4 bg-transparent cursor-pointer hover:bg-transparent"
                   onClick={() => setSelectedAccount(selectedAccount === account.name ? null : account.name)}
                 >
                   <div className="flex items-center justify-between">
@@ -196,10 +196,10 @@ export default function TaxAwareFeatures() {
                       <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${typeInfo.color}`}>
                         {typeInfo.label}
                       </span>
-                      <h4 className="font-medium text-gray-800">{account.name}</h4>
+                      <h4 className="font-medium palette.text">{account.name}</h4>
                     </div>
                     <div className="text-right">
-                      <p className="font-semibold text-gray-800">${accountValue.toLocaleString()}</p>
+                      <p className="font-semibold palette.text">${accountValue.toLocaleString()}</p>
                       <p className={`text-xs ${unrealizedGain >= 0 ? "text-green-600" : "text-red-600"}`}>
                         {unrealizedGain >= 0 ? "+" : ""}${unrealizedGain.toLocaleString()} unrealized
                       </p>
@@ -208,27 +208,27 @@ export default function TaxAwareFeatures() {
                 </div>
 
                 {selectedAccount === account.name && (
-                  <div className="p-4 bg-white border-t border-gray-200">
-                    <p className="text-sm text-gray-600 mb-3">{typeInfo.desc}</p>
+                  <div className="p-4 bg-white border-t border-transparent">
+                    <p className="text-sm palette.text mb-3">{typeInfo.desc}</p>
                     <table className="w-full text-sm">
-                      <thead className="bg-gray-50">
+                      <thead className="bg-transparent">
                         <tr>
-                          <th className="px-3 py-2 text-left text-gray-600">Symbol</th>
-                          <th className="px-3 py-2 text-right text-gray-600">Shares</th>
-                          <th className="px-3 py-2 text-right text-gray-600">Cost Basis</th>
-                          <th className="px-3 py-2 text-right text-gray-600">Current Value</th>
-                          <th className="px-3 py-2 text-right text-gray-600">Gain/Loss</th>
+                          <th className="px-3 py-2 text-left palette.text">Symbol</th>
+                          <th className="px-3 py-2 text-right palette.text">Shares</th>
+                          <th className="px-3 py-2 text-right palette.text">Cost Basis</th>
+                          <th className="px-3 py-2 text-right palette.text">Current Value</th>
+                          <th className="px-3 py-2 text-right palette.text">Gain/Loss</th>
                         </tr>
                       </thead>
                       <tbody>
                         {account.holdings.map((holding) => {
                           const gain = holding.currentValue - holding.costBasis;
                           return (
-                            <tr key={holding.symbol} className="border-t border-gray-100">
-                              <td className="px-3 py-2 font-medium text-gray-800">{holding.symbol}</td>
-                              <td className="px-3 py-2 text-right text-gray-600">{holding.shares}</td>
-                              <td className="px-3 py-2 text-right text-gray-600">${holding.costBasis.toLocaleString()}</td>
-                              <td className="px-3 py-2 text-right text-gray-800">${holding.currentValue.toLocaleString()}</td>
+                            <tr key={holding.symbol} className="border-t border-transparent">
+                              <td className="px-3 py-2 font-medium palette.text">{holding.symbol}</td>
+                              <td className="px-3 py-2 text-right palette.text">{holding.shares}</td>
+                              <td className="px-3 py-2 text-right palette.text">${holding.costBasis.toLocaleString()}</td>
+                              <td className="px-3 py-2 text-right palette.text">${holding.currentValue.toLocaleString()}</td>
                               <td className={`px-3 py-2 text-right ${gain >= 0 ? "text-green-600" : "text-red-600"}`}>
                                 {gain >= 0 ? "+" : ""}${gain.toLocaleString()}
                               </td>
@@ -252,8 +252,8 @@ export default function TaxAwareFeatures() {
           If you have losses in taxable accounts, you can sell losing positions to offset gains. This can reduce your tax bill while maintaining your asset allocation.
         </p>
         <div className="bg-white rounded-lg p-3 text-sm">
-          <p className="font-medium text-gray-700">Key Points:</p>
-          <ul className="list-disc list-inside text-gray-600 mt-2 space-y-1">
+          <p className="font-medium palette.text">Key Points:</p>
+          <ul className="list-disc list-inside palette.text mt-2 space-y-1">
             <li>Can offset capital gains dollar-for-dollar</li>
             <li>Up to $3,000 of excess loss can offset ordinary income</li>
             <li>Must wait 30 days before repurchasing same/similar security (wash sale rule)</li>

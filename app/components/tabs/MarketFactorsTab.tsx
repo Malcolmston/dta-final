@@ -2,27 +2,17 @@
 
 import { useState, useEffect, useRef } from "react";
 import * as d3 from "d3";
+import { useColorPalette } from "@/app/context/ColorPaletteContext";
 import { fetchHistory, StockHistory } from "@/lib/client";
-
-const COLOR_PALETTES = [
-  { name: "Ocean", label: "Default", category: "Standard", description: "Classic blue/green/red", bullish: "#10b981", bearish: "#ef4444", primary: "#1e3a5f", accent: "#f59e0b", chartLine: "#2563eb", neutral: "#64748b" },
-  { name: "BlueGold", label: "Blue/Gold", category: "Colorblind Safe", description: "Blue & gold - safe for deuteranopia", bullish: "#0077bb", bearish: "#ee7733", primary: "#1e3a5f", accent: "#f59e0b", chartLine: "#0077bb", neutral: "#64748b" },
-  { name: "BlueOrange", label: "Blue/Orange", category: "Colorblind Safe", description: "Blue & orange - safe for protanopia", bullish: "#0072b2", bearish: "#d55e00", primary: "#1e3a5f", accent: "#f59e0b", chartLine: "#0072b2", neutral: "#64748b" },
-  { name: "TealRed", label: "Teal/Red", category: "High Contrast", description: "High contrast teal & red", bullish: "#14b8a6", bearish: "#dc2626", primary: "#0f172a", accent: "#f59e0b", chartLine: "#14b8a6", neutral: "#94a3b8" },
-  { name: "LimeMagenta", label: "Lime/Magenta", category: "High Contrast", description: "Lime green & magenta - very high contrast", bullish: "#84cc16", bearish: "#d946ef", primary: "#1e3a5f", accent: "#f59e0b", chartLine: "#84cc16", neutral: "#64748b" },
-  { name: "Midnight", label: "Midnight", category: "Dark", description: "Dark theme with soft colors", bullish: "#34d399", bearish: "#f87171", primary: "#0f172a", accent: "#fbbf24", chartLine: "#3b82f6", neutral: "#94a3b8" },
-  { name: "Forest", label: "Forest", category: "Nature", description: "Natural green tones", bullish: "#16a34a", bearish: "#dc2626", primary: "#14532d", accent: "#eab308", chartLine: "#15803d", neutral: "#65a30d" },
-] as const;
-
-type ColorPalette = typeof COLOR_PALETTES[number];
 
 interface MarketFactorsTabProps {
   ticker: string;
   refreshKey: number;
-  colors: ColorPalette;
+  colors?: { chartLine: string; bullish: string; bearish: string; neutral: string };
 }
 
 export default function MarketFactorsTab({ ticker, refreshKey, colors }: MarketFactorsTabProps) {
+  const { palette, isDarkMode } = useColorPalette();
   const [stockData, setStockData] = useState<StockHistory[]>([]);
   const [loading, setLoading] = useState(true);
   const svgRef = useRef<SVGSVGElement>(null);
@@ -97,7 +87,7 @@ export default function MarketFactorsTab({ ticker, refreshKey, colors }: MarketF
         .attr("y", d.return >= 0 ? yScale(d.return) : yScale(0))
         .attr("width", 2)
         .attr("height", barHeight)
-        .attr("fill", d.return >= 0 ? colors.bullish : colors.bearish)
+        .attr("fill", d.return >= 0 ? palette.positive : palette.negative)
         .attr("fill-opacity", 0.7);
     });
 
@@ -105,14 +95,14 @@ export default function MarketFactorsTab({ ticker, refreshKey, colors }: MarketF
     svg.append("g")
       .attr("transform", `translate(0,${height - margin.bottom})`)
       .call(d3.axisBottom(xScale).ticks(8))
-      .selectAll("text").attr("fill", colors.neutral).attr("font-size", "11px");
+      .selectAll("text").attr("fill", palette.text).attr("font-size", "11px");
 
     svg.append("g")
       .attr("transform", `translate(${margin.left},0)`)
       .call(d3.axisLeft(yScale).tickFormat(d => `${(+d * 100).toFixed(1)}%`).ticks(5))
-      .selectAll("text").attr("fill", colors.neutral).attr("font-size", "11px");
+      .selectAll("text").attr("fill", palette.text).attr("font-size", "11px");
 
-  }, [stockData, colors]);
+  }, [stockData, palette]);
 
   if (loading) {
     return <div className="p-6 text-center text-slate-500">Loading market factor data...</div>;

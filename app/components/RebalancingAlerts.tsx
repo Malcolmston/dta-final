@@ -177,7 +177,7 @@ export default function RebalancingAlerts() {
                         {badge.label}
                       </span>
                     </div>
-                    <div className="text-sm text-gray-600">
+                    <div className="text-sm" style={{ color: palette.text, opacity: 0.7 }}>
                       Current: {alert.current}% → Target: {alert.target}% (Drift: {alert.drift > 0 ? "+" : ""}{alert.drift}%)
                     </div>
                   </div>
@@ -196,16 +196,16 @@ export default function RebalancingAlerts() {
 
       {/* Allocation editor */}
       <div className="mb-6">
-        <h3 className="font-semibold text-gray-800 mb-3">Current vs Target Allocations</h3>
+        <h3 className="font-semibold mb-3" style={{ color: palette.text }}>Current vs Target Allocations</h3>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-200">
-                <th className="text-left py-2 px-3">Asset Class</th>
-                <th className="text-right py-2 px-3">Current %</th>
-                <th className="text-right py-2 px-3">Target %</th>
-                <th className="text-right py-2 px-3">Drift</th>
-                <th className="text-center py-2 px-3">Status</th>
+              <tr className="border-b" style={{ borderColor: palette.gridLines }}>
+                <th className="text-left py-2 px-3 font-medium" style={{ color: palette.text }}>Asset Class</th>
+                <th className="text-right py-2 px-3 font-medium" style={{ color: palette.text }}>Current %</th>
+                <th className="text-right py-2 px-3 font-medium" style={{ color: palette.text }}>Target %</th>
+                <th className="text-right py-2 px-3 font-medium" style={{ color: palette.text }}>Drift</th>
+                <th className="text-center py-2 px-3 font-medium" style={{ color: palette.text }}>Status</th>
               </tr>
             </thead>
             <tbody>
@@ -215,41 +215,39 @@ export default function RebalancingAlerts() {
                 return (
                   <tr
                     key={asset.category}
-                    className="border-b border-gray-100 hover:bg-gray-50"
+                    className="border-b"
+                    style={{ borderColor: palette.gridLines }}
                   >
-                    <td className="py-2 px-3 font-medium text-gray-800">{asset.category}</td>
+                    <td className="py-2 px-3 font-medium" style={{ color: palette.text }}>{asset.category}</td>
                     <td className="text-right py-2 px-3">
                       <input
                         type="number"
                         value={asset.current}
                         onChange={(e) => updateAllocation(asset.category, Number(e.target.value))}
-                        className="w-16 text-right px-2 py-1 border border-gray-300 rounded"
+                        className="w-16 text-right px-2 py-1 rounded border"
+                        style={{ borderColor: palette.gridLines, color: palette.text, backgroundColor: palette.background }}
                         min="0"
                         max="100"
                       />
                     </td>
-                    <td className="text-right py-2 px-3 text-gray-500">{asset.target}%</td>
+                    <td className="text-right py-2 px-3" style={{ color: palette.text, opacity: 0.6 }}>{asset.target}%</td>
                     <td
                       className="text-right py-2 px-3 font-medium"
                       style={{
-                        color: drift > 0 ? "#ef4444" : drift < 0 ? "#22c55e" : "#6b7280",
+                        color: drift > 0 ? palette.negative : drift < 0 ? palette.positive : palette.text,
                       }}
                     >
                       {drift > 0 ? "+" : ""}{drift}%
                     </td>
-                    <td className="text-center py-2 px-3">
-                      {needsRebalance ? (
-                        <span className="text-red-600 font-medium">Rebalance</span>
-                      ) : (
-                        <span className="text-green-600">OK</span>
-                      )}
+                    <td className="text-center py-2 px-3" style={{ color: needsRebalance ? palette.negative : palette.positive }}>
+                      {needsRebalance ? "Rebalance" : "OK"}
                     </td>
                   </tr>
                 );
               })}
             </tbody>
             <tfoot>
-              <tr className="font-bold">
+              <tr className="font-bold" style={{ color: palette.text }}>
                 <td className="py-2 px-3">Total</td>
                 <td className="text-right py-2 px-3">
                   {portfolio.reduce((sum, a) => sum + a.current, 0)}%
@@ -265,13 +263,13 @@ export default function RebalancingAlerts() {
       </div>
 
       {/* Important note */}
-      <div className="p-4 bg-amber-50 rounded-lg border border-amber-200">
-        <h4 className="font-semibold text-gray-800 mb-2">Important: Why Rebalance?</h4>
-        <ul className="text-sm text-gray-700 space-y-1">
-          <li>• <strong>Risk Management:</strong> Maintains your intended risk level over time</li>
-          <li>• <strong>Buy Low, Sell High:</strong> Automatically sells appreciated assets and buys underweighted ones</li>
-          <li>• <strong>Discipline:</strong> Prevents your portfolio from drifting into inappropriate risk levels</li>
-          <li>• <strong>Tax Efficiency:</strong> In taxable accounts, rebalancing can minimize capital gains</li>
+      <div className="p-4 rounded-lg border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
+        <h4 className="font-semibold mb-2" style={{ color: palette.text }}>Important: Why Rebalance?</h4>
+        <ul className="text-sm space-y-1" style={{ color: palette.text, opacity: 0.8 }}>
+          <li>• <strong style={{ color: palette.text }}>Risk Management:</strong> Maintains your intended risk level over time</li>
+          <li>• <strong style={{ color: palette.text }}>Buy Low, Sell High:</strong> Automatically sells appreciated assets and buys underweighted ones</li>
+          <li>• <strong style={{ color: palette.text }}>Discipline:</strong> Prevents your portfolio from drifting into inappropriate risk levels</li>
+          <li>• <strong style={{ color: palette.text }}>Tax Efficiency:</strong> In taxable accounts, rebalancing can minimize capital gains</li>
         </ul>
       </div>
 

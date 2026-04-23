@@ -399,18 +399,18 @@ export default function OverviewSection() {
 
       {/* Data Source Legend - Issue 10 */}
       <div className="rounded-xl shadow-sm border p-4" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
-        <h3 className="font-semibold text-gray-900 mb-3">Data Source Legend</h3>
+        <h3 className="font-semibold mb-3" style={{ color: palette.text }}>Data Source Legend</h3>
         <div className="flex flex-wrap gap-4">
           <div className="flex items-center gap-2">
-            <span className="w-3 h-3 rounded-full bg-green-500"></span>
-            <span className="text-sm text-gray-700">Real Data (Yahoo Finance)</span>
+            <span className="w-3 h-3 rounded-full" style={{ backgroundColor: palette.positive }}></span>
+            <span className="text-sm" style={{ color: palette.text }}>Real Data (Yahoo Finance)</span>
           </div>
           <div className="flex items-center gap-2">
             <span className="w-3 h-3 rounded-full bg-yellow-500"></span>
-            <span className="text-sm text-gray-700">Simulated/Demo</span>
+            <span className="text-sm" style={{ color: palette.text }}>Simulated/Demo</span>
           </div>
         </div>
-        <p className="text-xs text-gray-500 mt-2">
+        <p className="text-xs mt-2" style={{ color: palette.text, opacity: 0.6 }}>
           Stock prices are real-time from Yahoo Finance. Portfolio allocations and projections are simulated for demonstration purposes.
         </p>
       </div>

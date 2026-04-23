@@ -16,6 +16,13 @@ export async function GET(request: NextRequest) {
   try {
     const redis = await getRedisClient();
 
+    if (!redis) {
+      return NextResponse.json({
+        success: false,
+        error: "Redis not configured. Set REDIS_URL environment variable to enable caching."
+      }, { status: 503 });
+    }
+
     // Get all stock data keys
     const stockKeys = await redis.keys("stock:*");
     const results: { operation: string; success: boolean; count?: number; error?: string }[] = [];

@@ -2,27 +2,17 @@
 
 import { useState, useEffect, useRef } from "react";
 import * as d3 from "d3";
+import { useColorPalette } from "@/app/context/ColorPaletteContext";
 import { fetchHistory, StockHistory } from "@/lib/client";
-
-const COLOR_PALETTES = [
-  { name: "Ocean", label: "Default", category: "Standard", description: "Classic blue/green/red", bullish: "#10b981", bearish: "#ef4444", primary: "#1e3a5f", accent: "#f59e0b", chartLine: "#2563eb", neutral: "#64748b" },
-  { name: "BlueGold", label: "Blue/Gold", category: "Colorblind Safe", description: "Blue & gold - safe for deuteranopia", bullish: "#0077bb", bearish: "#ee7733", primary: "#1e3a5f", accent: "#f59e0b", chartLine: "#0077bb", neutral: "#64748b" },
-  { name: "BlueOrange", label: "Blue/Orange", category: "Colorblind Safe", description: "Blue & orange - safe for protanopia", bullish: "#0072b2", bearish: "#d55e00", primary: "#1e3a5f", accent: "#f59e0b", chartLine: "#0072b2", neutral: "#64748b" },
-  { name: "TealRed", label: "Teal/Red", category: "High Contrast", description: "High contrast teal & red", bullish: "#14b8a6", bearish: "#dc2626", primary: "#0f172a", accent: "#f59e0b", chartLine: "#14b8a6", neutral: "#94a3b8" },
-  { name: "LimeMagenta", label: "Lime/Magenta", category: "High Contrast", description: "Lime green & magenta - very high contrast", bullish: "#84cc16", bearish: "#d946ef", primary: "#1e3a5f", accent: "#f59e0b", chartLine: "#84cc16", neutral: "#64748b" },
-  { name: "Midnight", label: "Midnight", category: "Dark", description: "Dark theme with soft colors", bullish: "#34d399", bearish: "#f87171", primary: "#0f172a", accent: "#fbbf24", chartLine: "#3b82f6", neutral: "#94a3b8" },
-  { name: "Forest", label: "Forest", category: "Nature", description: "Natural green tones", bullish: "#16a34a", bearish: "#dc2626", primary: "#14532d", accent: "#eab308", chartLine: "#15803d", neutral: "#65a30d" },
-] as const;
-
-type ColorPalette = typeof COLOR_PALETTES[number];
 
 interface PriceTrendsTabProps {
   ticker: string;
   refreshKey: number;
-  colors: ColorPalette;
+  colors?: { chartLine: string; bullish: string; bearish: string; neutral: string };
 }
 
 export default function PriceTrendsTab({ ticker, refreshKey, colors }: PriceTrendsTabProps) {
+  const { palette, isDarkMode } = useColorPalette();
   const [stockData, setStockData] = useState<StockHistory[]>([]);
   const [loading, setLoading] = useState(true);
   const svgRef = useRef<SVGSVGElement>(null);
@@ -85,7 +75,7 @@ export default function PriceTrendsTab({ ticker, refreshKey, colors }: PriceTren
       .attr("transform", `translate(${margin.left},0)`)
       .call(d3.axisLeft(yScale).tickSize(-(width - margin.left - margin.right)).tickFormat(() => "").ticks(6))
       .selectAll("line")
-      .attr("stroke", "#e2e8f0")
+      .attr("stroke", palette.gridLines)
       .attr("stroke-dasharray", "3,3");
     svg.selectAll(".domain").remove();
 
@@ -95,7 +85,7 @@ export default function PriceTrendsTab({ ticker, refreshKey, colors }: PriceTren
     stockData.forEach((d) => {
       const x = xScale(d.date);
       const isBullish = d.close >= d.open;
-      const color = isBullish ? colors.bullish : colors.bearish;
+      const color = isBullish ? palette.positive : palette.negative;
 
       // Wick
       svg.append("line")
@@ -133,40 +123,40 @@ export default function PriceTrendsTab({ ticker, refreshKey, colors }: PriceTren
         .attr("d", line);
     };
 
-    drawSMA(sma20, "#8b5cf6", 2);
-    drawSMA(sma50, "#f59e0b", 2, "5,3");
+    drawSMA(sma20, palette.accent, 2);
+    drawSMA(sma50, palette.secondary, 2, "5,3");
     drawSMA(sma200, "#06b6d4", 1.5, "2,2");
 
     // Axes
     svg.append("g")
       .attr("transform", `translate(0,${height - margin.bottom})`)
       .call(d3.axisBottom(xScale).ticks(8))
-      .selectAll("text").attr("fill", colors.neutral).attr("font-size", "11px");
+      .selectAll("text").attr("fill", palette.text).attr("font-size", "11px");
 
     svg.append("g")
       .attr("transform", `translate(${margin.left},0)`)
       .call(d3.axisLeft(yScale).tickFormat(d => `$${d}`).ticks(6))
-      .selectAll("text").attr("fill", colors.neutral).attr("font-size", "11px");
+      .selectAll("text").attr("fill", palette.text).attr("font-size", "11px");
 
     // Legend
     const legend = svg.append("g").attr("transform", `translate(${margin.left}, 10)`);
     const legends = [
-      { color: colors.bullish, label: "Price Candles" },
-      { color: "#8b5cf6", label: "20-day SMA" },
-      { color: "#f59e0b", label: "50-day SMA" },
+      { color: palette.positive, label: "Price Candles" },
+      { color: palette.accent, label: "20-day SMA" },
+      { color: palette.secondary, label: "50-day SMA" },
       { color: "#06b6d4", label: "200-day SMA" },
     ];
     legends.forEach((l, i) => {
       const g = legend.append("g").attr("transform", `translate(${i * 110}, 0)`);
       g.append("line").attr("x1", 0).attr("x2", 15).attr("y1", 5).attr("y2", 5)
         .attr("stroke", l.color).attr("stroke-width", 2);
-      g.append("text").attr("x", 20).attr("y", 9).attr("fill", colors.neutral).attr("font-size", "10px").text(l.label);
+      g.append("text").attr("x", 20).attr("y", 9).attr("fill", palette.text).attr("font-size", "10px").text(l.label);
     });
 
-  }, [stockData, colors]);
+  }, [stockData, palette]);
 
   if (loading) {
-    return <div className="p-6 text-center text-slate-500">Loading price trend data...</div>;
+    return <div className="p-6 text-center" style={{ color: palette.text }}>Loading price trend data...</div>;
   }
 
   // Calculate trend metrics
@@ -183,23 +173,23 @@ export default function PriceTrendsTab({ ticker, refreshKey, colors }: PriceTren
   return (
     <div className="p-6">
       {/* Chart */}
-      <div className="relative h-[400px] mb-6 border border-slate-200 rounded-lg p-4 bg-slate-50">
+      <div className="relative h-[400px] mb-6 rounded-lg p-4" style={{ backgroundColor: isDarkMode ? palette.background : '#f8fafc', border: `1px solid ${palette.gridLines}` }}>
         <svg ref={svgRef} className="w-full h-full" />
       </div>
 
       {/* Trend Analysis */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">
-          <div className="text-xs text-slate-500 uppercase tracking-wide">Short-term (20-day)</div>
-          <div className="text-xl font-bold text-slate-800">${sma20.toFixed(2)}</div>
+        <div className="rounded-xl p-4" style={{ backgroundColor: isDarkMode ? palette.background : '#f8fafc', border: `1px solid ${palette.gridLines}` }}>
+          <div className="text-xs uppercase tracking-wide mb-1" style={{ color: palette.text, opacity: 0.6 }}>Short-term (20-day)</div>
+          <div className="text-xl font-bold" style={{ color: palette.text }}>${sma20.toFixed(2)}</div>
         </div>
-        <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">
-          <div className="text-xs text-slate-500 uppercase tracking-wide">Medium-term (50-day)</div>
-          <div className="text-xl font-bold text-slate-800">${sma50.toFixed(2)}</div>
+        <div className="rounded-xl p-4" style={{ backgroundColor: isDarkMode ? palette.background : '#f8fafc', border: `1px solid ${palette.gridLines}` }}>
+          <div className="text-xs uppercase tracking-wide mb-1" style={{ color: palette.text, opacity: 0.6 }}>Medium-term (50-day)</div>
+          <div className="text-xl font-bold" style={{ color: palette.text }}>${sma50.toFixed(2)}</div>
         </div>
-        <div className={`rounded-xl p-4 border ${trend === "bullish" ? "bg-emerald-50 border-emerald-200" : "bg-red-50 border-red-200"}`}>
-          <div className="text-xs uppercase tracking-wide">Trend Signal</div>
-          <div className={`text-xl font-bold ${trend === "bullish" ? "text-emerald-600" : "text-red-600"}`}>
+        <div className="rounded-xl p-4" style={{ backgroundColor: trend === "bullish" ? palette.positive + '15' : palette.negative + '15', border: `1px solid ${palette.gridLines}` }}>
+          <div className="text-xs uppercase tracking-wide mb-1" style={{ color: palette.text, opacity: 0.6 }}>Trend Signal</div>
+          <div className="text-xl font-bold" style={{ color: trend === "bullish" ? palette.positive : palette.negative }}>
             {trend === "bullish" ? "BULLISH" : "BEARISH"}
           </div>
         </div>

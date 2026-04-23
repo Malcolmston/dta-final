@@ -394,7 +394,7 @@ export default function Heatmap() {
         <button
           onClick={() => setViewMode("chart")}
           className={`px-3 py-1.5 text-sm font-medium rounded-lg transition focus:ring-2 focus:ring-blue-500 focus:outline-none ${
-            viewMode === "chart" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+            viewMode === "chart" ? "bg-blue-600 text-white" : "bg-transparent palette.text hover:bg-gray-200"
           }`}
         >
           Chart View
@@ -402,14 +402,14 @@ export default function Heatmap() {
         <button
           onClick={() => setViewMode("table")}
           className={`px-3 py-1.5 text-sm font-medium rounded-lg transition focus:ring-2 focus:ring-blue-500 focus:outline-none ${
-            viewMode === "table" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+            viewMode === "table" ? "bg-blue-600 text-white" : "bg-transparent palette.text hover:bg-gray-200"
           }`}
         >
           Table View
         </button>
       </div>
 
-      <p className="text-xs text-gray-500 mb-2">
+      <p className="text-xs palette.text mb-2">
         Use arrow keys to navigate. Press Enter to select.
       </p>
 
@@ -422,16 +422,16 @@ export default function Heatmap() {
           <table className="w-full text-sm border-collapse">
             <thead>
               <tr>
-                <th className="p-2 text-left font-medium text-gray-600 border-b">Ticker</th>
+                <th className="p-2 text-left font-medium palette.text border-b">Ticker</th>
                 {periodList.map(period => (
-                  <th key={period} className="p-2 text-center font-medium text-gray-600 border-b">{period}</th>
+                  <th key={period} className="p-2 text-center font-medium palette.text border-b">{period}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {tickerList.map(ticker => (
                 <tr key={ticker}>
-                  <td className="p-2 font-medium text-gray-800 border-b">{ticker}</td>
+                  <td className="p-2 font-medium palette.text border-b">{ticker}</td>
                   {periodList.map(period => {
                     const data = performanceData.find(d => d.ticker === ticker && d.period === period);
                     const isPositive = data && data.performance >= 0;
@@ -461,7 +461,7 @@ export default function Heatmap() {
         </div>
       )}
 
-      <p className="mt-4 text-sm text-gray-500">
+      <p className="mt-4 text-sm palette.text">
         Heatmap shows percentage change for each ticker across different time periods. Green indicates positive performance, red indicates negative performance.
       </p>
     </div>

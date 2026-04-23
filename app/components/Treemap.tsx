@@ -356,7 +356,7 @@ export default function Treemap() {
 
       <div className="flex flex-wrap gap-4 mb-4">
         <div className="flex-1 min-w-[250px]">
-          <label className="block text-sm font-medium text-gray-800 mb-2">
+          <label className="block text-sm font-medium palette.text mb-2">
             Enter Ticker Symbols
           </label>
           <TickerInput

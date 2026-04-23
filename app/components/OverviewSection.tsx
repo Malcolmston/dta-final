@@ -316,7 +316,7 @@ export default function OverviewSection() {
               Market Overview
             </h3>
             <MarketPredictor />
-            <p className="text-sm text-gray-500 mt-2">
+            <p className="text-sm palette.text mt-2">
               Shows whether the overall market is feeling bullish (positive) or bearish (negative).
               Green means positive sentiment, red means negative.
             </p>
@@ -331,7 +331,7 @@ export default function OverviewSection() {
               Your Portfolio
             </h3>
             <PortfolioPieChart />
-            <p className="text-sm text-gray-500 mt-2">
+            <p className="text-sm palette.text mt-2">
               See how your investments are distributed across different sectors.
               Bigger slice = more money in that area.
             </p>
@@ -346,7 +346,7 @@ export default function OverviewSection() {
               Price Trend
             </h3>
             <CandlestickChart ticker="AAPL" />
-            <p className="text-sm text-gray-500 mt-2">
+            <p className="text-sm palette.text mt-2">
               A simple line showing how prices have changed over time.
               Going up = good! Use the buttons above to change the time period.
             </p>
@@ -422,30 +422,30 @@ export default function OverviewSection() {
             <svg className="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
             </svg>
-            <h4 className="font-semibold text-gray-900">Market Trend</h4>
+            <h4 className="font-semibold palette.text">Market Trend</h4>
           </div>
           <p className="text-2xl font-bold" style={{ color: palette.positive }}>Bullish</p>
-          <p className="text-sm text-gray-500">Major indices showing upward momentum over the past 30 days</p>
+          <p className="text-sm palette.text">Major indices showing upward momentum over the past 30 days</p>
         </div>
         <div className="rounded-xl shadow-sm border p-4" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
           <div className="flex items-center gap-2 mb-2">
             <svg className="w-5 h-5 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
             </svg>
-            <h4 className="font-semibold text-gray-900">Volatility Level</h4>
+            <h4 className="font-semibold palette.text">Volatility Level</h4>
           </div>
           <p className="text-2xl font-bold" style={{ color: palette.secondary }}>Moderate</p>
-          <p className="text-sm text-gray-500">Market volatility is within normal ranges for this period</p>
+          <p className="text-sm palette.text">Market volatility is within normal ranges for this period</p>
         </div>
         <div className="rounded-xl shadow-sm border p-4" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
           <div className="flex items-center gap-2 mb-2">
             <svg className="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <h4 className="font-semibold text-gray-900">Best Outlook</h4>
+            <h4 className="font-semibold palette.text">Best Outlook</h4>
           </div>
           <p className="text-2xl font-bold" style={{ color: palette.primary }}>6-12 Months</p>
-          <p className="text-sm text-gray-500">Historical patterns suggest positive outlook for the medium term</p>
+          <p className="text-sm palette.text">Historical patterns suggest positive outlook for the medium term</p>
         </div>
       </div>
     </div>

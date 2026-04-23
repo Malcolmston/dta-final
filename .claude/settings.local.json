@@ -64,7 +64,8 @@
       "Read(//Users/malcolmstone/Downloads/**)",
       "Read(//Users/malcolmstone/.git/**)",
       "Bash(git *)",
-      "WebFetch(domain:stock-henna-six.vercel.app)"
+      "WebFetch(domain:stock-henna-six.vercel.app)",
+      "Bash(xargs -I{} basename {})"
     ]
   }
 }

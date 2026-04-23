@@ -225,7 +225,7 @@ export default function GoalTracking() {
           const categoryColor = getCategoryColor(goal.category);
 
           return (
-            <div key={goal.id} className="p-4 rounded-lg border border-gray-200">
+            <div key={goal.id} className="p-4 rounded-lg border" style={{ borderColor: palette.gridLines, backgroundColor: palette.background }}>
               <div className="flex items-start justify-between mb-3">
                 <div className="flex items-center gap-3">
                   <div
@@ -235,35 +235,35 @@ export default function GoalTracking() {
                     {getCategoryIcon(goal.category)}
                   </div>
                   <div>
-                    <h4 className="font-semibold text-gray-900">{goal.name}</h4>
-                    <p className="text-xs text-gray-500">Target: {new Date(goal.targetDate).toLocaleDateString()}</p>
+                    <h4 className="font-semibold" style={{ color: palette.text }}>{goal.name}</h4>
+                    <p className="text-xs" style={{ color: palette.text, opacity: 0.6 }}>Target: {new Date(goal.targetDate).toLocaleDateString()}</p>
                   </div>
                 </div>
-                <span className="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-600 capitalize">
+                <span className="text-xs px-2 py-1 rounded-full capitalize" style={{ backgroundColor: palette.gridLines, color: palette.text }}>
                   {goal.category}
                 </span>
               </div>
 
               <div className="mb-2">
                 <div className="flex justify-between text-sm mb-1">
-                  <span className="text-gray-600">{formatCurrency(goal.currentAmount)} saved</span>
-                  <span className="text-gray-600">Goal: {formatCurrency(goal.targetAmount)}</span>
+                  <span className="text-gray">{formatCurrency(goal.currentAmount)} saved</span>
+                  <span className="text-gray">Goal: {formatCurrency(goal.targetAmount)}</span>
                 </div>
-                <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                <div className="h-2 bg-gray rounded-full overflow-hidden">
                   <div
                     className="h-full rounded-full transition-all duration-500"
                     style={{ width: `${progress}%`, backgroundColor: categoryColor }}
                   />
                 </div>
-                <p className="text-xs text-gray-500 mt-1">{progress.toFixed(0)}% complete</p>
+                <p className="text-xs text-gray mt-1">{progress.toFixed(0)}% complete</p>
               </div>
 
-              <div className="flex items-center justify-between text-sm pt-2 border-t border-gray-100">
+              <div className="flex items-center justify-between text-sm pt-2 border-t border-gray">
                 <div>
-                  <p className="text-gray-500">{monthsRemaining} months remaining</p>
+                  <p className="text-gray">{monthsRemaining} months remaining</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-gray-500">Save {formatCurrency(monthlyNeeded)}/month</p>
+                  <p className="text-gray">Save {formatCurrency(monthlyNeeded)}/month</p>
                 </div>
               </div>
             </div>
@@ -272,13 +272,13 @@ export default function GoalTracking() {
       </div>
 
       {goals.length === 0 && (
-        <p className="text-gray-500 text-center py-8">
+        <p className="text-gray text-center py-8">
           No goals yet. Click "Add Goal" to start tracking your financial goals.
         </p>
       )}
 
       <div className="mt-4 pt-4 border-t border-gray-200">
-        <p className="text-xs text-gray-500 text-center">
+        <p className="text-xs text-gray text-center">
           Tip: Set realistic target dates and adjust your monthly savings to meet your goals.
         </p>
       </div>

@@ -414,7 +414,8 @@ export default function PortfolioManager() {
                         setNewShares("");
                         setNewPrice("");
                       }}
-                      className="px-4 py-2 bg-gray-200 palette.text rounded-lg hover:bg-gray-300"
+                      className="px-4 py-2 rounded-lg transition"
+                      style={{ backgroundColor: palette.gridLines, color: palette.text }}
                     >
                       Cancel
                     </button>
@@ -425,7 +426,7 @@ export default function PortfolioManager() {
           </div>
 
           {holdings.length === 0 ? (
-            <div className="text-center py-8 palette.text">
+            <div className="text-center py-8" style={{ color: palette.text }}>
               <p>No holdings yet. Add your first holding to get started.</p>
             </div>
           ) : (
@@ -433,10 +434,10 @@ export default function PortfolioManager() {
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-transparent">
-                    <th className="text-left py-3 px-2 text-sm font-medium palette.text">Ticker</th>
-                    <th className="text-right py-3 px-2 text-sm font-medium palette.text">Shares</th>
-                    <th className="text-right py-3 px-2 text-sm font-medium palette.text">Avg Cost</th>
-                    <th className="text-right py-3 px-2 text-sm font-medium palette.text">Cost Basis</th>
+                    <th className="text-left py-3 px-2 text-sm font-medium" style={{ color: palette.text }}>Ticker</th>
+                    <th className="text-right py-3 px-2 text-sm font-medium" style={{ color: palette.text }}>Shares</th>
+                    <th className="text-right py-3 px-2 text-sm font-medium" style={{ color: palette.text }}>Avg Cost</th>
+                    <th className="text-right py-3 px-2 text-sm font-medium" style={{ color: palette.text }}>Cost Basis</th>
                     <th className="text-right py-3 px-2 text-sm font-medium palette.text">Current Price</th>
                     <th className="text-right py-3 px-2 text-sm font-medium palette.text">Current Value</th>
                     <th className="text-right py-3 px-2 text-sm font-medium palette.text">Gain/Loss</th>
@@ -554,7 +555,8 @@ export default function PortfolioManager() {
                         setTransactionShares("");
                         setTransactionPrice("");
                       }}
-                      className="px-4 py-2 bg-gray-200 palette.text rounded-lg hover:bg-gray-300"
+                      className="px-4 py-2 rounded-lg transition"
+                      style={{ backgroundColor: palette.gridLines, color: palette.text }}
                     >
                       Cancel
                     </button>
@@ -565,7 +567,7 @@ export default function PortfolioManager() {
           </div>
 
           {transactions.length === 0 ? (
-            <div className="text-center py-8 palette.text">
+            <div className="text-center py-8" style={{ color: palette.text }}>
               <p>No transactions yet. Add your first transaction.</p>
             </div>
           ) : (
@@ -573,9 +575,9 @@ export default function PortfolioManager() {
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-transparent">
-                    <th className="text-left py-3 px-2 text-sm font-medium palette.text">Date</th>
-                    <th className="text-left py-3 px-2 text-sm font-medium palette.text">Type</th>
-                    <th className="text-left py-3 px-2 text-sm font-medium palette.text">Ticker</th>
+                    <th className="text-left py-3 px-2 text-sm font-medium" style={{ color: palette.text }}>Date</th>
+                    <th className="text-left py-3 px-2 text-sm font-medium" style={{ color: palette.text }}>Type</th>
+                    <th className="text-left py-3 px-2 text-sm font-medium" style={{ color: palette.text }}>Ticker</th>
                     <th className="text-right py-3 px-2 text-sm font-medium palette.text">Shares</th>
                     <th className="text-right py-3 px-2 text-sm font-medium palette.text">Price</th>
                     <th className="text-right py-3 px-2 text-sm font-medium palette.text">Total</th>

@@ -120,11 +120,11 @@ export default function Home() {
             <>
               <SectionAnalytics section="trends" />
               {/* Issue 31: Use 2D charts in simple mode for clarity */}
-              <div className="mb-6">
+              <div className="mb-6 p-6 rounded-xl border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
                 <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Price Trends</h3>
                 <CandlestickChart ticker="AAPL" />
               </div>
-              <div className="mb-6">
+              <div className="mb-6 p-6 rounded-xl border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
                 <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Trading Activity</h3>
                 <CandlestickChart ticker="AAPL" period="3mo" />
               </div>
@@ -135,11 +135,11 @@ export default function Home() {
           return (
             <>
               <SectionAnalytics section="factors" />
-              <div className="mb-6">
+              <div className="mb-6 p-6 rounded-xl border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
                 <MarketFactors />
                 <ChartAnalysis chartType="MarketFactors" isSimpleMode={isSimpleMode} />
               </div>
-              <div className="mb-6">
+              <div className="mb-6 p-6 rounded-xl border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
                 <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Economic Trends</h3>
                 <DualAxisPlot />
                 <ChartAnalysis chartType="DualAxisPlot" isSimpleMode={isSimpleMode} />
@@ -151,12 +151,12 @@ export default function Home() {
           return (
             <>
               <SectionAnalytics section="sectors" />
-              <div className="mb-6">
+              <div className="mb-6 p-6 rounded-xl border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
                 <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Sector Performance</h3>
                 <Heatmap />
                 <ChartAnalysis chartType="Heatmap" isSimpleMode={isSimpleMode} />
               </div>
-              <div className="mb-6">
+              <div className="mb-6 p-6 rounded-xl border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
                 <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Market Segments</h3>
                 <Treemap />
                 <ChartAnalysis chartType="Treemap" isSimpleMode={isSimpleMode} />
@@ -168,12 +168,12 @@ export default function Home() {
           return (
             <>
               <SectionAnalytics section="analysis" />
-              <div className="mb-6">
+              <div className="mb-6 p-6 rounded-xl border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
                 <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Technical Analysis</h3>
                 <AnalysisTabs />
                 <ChartAnalysis chartType="AnalysisTabs" isSimpleMode={isSimpleMode} />
               </div>
-              <div className="mb-6">
+              <div className="mb-6 p-6 rounded-xl border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
                 <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Stock Connections</h3>
                 <NetworkGraph />
                 <ChartAnalysis chartType="NetworkGraph" isSimpleMode={isSimpleMode} />
@@ -186,20 +186,20 @@ export default function Home() {
             <>
               <SectionAnalytics section="portfolio" />
               <SurvivorshipBiasBanner />
-              <div className="mb-6">
+              <div className="mb-6 p-6 rounded-xl border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
                 <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Your Investments</h3>
                 <PortfolioManager />
               </div>
-              <div className="mb-6">
+              <div className="mb-6 p-6 rounded-xl border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
                 <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Portfolio Allocation</h3>
                 <PortfolioPieChart />
                 <ChartAnalysis chartType="PortfolioPieChart" isSimpleMode={isSimpleMode} />
               </div>
-              <div className="mb-6">
+              <div className="mb-6 p-6 rounded-xl border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
                 <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Income Tracking</h3>
                 <IncomeTrackingPanel />
               </div>
-              <div className="mb-6">
+              <div className="mb-6 p-6 rounded-xl border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
                 <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Cost Basis & P&L</h3>
                 <CostBasisInput />
               </div>
@@ -212,7 +212,7 @@ export default function Home() {
               <SectionAnalytics section="wealth" />
               {/* Issue 27: Time horizon wizard - show before advice */}
               {!goals.hasCompletedWizard && (
-                <div className="mb-6">
+                <div className="mb-6 p-6 rounded-xl border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
                   <InvestmentGoalsWizard
                     goals={goals}
                     onGoalsComplete={updateGoals}
@@ -292,32 +292,32 @@ export default function Home() {
         return (
           <>
             <SectionAnalytics section="trends" />
-            <div className="mb-6">
+            <div className="mb-6 p-6 rounded-xl border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
               <h3 className="font-semibold mb-2" style={{ color: palette.text }}>3D Candlestick OHLCV</h3>
               <CandlestickChart />
               <ChartAnalysis chartType="CandlestickChart" isSimpleMode={isSimpleMode} />
             </div>
-            <div className="mb-6">
+            <div className="mb-6 p-6 rounded-xl border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
               <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Volume Profile Analysis</h3>
               <VolumeChart />
               <ChartAnalysis chartType="VolumeChart" isSimpleMode={isSimpleMode} />
             </div>
-            <div className="mb-6">
+            <div className="mb-6 p-6 rounded-xl border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
               <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Multi-Ticker Performance Comparison</h3>
               <Streamgraph />
               <ChartAnalysis chartType="Streamgraph" isSimpleMode={isSimpleMode} />
             </div>
-            <div className="mb-6">
+            <div className="mb-6 p-6 rounded-xl border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
               <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Moving Average Ribbon</h3>
               <PriceRibbon3D />
               <ChartAnalysis chartType="PriceRibbon3D" isSimpleMode={isSimpleMode} />
             </div>
-            <div className="mb-6">
+            <div className="mb-6 p-6 rounded-xl border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
               <h3 className="font-semibold mb-2" style={{ color: palette.text }}>3D Volume Bars</h3>
               <Volume3DBars />
               <ChartAnalysis chartType="Volume3DBars" isSimpleMode={isSimpleMode} />
             </div>
-            <div className="mb-6">
+            <div className="mb-6 p-6 rounded-xl border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
               <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Interactive 3D Candlestick</h3>
               <Candlestick3DChart />
               <ChartAnalysis chartType="Candlestick3DChart" isSimpleMode={isSimpleMode} />
@@ -329,11 +329,11 @@ export default function Home() {
         return (
           <>
             <SectionAnalytics section="factors" />
-            <div className="mb-6">
+            <div className="mb-6 p-6 rounded-xl border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
               <MarketFactors />
               <ChartAnalysis chartType="MarketFactors" isSimpleMode={isSimpleMode} />
             </div>
-            <div className="mb-6">
+            <div className="mb-6 p-6 rounded-xl border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
               <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Temporal Lag Analysis</h3>
               <LagCorrelationPlot />
               <ChartAnalysis chartType="LagCorrelationPlot" isSimpleMode={isSimpleMode} />
@@ -345,12 +345,12 @@ export default function Home() {
         return (
           <>
             <SectionAnalytics section="sectors" />
-            <div className="mb-6">
+            <div className="mb-6 p-6 rounded-xl border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
               <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Sector Performance Heatmap</h3>
               <Heatmap />
               <ChartAnalysis chartType="Heatmap" isSimpleMode={isSimpleMode} />
             </div>
-            <div className="mb-6">
+            <div className="mb-6 p-6 rounded-xl border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
               <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Sector Allocation</h3>
               <TreemapBoxes />
               <ChartAnalysis chartType="Treemap" isSimpleMode={isSimpleMode} />
@@ -362,12 +362,12 @@ export default function Home() {
         return (
           <>
             <SectionAnalytics section="analysis" />
-            <div className="mb-6">
+            <div className="mb-6 p-6 rounded-xl border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
               <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Multi-Indicator Technical Panel</h3>
               <AnalysisTabs />
               <ChartAnalysis chartType="AnalysisTabs" isSimpleMode={isSimpleMode} />
             </div>
-            <div className="mb-6">
+            <div className="mb-6 p-6 rounded-xl border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
               <h3 className="font-semibold mb-2" style={{ color: palette.text }}>ML Model Performance Matrix</h3>
               <ConfusionMatrixPlot />
               <ChartAnalysis chartType="ConfusionMatrixPlot" isSimpleMode={isSimpleMode} />
@@ -380,25 +380,25 @@ export default function Home() {
           <div className="max-w-5xl mx-auto">
             <SectionAnalytics section="portfolio" />
             <SurvivorshipBiasBanner />
-            <div className="mb-6">
+            <div className="mb-6 p-6 rounded-xl border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
               <h3 className="font-semibold mb-2" style={{ color: palette.text }}>My Portfolio</h3>
               <PortfolioManager />
             </div>
-            <div className="mb-6">
+            <div className="mb-6 p-6 rounded-xl border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
               <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Portfolio Weight Distribution</h3>
               <PortfolioPieChart />
               <ChartAnalysis chartType="PortfolioPieChart" isSimpleMode={isSimpleMode} />
             </div>
-            <div className="mb-6">
+            <div className="mb-6 p-6 rounded-xl border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
               <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Holdings Map</h3>
               <Treemap />
               <ChartAnalysis chartType="Treemap" isSimpleMode={isSimpleMode} />
             </div>
-            <div className="mb-6">
+            <div className="mb-6 p-6 rounded-xl border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
               <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Income Tracking</h3>
               <IncomeTrackingPanel />
             </div>
-            <div className="mb-6">
+            <div className="mb-6 p-6 rounded-xl border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
               <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Cost Basis & P&L</h3>
               <CostBasisInput />
             </div>

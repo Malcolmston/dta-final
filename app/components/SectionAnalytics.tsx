@@ -1,6 +1,7 @@
 "use client";
 
 import { DashboardSection } from "./DashboardTabs";
+import { useColorPalette } from "../context/ColorPaletteContext";
 import Card from "./Card";
 import StatCard from "./StatCard";
 
@@ -74,14 +75,14 @@ const analyticsData: Record<DashboardSection, { title: string; metrics: { label:
   },
 };
 
-function getTrendColor(trend: "up" | "down" | "neutral"): string {
+function getTrendColor(palette: { positive: string; negative: string; text: string; gridLines: string }, trend: "up" | "down" | "neutral"): { color: string; bg: string } {
   switch (trend) {
     case "up":
-      return "text-green-600 bg-green-50";
+      return { color: palette.positive, bg: palette.positive + "15" };
     case "down":
-      return "text-red-600 bg-red-50";
+      return { color: palette.negative, bg: palette.negative + "15" };
     default:
-      return "text-gray-600 bg-gray-50";
+      return { color: palette.text, bg: palette.gridLines };
   }
 }
 
@@ -97,12 +98,14 @@ function getTrendIcon(trend: "up" | "down" | "neutral"): string {
 }
 
 export default function SectionAnalytics({ section }: SectionAnalyticsProps) {
+  const { palette } = useColorPalette();
   const data = analyticsData[section];
+  const trendStyle = getTrendColor(palette, "neutral");
 
   return (
     <Card className="mb-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="font-semibold" style={{ color: 'inherit' }}>{data.title}</h3>
+        <h3 className="font-semibold" style={{ color: palette.text }}>{data.title}</h3>
         <span className="text-xs" style={{ opacity: 0.5 }}>Real-time</span>
       </div>
 

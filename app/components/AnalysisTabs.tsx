@@ -241,8 +241,8 @@ export default function AnalysisTabs() {
 
       {/* Big Picture - Above Tabs */}
       <div className="mb-6">
-        <h3 className="text-lg font-bold text-slate-800 mb-2">{BIG_PICTURE[activeTab].title}</h3>
-        <p className="text-slate-600 leading-relaxed">
+        <h3 className="text-lg font-bold mb-2" style={{ color: palette.text }}>{BIG_PICTURE[activeTab].title}</h3>
+        <p className="leading-relaxed" style={{ color: palette.text, opacity: 0.7 }}>
           {BIG_PICTURE[activeTab].description}
         </p>
       </div>
@@ -253,19 +253,20 @@ export default function AnalysisTabs() {
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`flex items-center gap-3 px-5 py-3 rounded-xl transition-all duration-300 whitespace-nowrap ${
-              activeTab === tab.id
-                ? "bg-slate-800 text-white shadow-lg"
-                : "bg-white text-slate-600 hover:bg-slate-50 border border-slate-200"
-            }`}
+            className="flex items-center gap-3 px-5 py-3 rounded-xl transition-all duration-300 whitespace-nowrap"
+            style={{
+              backgroundColor: activeTab === tab.id ? palette.primary : palette.background,
+              color: activeTab === tab.id ? "#ffffff" : palette.text,
+              border: `1px solid ${activeTab === tab.id ? palette.primary : palette.gridLines}`,
+            }}
           >
             <div className="w-6 h-6 rounded-full border-2 flex items-center justify-center"
-                 style={{ borderColor: activeTab === tab.id ? "white" : "#94a3b8" }}>
+                 style={{ borderColor: activeTab === tab.id ? "#ffffff" : palette.gridLines }}>
               <div className="w-2 h-2 rounded-full bg-current" />
             </div>
             <div className="text-left">
               <div className="font-semibold text-sm">{tab.label}</div>
-              <div className={`text-xs ${activeTab === tab.id ? "text-slate-300" : "text-slate-400"}`}>
+              <div className="text-xs" style={{ opacity: activeTab === tab.id ? 0.8 : 0.6 }}>
                 {tab.description}
               </div>
             </div>
@@ -280,19 +281,21 @@ export default function AnalysisTabs() {
           value={ticker}
           onChange={(e) => setTicker(e.target.value.toUpperCase())}
           onKeyDown={(e) => e.key === "Enter" && handleRefresh()}
-          className="flex-1 px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-slate-500 outline-none"
+          className="flex-1 px-4 py-2 rounded-lg outline-none"
+          style={{ border: `1px solid ${palette.gridLines}`, color: palette.text, backgroundColor: palette.background }}
           placeholder="SPY, AAPL, MSFT, GOOGL, etc."
         />
         <button
           onClick={handleRefresh}
-          className="px-5 py-2 bg-slate-800 text-white rounded-lg hover:bg-slate-700 transition"
+          className="px-5 py-2 rounded-lg transition"
+          style={{ backgroundColor: palette.primary, color: "#ffffff" }}
         >
           Update
         </button>
       </div>
 
       {/* Tab Content */}
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+      <div className="rounded-2xl shadow-sm border overflow-hidden" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
         {activeTab === "overview" && <MarketOverviewTab ticker={ticker} refreshKey={refreshKey} colors={COLOR_PALETTES[activePalette]} />}
         {activeTab === "trends" && <PriceTrendsTab ticker={ticker} refreshKey={refreshKey} colors={COLOR_PALETTES[activePalette]} />}
         {activeTab === "factors" && <MarketFactorsTab ticker={ticker} refreshKey={refreshKey} colors={COLOR_PALETTES[activePalette]} />}

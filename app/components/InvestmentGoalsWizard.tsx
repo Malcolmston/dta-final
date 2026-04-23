@@ -116,7 +116,7 @@ export default function InvestmentGoalsWizard({
 
   return (
     <div className="w-full max-w-3xl mx-auto">
-      <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
+      <div className="rounded-xl shadow-lg overflow-hidden" style={{ backgroundColor: palette.background, border: `1px solid ${palette.gridLines}` }}>
         <div
           className="px-6 py-4 border-b"
           style={{ backgroundColor: palette.primary + '10', borderColor: palette.gridLines }}

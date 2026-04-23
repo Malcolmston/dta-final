@@ -208,7 +208,7 @@ export default function Home() {
 
         case "wealth":
           return (
-            <div className="max-w-6xl mx-auto">
+            <div className="max-w-5xl mx-auto">
               <SectionAnalytics section="wealth" />
 
               {/* Investment Goals Section */}
@@ -223,96 +223,78 @@ export default function Home() {
                   </div>
                 ) : (
                   <div className="p-6 rounded-xl border shadow-sm" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
-                    <h2 className="text-xl font-bold mb-4" style={{ color: palette.text }}>Your Investment Profile</h2>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                      <div className="p-4 rounded-lg" style={{ backgroundColor: palette.primary + "15" }}>
-                        <p className="text-xs" style={{ color: palette.text, opacity: 0.7 }}>Risk Tolerance</p>
-                        <p className="text-lg font-bold capitalize" style={{ color: palette.primary }}>{goals.riskTolerance || "moderate"}</p>
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                      <div>
+                        <h2 className="text-xl font-bold" style={{ color: palette.text }}>Your Investment Profile</h2>
+                        <p className="text-sm mt-1" style={{ color: palette.text, opacity: 0.7 }}>Setup complete</p>
                       </div>
-                      <div className="p-4 rounded-lg" style={{ backgroundColor: palette.positive + "15" }}>
-                        <p className="text-xs" style={{ color: palette.text, opacity: 0.7 }}>Time Horizon</p>
-                        <p className="text-lg font-bold" style={{ color: palette.positive }}>{goals.timeHorizon || 10}+ years</p>
-                      </div>
-                      <div className="p-4 rounded-lg" style={{ backgroundColor: palette.secondary + "15" }}>
-                        <p className="text-xs" style={{ color: palette.text, opacity: 0.7 }}>Primary Goal</p>
-                        <p className="text-lg font-bold capitalize" style={{ color: palette.secondary }}>{goals.primaryGoal || "retirement"}</p>
-                      </div>
-                      <div className="p-4 rounded-lg" style={{ backgroundColor: palette.accent + "15" }}>
-                        <p className="text-xs" style={{ color: palette.text, opacity: 0.7 }}>Status</p>
-                        <p className="text-lg font-bold" style={{ color: palette.accent }}>Setup Complete</p>
+                      <div className="flex flex-wrap gap-3">
+                        <span className="px-3 py-1.5 rounded-full text-sm font-medium" style={{ backgroundColor: palette.primary + "20", color: palette.primary }}>
+                          {goals.riskTolerance || "Moderate"} Risk
+                        </span>
+                        <span className="px-3 py-1.5 rounded-full text-sm font-medium" style={{ backgroundColor: palette.positive + "20", color: palette.positive }}>
+                          {goals.timeHorizon || 10}+ Years
+                        </span>
+                        <span className="px-3 py-1.5 rounded-full text-sm font-medium" style={{ backgroundColor: palette.secondary + "20", color: palette.secondary }}>
+                          {goals.primaryGoal || "Retirement"}
+                        </span>
                       </div>
                     </div>
                   </div>
                 )}
               </div>
 
-              {/* Planning & Goals Row */}
-              <div className="mb-8">
-                <h3 className="text-lg font-semibold mb-4" style={{ color: palette.text }}>Planning & Goals</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  <div className="p-5 rounded-xl border shadow-sm" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
-                    <RetirementCalculator />
-                  </div>
-                  <div className="p-5 rounded-xl border shadow-sm" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
-                    <GoalTracking />
-                  </div>
-                  <div className="p-5 rounded-xl border shadow-sm" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
-                    <ActionItemsPanel />
-                  </div>
+              {/* Main Tools - 2 cards per row */}
+              <div className="space-y-6">
+                <div className="p-6 rounded-xl border shadow-sm" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
+                  <h3 className="text-lg font-semibold mb-4" style={{ color: palette.text }}>Retirement Planning</h3>
+                  <RetirementCalculator />
                 </div>
-              </div>
 
-              {/* Portfolio Management Row */}
-              <div className="mb-8">
-                <h3 className="text-lg font-semibold mb-4" style={{ color: palette.text }}>Portfolio Management</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  <div className="p-5 rounded-xl border shadow-sm" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
-                    <AssetAllocation />
-                  </div>
-                  <div className="p-5 rounded-xl border shadow-sm" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
-                    <RebalancingAlerts />
-                  </div>
-                  <div className="p-5 rounded-xl border shadow-sm" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
-                    <RiskMetricsPanel />
-                  </div>
+                <div className="p-6 rounded-xl border shadow-sm" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
+                  <h3 className="text-lg font-semibold mb-4" style={{ color: palette.text }}>Goal Tracking</h3>
+                  <GoalTracking />
                 </div>
-              </div>
 
-              {/* Analysis Row */}
-              <div className="mb-8">
-                <h3 className="text-lg font-semibold mb-4" style={{ color: palette.text }}>Analysis & Insights</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  <div className="p-5 rounded-xl border shadow-sm" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
-                    <DiversificationAnalyzer />
-                  </div>
-                  <div className="p-5 rounded-xl border shadow-sm" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
-                    <EmergencyFundCheck />
-                  </div>
-                  <div className="p-5 rounded-xl border shadow-sm" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
-                    <BenchmarkComparison />
-                  </div>
+                <div className="p-6 rounded-xl border shadow-sm" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
+                  <h3 className="text-lg font-semibold mb-4" style={{ color: palette.text }}>Asset Allocation</h3>
+                  <AssetAllocation />
                 </div>
-              </div>
 
-              {/* Financial Tools Row */}
-              <div className="mb-8">
-                <h3 className="text-lg font-semibold mb-4" style={{ color: palette.text }}>Financial Tools</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="p-5 rounded-xl border shadow-sm" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
-                    <CashFlowTracking />
-                  </div>
-                  <div className="p-5 rounded-xl border shadow-sm" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
-                    <TaxAwareFeatures />
-                  </div>
+                <div className="p-6 rounded-xl border shadow-sm" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
+                  <h3 className="text-lg font-semibold mb-4" style={{ color: palette.text }}>Rebalancing Alerts</h3>
+                  <RebalancingAlerts />
                 </div>
-              </div>
 
-              {/* Disclosure Row */}
-              <div className="mb-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="p-5 rounded-xl border shadow-sm" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
-                    <FeeDisclosure />
-                  </div>
+                <div className="p-6 rounded-xl border shadow-sm" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
+                  <h3 className="text-lg font-semibold mb-4" style={{ color: palette.text }}>Risk Metrics</h3>
+                  <RiskMetricsPanel />
+                </div>
+
+                <div className="p-6 rounded-xl border shadow-sm" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
+                  <h3 className="text-lg font-semibold mb-4" style={{ color: palette.text }}>Emergency Fund</h3>
+                  <EmergencyFundCheck />
+                </div>
+
+                <div className="p-6 rounded-xl border shadow-sm" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
+                  <h3 className="text-lg font-semibold mb-4" style={{ color: palette.text }}>Cash Flow</h3>
+                  <CashFlowTracking />
+                </div>
+
+                <div className="p-6 rounded-xl border shadow-sm" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
+                  <ActionItemsPanel />
+                </div>
+
+                <div className="p-6 rounded-xl border shadow-sm" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
+                  <TaxAwareFeatures />
+                </div>
+
+                <div className="p-6 rounded-xl border shadow-sm" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
+                  <BenchmarkComparison />
+                </div>
+
+                <div className="p-6 rounded-xl border shadow-sm" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
+                  <FeeDisclosure />
                 </div>
               </div>
             </div>
@@ -333,17 +315,17 @@ export default function Home() {
           <>
             <SectionAnalytics section="trends" />
             <div className="mb-6 p-6 rounded-xl border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
-              <h3 className="font-semibold mb-2" style={{ color: palette.text }}>3D Candlestick OHLCV</h3>
+              <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Candlestick Chart</h3>
               <CandlestickChart />
               <ChartAnalysis chartType="CandlestickChart" isSimpleMode={isSimpleMode} />
             </div>
             <div className="mb-6 p-6 rounded-xl border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
-              <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Volume Profile Analysis</h3>
+              <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Volume Analysis</h3>
               <VolumeChart />
               <ChartAnalysis chartType="VolumeChart" isSimpleMode={isSimpleMode} />
             </div>
             <div className="mb-6 p-6 rounded-xl border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
-              <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Multi-Ticker Performance Comparison</h3>
+              <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Multi-Ticker Performance</h3>
               <Streamgraph />
               <ChartAnalysis chartType="Streamgraph" isSimpleMode={isSimpleMode} />
             </div>
@@ -351,16 +333,6 @@ export default function Home() {
               <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Moving Average Ribbon</h3>
               <PriceRibbon3D />
               <ChartAnalysis chartType="PriceRibbon3D" isSimpleMode={isSimpleMode} />
-            </div>
-            <div className="mb-6 p-6 rounded-xl border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
-              <h3 className="font-semibold mb-2" style={{ color: palette.text }}>3D Volume Bars</h3>
-              <Volume3DBars />
-              <ChartAnalysis chartType="Volume3DBars" isSimpleMode={isSimpleMode} />
-            </div>
-            <div className="mb-6 p-6 rounded-xl border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
-              <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Interactive 3D Candlestick</h3>
-              <Candlestick3DChart />
-              <ChartAnalysis chartType="Candlestick3DChart" isSimpleMode={isSimpleMode} />
             </div>
           </>
         );

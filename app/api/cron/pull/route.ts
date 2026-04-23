@@ -22,6 +22,14 @@ export async function GET(request: NextRequest) {
 
   try {
     const redis = await getRedisClient();
+
+    if (!redis) {
+      return NextResponse.json({
+        success: false,
+        error: "Redis not configured. Set REDIS_URL environment variable to enable caching."
+      }, { status: 503 });
+    }
+
     const results: { symbol: string; period: string; success: boolean; error?: string }[] = [];
 
     for (const symbol of POPULAR_STOCKS) {

@@ -537,26 +537,26 @@ export default function MarketPredictor() {
       </div>
 
       {/* User-friendly description section */}
-      <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
-        <p className="text-sm text-gray-600 mb-3">
+      <div className="mb-6 p-4 bg-transparent rounded-lg border border-transparent">
+        <p className="text-sm palette.text mb-3">
           Not sure what this chart shows? Here's a simple breakdown:
         </p>
         <div className="grid md:grid-cols-3 gap-4">
           <div>
-            <p className="font-bold text-lg text-gray-800">*Percentage Change*</p>
-            <p className="text-gray-600">
+            <p className="font-bold text-lg palette.text">*Percentage Change*</p>
+            <p className="palette.text">
               Shows how much each stock has gained or lost from the start of the period.
             </p>
           </div>
           <div>
-            <p className="font-bold text-lg text-gray-800">*Historical Zones*</p>
-            <p className="text-gray-600">
+            <p className="font-bold text-lg palette.text">*Historical Zones*</p>
+            <p className="palette.text">
               Colored areas showing historical price ranges. <span className="text-amber-600 font-medium">Not recommendations to buy or sell.</span>
             </p>
           </div>
           <div>
-            <p className="font-bold text-lg text-gray-800">*Growth Estimate*</p>
-            <p className="text-gray-600">
+            <p className="font-bold text-lg palette.text">*Growth Estimate*</p>
+            <p className="palette.text">
               The dashed line shows analyst growth estimates - <span className="text-amber-600 font-medium">not a prediction</span>.
             </p>
           </div>
@@ -565,7 +565,7 @@ export default function MarketPredictor() {
 
       <div className="flex flex-wrap gap-4 mb-4">
         <div className="flex-1 min-w-[250px]">
-          <label className="block text-sm font-medium text-gray-800 mb-2">
+          <label className="block text-sm font-medium palette.text mb-2">
             Enter Ticker Symbol
           </label>
           <TickerInput
@@ -607,7 +607,7 @@ export default function MarketPredictor() {
         <svg ref={svgRef} className="w-full" />
       </div>
 
-      <p className="mt-4 text-sm text-gray-500">
+      <p className="mt-4 text-sm palette.text">
         Chart shows percentage change from the start of the period. Enter multiple tickers separated by commas. Hover over the chart to see exact values.
       </p>
     </div>

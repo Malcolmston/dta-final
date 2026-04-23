@@ -405,13 +405,13 @@ export default function ConfusionMatrixPlot() {
 
   return (
     <div className="w-full max-w-4xl mx-auto p-6 bg-white rounded-xl shadow-lg">
-      <h2 className="text-2xl font-bold mb-2 text-gray-800">Signal Accuracy / Confusion Matrix</h2>
-      <p className="text-sm text-gray-500 mb-6">
+      <h2 className="text-2xl font-bold mb-2 palette.text">Signal Accuracy / Confusion Matrix</h2>
+      <p className="text-sm palette.text mb-6">
         Evaluating trading strategy predictions using RSI indicator
       </p>
 
-      <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
-        <p className="text-sm text-gray-700">
+      <div className="mb-6 p-4 bg-transparent rounded-lg border border-transparent">
+        <p className="text-sm palette.text">
           <strong>How to read this matrix:</strong> This confusion matrix evaluates trading signals
           (BUY/SELL) against actual stock outcomes (PROFIT/LOSS).{" "}
           <span className="text-green-600 font-medium">Green cells</span> show correct predictions
@@ -425,7 +425,7 @@ export default function ConfusionMatrixPlot() {
 
       <div className="flex flex-wrap gap-4 mb-4">
         <div className="min-w-[200px]">
-          <label className="block text-sm font-medium text-gray-800 mb-2">Enter Ticker Symbol</label>
+          <label className="block text-sm font-medium palette.text mb-2">Enter Ticker Symbol</label>
           <TickerInput
             value={ticker}
             onChange={setTicker}
@@ -456,19 +456,19 @@ export default function ConfusionMatrixPlot() {
       <div className="mt-4 grid grid-cols-2 gap-4 text-sm">
         <div className="p-3 bg-green-50 rounded-lg border border-green-200">
           <h4 className="font-semibold text-green-800 mb-1">True Positive (TP)</h4>
-          <p className="text-gray-600">Predicted BUY, actual PROFIT - Correct buy signal</p>
+          <p className="palette.text">Predicted BUY, actual PROFIT - Correct buy signal</p>
         </div>
         <div className="p-3 bg-red-50 rounded-lg border border-red-200">
           <h4 className="font-semibold text-red-800 mb-1">False Positive (FP)</h4>
-          <p className="text-gray-600">Predicted BUY, actual LOSS - Wrong buy signal</p>
+          <p className="palette.text">Predicted BUY, actual LOSS - Wrong buy signal</p>
         </div>
         <div className="p-3 bg-red-50 rounded-lg border border-red-200">
           <h4 className="font-semibold text-red-800 mb-1">False Negative (FN)</h4>
-          <p className="text-gray-600">Predicted SELL, actual PROFIT - Missed profit opportunity</p>
+          <p className="palette.text">Predicted SELL, actual PROFIT - Missed profit opportunity</p>
         </div>
         <div className="p-3 bg-green-50 rounded-lg border border-green-200">
           <h4 className="font-semibold text-green-800 mb-1">True Negative (TN)</h4>
-          <p className="text-gray-600">Predicted SELL, actual LOSS - Correct sell signal</p>
+          <p className="palette.text">Predicted SELL, actual LOSS - Correct sell signal</p>
         </div>
       </div>
     </div>

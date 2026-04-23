@@ -201,17 +201,17 @@ export default function PriceTrendsTab({ ticker, refreshKey, colors }: PriceTren
           <span className="w-6 h-6 rounded-full bg-slate-800 text-white text-xs flex items-center justify-center">i</span>
           Key Insights
         </h4>
-        <ul className="space-y-2 text-slate-600">
+        <ul className="space-y-2" style={{ color: palette.text, opacity: 0.7 }}>
           <li className="flex items-start gap-2">
-            <span className="text-emerald-500 mt-1">-</span>
+            <span style={{ color: palette.positive, marginTop: '4px' }}>-</span>
             <span>When the 20-day SMA is above the 50-day SMA, short-term momentum is positive</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="text-emerald-500 mt-1">-</span>
+            <span style={{ color: palette.positive, marginTop: '4px' }}>-</span>
             <span>The 200-day SMA is called the "life insurance line" - prices above it are generally considered healthy</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="text-emerald-500 mt-1">-</span>
+            <span style={{ color: palette.positive, marginTop: '4px' }}>-</span>
             <span>Candlesticks show daily trading: green (bullish) means close higher than open, red (bearish) means close lower</span>
           </li>
         </ul>

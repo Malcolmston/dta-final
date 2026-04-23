@@ -324,7 +324,7 @@ export default function PortfolioManager() {
           className={`px-4 py-2 font-medium ${
             activeTab === "performance"
               ? "text-blue-600 border-b-2 border-blue-600"
-              : "text-gray-600 hover:text-gray-800"
+              : "palette.text hover:palette.text"
           }`}
         >
           Performance
@@ -365,11 +365,11 @@ export default function PortfolioManager() {
                 + Add Holding
               </button>
             ) : (
-              <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                <h3 className="font-medium text-gray-800 mb-3">Add New Holding</h3>
+              <div className="p-4 bg-transparent rounded-lg border border-transparent">
+                <h3 className="font-medium palette.text mb-3">Add New Holding</h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   <div>
-                    <label className="block text-sm text-gray-600 mb-1">Ticker</label>
+                    <label className="block text-sm palette.text mb-1">Ticker</label>
                     <input
                       type="text"
                       value={newTicker}
@@ -379,7 +379,7 @@ export default function PortfolioManager() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm text-gray-600 mb-1">Shares</label>
+                    <label className="block text-sm palette.text mb-1">Shares</label>
                     <input
                       type="number"
                       value={newShares}
@@ -389,7 +389,7 @@ export default function PortfolioManager() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm text-gray-600 mb-1">Price per Share</label>
+                    <label className="block text-sm palette.text mb-1">Price per Share</label>
                     <input
                       type="number"
                       value={newPrice}
@@ -414,7 +414,7 @@ export default function PortfolioManager() {
                         setNewShares("");
                         setNewPrice("");
                       }}
-                      className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
+                      className="px-4 py-2 bg-gray-200 palette.text rounded-lg hover:bg-gray-300"
                     >
                       Cancel
                     </button>
@@ -425,22 +425,22 @@ export default function PortfolioManager() {
           </div>
 
           {holdings.length === 0 ? (
-            <div className="text-center py-8 text-gray-500">
+            <div className="text-center py-8 palette.text">
               <p>No holdings yet. Add your first holding to get started.</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-gray-200">
-                    <th className="text-left py-3 px-2 text-sm font-medium text-gray-600">Ticker</th>
-                    <th className="text-right py-3 px-2 text-sm font-medium text-gray-600">Shares</th>
-                    <th className="text-right py-3 px-2 text-sm font-medium text-gray-600">Avg Cost</th>
-                    <th className="text-right py-3 px-2 text-sm font-medium text-gray-600">Cost Basis</th>
-                    <th className="text-right py-3 px-2 text-sm font-medium text-gray-600">Current Price</th>
-                    <th className="text-right py-3 px-2 text-sm font-medium text-gray-600">Current Value</th>
-                    <th className="text-right py-3 px-2 text-sm font-medium text-gray-600">Gain/Loss</th>
-                    <th className="text-right py-3 px-2 text-sm font-medium text-gray-600">Return</th>
+                  <tr className="border-b border-transparent">
+                    <th className="text-left py-3 px-2 text-sm font-medium palette.text">Ticker</th>
+                    <th className="text-right py-3 px-2 text-sm font-medium palette.text">Shares</th>
+                    <th className="text-right py-3 px-2 text-sm font-medium palette.text">Avg Cost</th>
+                    <th className="text-right py-3 px-2 text-sm font-medium palette.text">Cost Basis</th>
+                    <th className="text-right py-3 px-2 text-sm font-medium palette.text">Current Price</th>
+                    <th className="text-right py-3 px-2 text-sm font-medium palette.text">Current Value</th>
+                    <th className="text-right py-3 px-2 text-sm font-medium palette.text">Gain/Loss</th>
+                    <th className="text-right py-3 px-2 text-sm font-medium palette.text">Return</th>
                     <th className="py-3 px-2"></th>
                   </tr>
                 </thead>
@@ -453,13 +453,13 @@ export default function PortfolioManager() {
                     const gainPercent = costBasis > 0 ? (gain / costBasis) * 100 : 0;
 
                     return (
-                      <tr key={holding.id} className="border-b border-gray-100 hover:bg-gray-50">
-                        <td className="py-3 px-2 font-medium text-gray-800">{holding.ticker}</td>
-                        <td className="py-3 px-2 text-right text-gray-700">{holding.shares.toLocaleString()}</td>
-                        <td className="py-3 px-2 text-right text-gray-700">{formatCurrency(holding.avgCostBasis)}</td>
-                        <td className="py-3 px-2 text-right text-gray-700">{formatCurrency(costBasis)}</td>
-                        <td className="py-3 px-2 text-right text-gray-700">{formatCurrency(currentPrice)}</td>
-                        <td className="py-3 px-2 text-right text-gray-700">{formatCurrency(currentValue)}</td>
+                      <tr key={holding.id} className="border-b border-transparent hover:bg-transparent">
+                        <td className="py-3 px-2 font-medium palette.text">{holding.ticker}</td>
+                        <td className="py-3 px-2 text-right palette.text">{holding.shares.toLocaleString()}</td>
+                        <td className="py-3 px-2 text-right palette.text">{formatCurrency(holding.avgCostBasis)}</td>
+                        <td className="py-3 px-2 text-right palette.text">{formatCurrency(costBasis)}</td>
+                        <td className="py-3 px-2 text-right palette.text">{formatCurrency(currentPrice)}</td>
+                        <td className="py-3 px-2 text-right palette.text">{formatCurrency(currentValue)}</td>
                         <td className={`py-3 px-2 text-right ${gain >= 0 ? "text-green-600" : "text-red-600"}`}>
                           {formatCurrency(gain)}
                         </td>
@@ -489,11 +489,11 @@ export default function PortfolioManager() {
                 + Add Transaction
               </button>
             ) : (
-              <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                <h3 className="font-medium text-gray-800 mb-3">Add Transaction</h3>
+              <div className="p-4 bg-transparent rounded-lg border border-transparent">
+                <h3 className="font-medium palette.text mb-3">Add Transaction</h3>
                 <div className="grid grid-cols-2 md:grid-cols-6 gap-3">
                   <div>
-                    <label className="block text-sm text-gray-600 mb-1">Type</label>
+                    <label className="block text-sm palette.text mb-1">Type</label>
                     <select
                       value={transactionType}
                       onChange={(e) => setTransactionType(e.target.value as "buy" | "sell")}
@@ -504,7 +504,7 @@ export default function PortfolioManager() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm text-gray-600 mb-1">Ticker</label>
+                    <label className="block text-sm palette.text mb-1">Ticker</label>
                     <input
                       type="text"
                       value={newTicker}
@@ -514,7 +514,7 @@ export default function PortfolioManager() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm text-gray-600 mb-1">Shares</label>
+                    <label className="block text-sm palette.text mb-1">Shares</label>
                     <input
                       type="number"
                       value={transactionShares}
@@ -524,7 +524,7 @@ export default function PortfolioManager() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm text-gray-600 mb-1">Price</label>
+                    <label className="block text-sm palette.text mb-1">Price</label>
                     <input
                       type="number"
                       value={transactionPrice}
@@ -535,7 +535,7 @@ export default function PortfolioManager() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm text-gray-600 mb-1">Date</label>
+                    <label className="block text-sm palette.text mb-1">Date</label>
                     <input
                       type="date"
                       value={transactionDate}
@@ -554,7 +554,7 @@ export default function PortfolioManager() {
                         setTransactionShares("");
                         setTransactionPrice("");
                       }}
-                      className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
+                      className="px-4 py-2 bg-gray-200 palette.text rounded-lg hover:bg-gray-300"
                     >
                       Cancel
                     </button>
@@ -565,26 +565,26 @@ export default function PortfolioManager() {
           </div>
 
           {transactions.length === 0 ? (
-            <div className="text-center py-8 text-gray-500">
+            <div className="text-center py-8 palette.text">
               <p>No transactions yet. Add your first transaction.</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-gray-200">
-                    <th className="text-left py-3 px-2 text-sm font-medium text-gray-600">Date</th>
-                    <th className="text-left py-3 px-2 text-sm font-medium text-gray-600">Type</th>
-                    <th className="text-left py-3 px-2 text-sm font-medium text-gray-600">Ticker</th>
-                    <th className="text-right py-3 px-2 text-sm font-medium text-gray-600">Shares</th>
-                    <th className="text-right py-3 px-2 text-sm font-medium text-gray-600">Price</th>
-                    <th className="text-right py-3 px-2 text-sm font-medium text-gray-600">Total</th>
+                  <tr className="border-b border-transparent">
+                    <th className="text-left py-3 px-2 text-sm font-medium palette.text">Date</th>
+                    <th className="text-left py-3 px-2 text-sm font-medium palette.text">Type</th>
+                    <th className="text-left py-3 px-2 text-sm font-medium palette.text">Ticker</th>
+                    <th className="text-right py-3 px-2 text-sm font-medium palette.text">Shares</th>
+                    <th className="text-right py-3 px-2 text-sm font-medium palette.text">Price</th>
+                    <th className="text-right py-3 px-2 text-sm font-medium palette.text">Total</th>
                   </tr>
                 </thead>
                 <tbody>
                   {[...transactions].reverse().map((tx) => (
-                    <tr key={tx.id} className="border-b border-gray-100">
-                      <td className="py-3 px-2 text-gray-700">{tx.date}</td>
+                    <tr key={tx.id} className="border-b border-transparent">
+                      <td className="py-3 px-2 palette.text">{tx.date}</td>
                       <td className="py-3 px-2">
                         <span
                           className={`px-2 py-1 rounded text-xs font-medium ${
@@ -594,10 +594,10 @@ export default function PortfolioManager() {
                           {tx.type.toUpperCase()}
                         </span>
                       </td>
-                      <td className="py-3 px-2 font-medium text-gray-800">{tx.ticker}</td>
-                      <td className="py-3 px-2 text-right text-gray-700">{tx.shares.toLocaleString()}</td>
-                      <td className="py-3 px-2 text-right text-gray-700">{formatCurrency(tx.price)}</td>
-                      <td className="py-3 px-2 text-right text-gray-700">{formatCurrency(tx.shares * tx.price)}</td>
+                      <td className="py-3 px-2 font-medium palette.text">{tx.ticker}</td>
+                      <td className="py-3 px-2 text-right palette.text">{tx.shares.toLocaleString()}</td>
+                      <td className="py-3 px-2 text-right palette.text">{formatCurrency(tx.price)}</td>
+                      <td className="py-3 px-2 text-right palette.text">{formatCurrency(tx.shares * tx.price)}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -610,12 +610,12 @@ export default function PortfolioManager() {
       {activeTab === "performance" && (
         <div>
           {holdings.length === 0 ? (
-            <div className="text-center py-8 text-gray-500">
+            <div className="text-center py-8 palette.text">
               <p>Add holdings to see performance tracking.</p>
             </div>
           ) : (
             <div>
-              <h3 className="font-medium text-gray-800 mb-4">Performance Summary</h3>
+              <h3 className="font-medium palette.text mb-4">Performance Summary</h3>
               <div className="space-y-4">
                 {holdings.map((holding) => {
                   const holdingTransactions = getTransactionsForTicker(holding.ticker);
@@ -629,35 +629,35 @@ export default function PortfolioManager() {
                   const gainPercent = costBasis > 0 ? (gain / costBasis) * 100 : 0;
 
                   return (
-                    <div key={holding.id} className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <div key={holding.id} className="p-4 bg-transparent rounded-lg border border-transparent">
                       <div className="flex items-center justify-between mb-2">
-                        <h4 className="font-medium text-gray-800">{holding.ticker}</h4>
+                        <h4 className="font-medium palette.text">{holding.ticker}</h4>
                         <span className={`text-sm font-medium ${gain >= 0 ? "text-green-600" : "text-red-600"}`}>
                           {formatCurrency(gain)} ({formatPercent(gainPercent)})
                         </span>
                       </div>
                       <div className="grid grid-cols-3 gap-4 text-sm">
                         <div>
-                          <p className="text-gray-600">Shares</p>
-                          <p className="font-medium text-gray-800">{holding.shares.toLocaleString()}</p>
+                          <p className="palette.text">Shares</p>
+                          <p className="font-medium palette.text">{holding.shares.toLocaleString()}</p>
                         </div>
                         <div>
-                          <p className="text-gray-600">Cost Basis</p>
-                          <p className="font-medium text-gray-800">{formatCurrency(costBasis)}</p>
+                          <p className="palette.text">Cost Basis</p>
+                          <p className="font-medium palette.text">{formatCurrency(costBasis)}</p>
                         </div>
                         <div>
-                          <p className="text-gray-600">Current Value</p>
-                          <p className="font-medium text-gray-800">{formatCurrency(currentValue)}</p>
+                          <p className="palette.text">Current Value</p>
+                          <p className="font-medium palette.text">{formatCurrency(currentValue)}</p>
                         </div>
                       </div>
-                      <div className="mt-2 pt-2 border-t border-gray-200 grid grid-cols-2 gap-4 text-sm">
+                      <div className="mt-2 pt-2 border-t border-transparent grid grid-cols-2 gap-4 text-sm">
                         <div>
-                          <p className="text-gray-600">Total Bought</p>
-                          <p className="font-medium text-gray-800">{buys.reduce((sum, t) => sum + t.shares, 0)} shares</p>
+                          <p className="palette.text">Total Bought</p>
+                          <p className="font-medium palette.text">{buys.reduce((sum, t) => sum + t.shares, 0)} shares</p>
                         </div>
                         <div>
-                          <p className="text-gray-600">Total Sold</p>
-                          <p className="font-medium text-gray-800">{sells.reduce((sum, t) => sum + t.shares, 0)} shares</p>
+                          <p className="palette.text">Total Sold</p>
+                          <p className="font-medium palette.text">{sells.reduce((sum, t) => sum + t.shares, 0)} shares</p>
                         </div>
                       </div>
                     </div>
@@ -695,7 +695,7 @@ export default function PortfolioManager() {
         </div>
       )}
 
-      <p className="mt-6 text-sm text-gray-500 text-center">
+      <p className="mt-6 text-sm palette.text text-center">
         Your portfolio data is saved locally in your browser. No data is sent to any server.
       </p>
     </div>

@@ -73,7 +73,7 @@ export default function VolumeChart({ ticker = "AAPL" }: VolumeChartProps) {
 
   }, [data]);
 
-  if (loading) return <div className="p-4 text-gray-500">Loading volume data...</div>;
+  if (loading) return <div className="p-4 palette.text">Loading volume data...</div>;
   if (error) return <div className="p-4 text-red-500">Error: {error}</div>;
 
   return (

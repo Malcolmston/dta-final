@@ -31,6 +31,14 @@ export async function GET(request: NextRequest) {
 
   try {
     const redis = await getRedisClient();
+
+    if (!redis) {
+      return NextResponse.json({
+        success: false,
+        error: "Redis not configured. Set REDIS_URL environment variable to enable caching."
+      }, { status: 503 });
+    }
+
     const results: { page: string; success: boolean; cachedAt?: string; error?: string }[] = [];
 
     // Get top searched symbols from analytics

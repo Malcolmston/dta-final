@@ -129,21 +129,21 @@ export default function Treemap3DBoxes({ ticker: initialTicker = "AAPL" }: { tic
     <div ref={containerRef} className="w-full max-w-5xl mx-auto">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h2 className="text-2xl font-bold text-gray-800">Sector Allocation</h2>
-          <p className="text-sm text-gray-500">Portfolio breakdown by sector</p>
+          <h2 className="text-2xl font-bold palette.text">Sector Allocation</h2>
+          <p className="text-sm palette.text">Portfolio breakdown by sector</p>
         </div>
         <span className="px-3 py-1 bg-violet-100 text-violet-700 text-sm font-medium rounded-full">
           {ticker} Portfolio
         </span>
       </div>
 
-      <div className="mb-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
-        <p className="text-sm text-gray-600">Box size indicates allocation percentage for each sector.</p>
+      <div className="mb-4 p-4 bg-transparent rounded-lg border border-transparent">
+        <p className="text-sm palette.text">Box size indicates allocation percentage for each sector.</p>
       </div>
 
       <div className="flex flex-wrap gap-3 mb-4">
         <div className="flex-1 min-w-[200px]">
-          <label className="block text-sm font-medium text-gray-800 mb-2">
+          <label className="block text-sm font-medium palette.text mb-2">
             Enter Ticker Symbol
           </label>
           <TickerInput
@@ -156,15 +156,15 @@ export default function Treemap3DBoxes({ ticker: initialTicker = "AAPL" }: { tic
         </div>
       </div>
 
-      <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
+      <div className="bg-white rounded-xl shadow-lg border border-transparent overflow-hidden">
         <svg ref={svgRef} className="w-full" style={{ height: "400px" }} />
       </div>
 
       <div className="mt-3 flex flex-wrap gap-2">
         {sectorData.map((sector, i) => (
-          <div key={i} className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-lg border border-gray-200">
+          <div key={i} className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-lg border border-transparent">
             <div className="w-3 h-3 rounded" style={{ backgroundColor: sector.color }}></div>
-            <span className="text-xs font-medium text-gray-700">{sector.name}</span>
+            <span className="text-xs font-medium palette.text">{sector.name}</span>
           </div>
         ))}
       </div>

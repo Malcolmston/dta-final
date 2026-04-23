@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { rateLimit, getClientIp } from "@/lib/rateLimit";
+import { getRedisClient } from "@/lib/redis";
 
 // Cache responses for 60 seconds
 export const revalidate = 60;
@@ -26,6 +27,19 @@ export async function GET(request: NextRequest) {
   }
 
   try {
+    // Try to get from Redis cache first
+    const redis = await getRedisClient();
+    const cacheKey = `stock:${symbol.toUpperCase()}:${period}`;
+    const cachedData = await redis.get(cacheKey);
+
+    if (cachedData) {
+      // Track this search for analytics
+      await redis.incr(`search:${symbol.toUpperCase()}`);
+      await redis.expire(`search:${symbol.toUpperCase()}`, 86400);
+
+      return NextResponse.json({ data: JSON.parse(cachedData), cached: true });
+    }
+
     const rangeMap: Record<string, number> = {
       "1d": 1,
       "5d": 5,
@@ -81,6 +95,17 @@ export async function GET(request: NextRequest) {
         volume: quote.volume?.[i] || 0,
       }))
       .filter((d) => d.close > 0);
+
+    // Cache in Redis for 5 minutes
+    await redis.setEx(cacheKey, 300, JSON.stringify(data));
+
+    // Track this search for analytics
+    await redis.incr(`search:${symbol.toUpperCase()}`);
+    await redis.expire(`search:${symbol.toUpperCase()}`, 86400);
+
+    // Track page view
+    await redis.incr(`page_view:${symbol.toUpperCase()}`);
+    await redis.expire(`page_view:${symbol.toUpperCase()}`, 3600);
 
     return NextResponse.json({ data });
   } catch (error) {

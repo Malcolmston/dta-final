@@ -1,5 +1,7 @@
 "use client";
 
+import { useColorPalette } from "@/app/context/ColorPaletteContext";
+
 interface MarketFactor {
   id: string;
   title: string;
@@ -75,23 +77,25 @@ const marketFactors: MarketFactor[] = [
   },
 ];
 
-function getImpactColor(impact: MarketFactor["impact"]): string {
+function getImpactColor(impact: MarketFactor["impact"], palette: any): string {
   switch (impact) {
     case "positive":
-      return "bg-green-100 text-green-800";
+      return `${palette.positive}20`;
     case "negative":
-      return "bg-red-100 text-red-800";
+      return `${palette.negative}20`;
     default:
-      return "bg-gray-100 text-gray-800";
+      return palette.background;
   }
 }
 
 export default function MarketFactors() {
+  const { palette } = useColorPalette();
+
   return (
-    <div className="p-6">
+    <div className="p-6" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
       <div className="mb-6">
-        <h2 className="text-xl font-bold text-gray-900">What Influences the Stock Market?</h2>
-        <p className="text-gray-600 mt-2">
+        <h2 className="text-xl font-bold" style={{ color: palette.text }}>What Influences the Stock Market?</h2>
+        <p className="mt-2" style={{ color: palette.text, opacity: 0.7 }}>
           Understanding these factors can help you make better investment decisions.
         </p>
       </div>
@@ -100,16 +104,17 @@ export default function MarketFactors() {
         {marketFactors.map((factor) => (
           <div
             key={factor.id}
-            className="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md transition-shadow"
+            className="rounded-lg border p-4 hover:shadow-md transition-shadow"
+            style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}
           >
             <div className="flex-1">
-              <h3 className="font-semibold text-gray-900">{factor.title}</h3>
-              <p className="text-sm text-gray-600 mt-1">{factor.description}</p>
+              <h3 className="font-semibold" style={{ color: palette.text }}>{factor.title}</h3>
+              <p className="text-sm mt-1" style={{ color: palette.text, opacity: 0.7 }}>{factor.description}</p>
               <details className="mt-2">
-                <summary className="text-xs text-blue-600 cursor-pointer hover:text-blue-800">
+                <summary className="text-xs cursor-pointer hover:opacity-80" style={{ color: palette.primary }}>
                   Learn more
                 </summary>
-                <p className="text-sm text-gray-500 mt-2 pl-2 border-l-2 border-gray-200">
+                <p className="text-sm mt-2 pl-2 border-l-2" style={{ color: palette.text, opacity: 0.6, borderColor: palette.gridLines }}>
                   {factor.details}
                 </p>
               </details>
@@ -118,9 +123,9 @@ export default function MarketFactors() {
         ))}
       </div>
 
-      <div className="mt-8 bg-blue-50 rounded-lg p-4 border border-blue-200">
-        <h3 className="font-semibold text-blue-900">Key Takeaway</h3>
-        <p className="text-sm text-blue-800 mt-2">
+      <div className="mt-8 rounded-lg p-4 border" style={{ backgroundColor: palette.primary + "15", borderColor: palette.primary }}>
+        <h3 className="font-semibold" style={{ color: palette.text }}>Key Takeaway</h3>
+        <p className="text-sm mt-2" style={{ color: palette.text, opacity: 0.8 }}>
           Stock prices are influenced by a combination of these factors. No single factor
           determines the market - it&apos;s the interaction of all these elements that
           creates the complex system we call the stock market.

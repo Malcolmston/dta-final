@@ -40,11 +40,11 @@ export default function PortfolioPieChart() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Use palette colors for categories (colorblind-safe options)
-  const CATEGORY_COLORS: Record<string, string> = {
-    Stocks: palette.primary,
-    CDs: palette.secondary,
-    Bonds: palette.positive,
-    Crypto: palette.negative,
+  const CATEGORY_COLORS = {
+    Stocks: palette?.primary || "#3b82f6",
+    CDs: palette?.secondary || "#1e40af",
+    Bonds: palette?.positive || "#22c55e",
+    Crypto: palette?.negative || "#ef4444",
   };
 
   const [ticker, setTicker] = useState("AAPL");
@@ -258,11 +258,14 @@ export default function PortfolioPieChart() {
 
     // Add center text for total
     const total = portfolioData.reduce((sum, d) => sum + d.value, 0);
+    const textColor = palette?.text || "#1f2937";
+    const tooltipBg = palette?.background || "#ffffff";
+    const tooltipBorder = palette?.gridLines || "#e5e7eb";
 
     g.append("text")
       .attr("text-anchor", "middle")
       .attr("dy", "-0.2em")
-      .attr("fill", "#374151")
+      .attr("fill", textColor)
       .attr("font-size", "14px")
       .attr("font-weight", "600")
       .text("Total");
@@ -270,7 +273,7 @@ export default function PortfolioPieChart() {
     g.append("text")
       .attr("text-anchor", "middle")
       .attr("dy", "1em")
-      .attr("fill", "#374151")
+      .attr("fill", textColor)
       .attr("font-size", "24px")
       .attr("font-weight", "bold")
       .text(`${total}%`);
@@ -282,8 +285,8 @@ export default function PortfolioPieChart() {
       .attr("class", "pie-tooltip")
       .style("position", "absolute")
       .style("visibility", "hidden")
-      .style("background", "white")
-      .style("border", "1px solid #e5e7eb")
+      .style("background", tooltipBg)
+      .style("border", `1px solid ${tooltipBorder}`)
       .style("border-radius", "8px")
       .style("padding", "12px 16px")
       .style("font-size", "13px")
@@ -303,7 +306,7 @@ export default function PortfolioPieChart() {
             `<div style="font-weight: 600; font-size: 14px; margin-bottom: 4px; color: ${d.data.color}">
               ${d.data.category}
             </div>
-            <div style="color: #374151;">
+            <div style="color: ${textColor};">
               Allocation: <span style="font-weight: 600;">${d.data.percentage}%</span>
             </div>`
           );

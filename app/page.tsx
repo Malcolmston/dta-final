@@ -219,57 +219,57 @@ export default function Home() {
                 </div>
               )}
               {/* Wealth cards with consistent sizing */}
-              <div className="grid gap-6">
-                <div className="min-h-[200px]">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="min-h-[280px]">
                   <ActionItemsPanel />
                 </div>
-                <div className="min-h-[200px]">
+                <div className="min-h-[280px]">
                   <RetirementCalculator />
                 </div>
-                <div className="min-h-[200px]">
+                <div className="min-h-[280px]">
                   <GoalTracking />
                 </div>
-                <div className="min-h-[200px]">
+                <div className="min-h-[280px]">
                   <AssetAllocation />
                 </div>
 
                 {/* Issue 22: Emergency Fund Check */}
-                <div className="min-h-[200px]">
+                <div className="min-h-[280px]">
                   <EmergencyFundCheck />
                 </div>
 
                 {/* Issue 23: Diversification Analysis */}
-                <div className="min-h-[200px]">
+                <div className="min-h-[280px]">
                   <DiversificationAnalyzer />
                 </div>
 
                 {/* Issue 24: Risk Metrics Panel */}
-                <div className="min-h-[200px]">
+                <div className="min-h-[280px]">
                   <RiskMetricsPanel />
                 </div>
 
                 {/* Issue 25: Rebalancing Alerts */}
-                <div className="min-h-[200px]">
+                <div className="min-h-[280px]">
                   <RebalancingAlerts />
                 </div>
 
                 {/* Issue 18: Fee Disclosure */}
-                <div className="min-h-[200px]">
+                <div className="min-h-[280px]">
                   <FeeDisclosure />
                 </div>
 
                 {/* Issue 19: Tax-Aware Features */}
-                <div className="min-h-[200px]">
+                <div className="min-h-[280px]">
                   <TaxAwareFeatures />
                 </div>
 
                 {/* Issue 20: Benchmark Comparison */}
-                <div className="min-h-[200px]">
+                <div className="min-h-[280px]">
                   <BenchmarkComparison />
                 </div>
 
                 {/* Issue 21: Cash Flow Analysis */}
-                <div className="min-h-[200px]">
+                <div className="min-h-[280px]">
                   <CashFlowTracking />
                 </div>
               </div>

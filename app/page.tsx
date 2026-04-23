@@ -87,6 +87,15 @@ export default function Home() {
     setInitialized(true);
   }, [initialized, setIsDarkMode]);
 
+  // Toggle .dark class on body for CSS variable support
+  useEffect(() => {
+    if (isDarkMode) {
+      document.body.classList.add("dark");
+    } else {
+      document.body.classList.remove("dark");
+    }
+  }, [isDarkMode]);
+
   // Save configuration when it changes
   useEffect(() => {
     if (!initialized) return;
@@ -110,11 +119,11 @@ export default function Home() {
               <SectionAnalytics section="trends" />
               {/* Issue 31: Use 2D charts in simple mode for clarity */}
               <div className="mb-6">
-                <h3 className="font-semibold text-gray-900 mb-2">Price Trends</h3>
+                <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Price Trends</h3>
                 <CandlestickChart ticker="AAPL" />
               </div>
               <div className="mb-6">
-                <h3 className="font-semibold text-gray-900 mb-2">Trading Activity</h3>
+                <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Trading Activity</h3>
                 <CandlestickChart ticker="AAPL" period="3mo" />
               </div>
             </>
@@ -129,7 +138,7 @@ export default function Home() {
                 <ChartAnalysis chartType="MarketFactors" isSimpleMode={isSimpleMode} />
               </div>
               <div className="mb-6">
-                <h3 className="font-semibold text-gray-900 mb-2">Economic Trends</h3>
+                <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Economic Trends</h3>
                 <DualAxisPlot />
                 <ChartAnalysis chartType="DualAxisPlot" isSimpleMode={isSimpleMode} />
               </div>
@@ -141,12 +150,12 @@ export default function Home() {
             <>
               <SectionAnalytics section="sectors" />
               <div className="mb-6">
-                <h3 className="font-semibold text-gray-900 mb-2">Sector Performance</h3>
+                <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Sector Performance</h3>
                 <Heatmap />
                 <ChartAnalysis chartType="Heatmap" isSimpleMode={isSimpleMode} />
               </div>
               <div className="mb-6">
-                <h3 className="font-semibold text-gray-900 mb-2">Market Segments</h3>
+                <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Market Segments</h3>
                 <Treemap />
                 <ChartAnalysis chartType="Treemap" isSimpleMode={isSimpleMode} />
               </div>
@@ -158,12 +167,12 @@ export default function Home() {
             <>
               <SectionAnalytics section="analysis" />
               <div className="mb-6">
-                <h3 className="font-semibold text-gray-900 mb-2">Technical Analysis</h3>
+                <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Technical Analysis</h3>
                 <AnalysisTabs />
                 <ChartAnalysis chartType="AnalysisTabs" isSimpleMode={isSimpleMode} />
               </div>
               <div className="mb-6">
-                <h3 className="font-semibold text-gray-900 mb-2">Stock Connections</h3>
+                <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Stock Connections</h3>
                 <NetworkGraph />
                 <ChartAnalysis chartType="NetworkGraph" isSimpleMode={isSimpleMode} />
               </div>
@@ -176,20 +185,20 @@ export default function Home() {
               <SectionAnalytics section="portfolio" />
               <SurvivorshipBiasBanner />
               <div className="mb-6">
-                <h3 className="font-semibold text-gray-900 mb-2">Your Investments</h3>
+                <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Your Investments</h3>
                 <PortfolioManager />
               </div>
               <div className="mb-6">
-                <h3 className="font-semibold text-gray-900 mb-2">Portfolio Allocation</h3>
+                <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Portfolio Allocation</h3>
                 <PortfolioPieChart />
                 <ChartAnalysis chartType="PortfolioPieChart" isSimpleMode={isSimpleMode} />
               </div>
               <div className="mb-6">
-                <h3 className="font-semibold text-gray-900 mb-2">Income Tracking</h3>
+                <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Income Tracking</h3>
                 <IncomeTrackingPanel />
               </div>
               <div className="mb-6">
-                <h3 className="font-semibold text-gray-900 mb-2">Cost Basis & P&L</h3>
+                <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Cost Basis & P&L</h3>
                 <CostBasisInput />
               </div>
             </>
@@ -282,22 +291,22 @@ export default function Home() {
           <>
             <SectionAnalytics section="trends" />
             <div className="mb-6">
-              <h3 className="font-semibold text-gray-900 mb-2">3D Candlestick OHLCV</h3>
+              <h3 className="font-semibold mb-2" style={{ color: palette.text }}>3D Candlestick OHLCV</h3>
               <CandlestickChart />
               <ChartAnalysis chartType="CandlestickChart" isSimpleMode={isSimpleMode} />
             </div>
             <div className="mb-6">
-              <h3 className="font-semibold text-gray-900 mb-2">Volume Profile Analysis</h3>
+              <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Volume Profile Analysis</h3>
               <VolumeChart />
               <ChartAnalysis chartType="VolumeChart" isSimpleMode={isSimpleMode} />
             </div>
             <div className="mb-6">
-              <h3 className="font-semibold text-gray-900 mb-2">Multi-Ticker Performance Comparison</h3>
+              <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Multi-Ticker Performance Comparison</h3>
               <Streamgraph />
               <ChartAnalysis chartType="Streamgraph" isSimpleMode={isSimpleMode} />
             </div>
             <div className="mb-6">
-              <h3 className="font-semibold text-gray-900 mb-2">Moving Average Ribbon</h3>
+              <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Moving Average Ribbon</h3>
               <PriceRibbon3D />
               <ChartAnalysis chartType="PriceRibbon3D" isSimpleMode={isSimpleMode} />
             </div>
@@ -313,7 +322,7 @@ export default function Home() {
               <ChartAnalysis chartType="MarketFactors" isSimpleMode={isSimpleMode} />
             </div>
             <div className="mb-6">
-              <h3 className="font-semibold text-gray-900 mb-2">Temporal Lag Analysis</h3>
+              <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Temporal Lag Analysis</h3>
               <LagCorrelationPlot />
               <ChartAnalysis chartType="LagCorrelationPlot" isSimpleMode={isSimpleMode} />
             </div>
@@ -325,12 +334,12 @@ export default function Home() {
           <>
             <SectionAnalytics section="sectors" />
             <div className="mb-6">
-              <h3 className="font-semibold text-gray-900 mb-2">Sector Performance Heatmap</h3>
+              <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Sector Performance Heatmap</h3>
               <Heatmap />
               <ChartAnalysis chartType="Heatmap" isSimpleMode={isSimpleMode} />
             </div>
             <div className="mb-6">
-              <h3 className="font-semibold text-gray-900 mb-2">Sector Allocation</h3>
+              <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Sector Allocation</h3>
               <TreemapBoxes />
               <ChartAnalysis chartType="Treemap" isSimpleMode={isSimpleMode} />
             </div>
@@ -342,12 +351,12 @@ export default function Home() {
           <>
             <SectionAnalytics section="analysis" />
             <div className="mb-6">
-              <h3 className="font-semibold text-gray-900 mb-2">Multi-Indicator Technical Panel</h3>
+              <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Multi-Indicator Technical Panel</h3>
               <AnalysisTabs />
               <ChartAnalysis chartType="AnalysisTabs" isSimpleMode={isSimpleMode} />
             </div>
             <div className="mb-6">
-              <h3 className="font-semibold text-gray-900 mb-2">ML Model Performance Matrix</h3>
+              <h3 className="font-semibold mb-2" style={{ color: palette.text }}>ML Model Performance Matrix</h3>
               <ConfusionMatrixPlot />
               <ChartAnalysis chartType="ConfusionMatrixPlot" isSimpleMode={isSimpleMode} />
             </div>
@@ -360,25 +369,25 @@ export default function Home() {
             <SectionAnalytics section="portfolio" />
             <SurvivorshipBiasBanner />
             <div className="mb-6">
-              <h3 className="font-semibold text-gray-900 mb-2">My Portfolio</h3>
+              <h3 className="font-semibold mb-2" style={{ color: palette.text }}>My Portfolio</h3>
               <PortfolioManager />
             </div>
             <div className="mb-6">
-              <h3 className="font-semibold text-gray-900 mb-2">Portfolio Weight Distribution</h3>
+              <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Portfolio Weight Distribution</h3>
               <PortfolioPieChart />
               <ChartAnalysis chartType="PortfolioPieChart" isSimpleMode={isSimpleMode} />
             </div>
             <div className="mb-6">
-              <h3 className="font-semibold text-gray-900 mb-2">Holdings Map</h3>
+              <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Holdings Map</h3>
               <Treemap />
               <ChartAnalysis chartType="Treemap" isSimpleMode={isSimpleMode} />
             </div>
             <div className="mb-6">
-              <h3 className="font-semibold text-gray-900 mb-2">Income Tracking</h3>
+              <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Income Tracking</h3>
               <IncomeTrackingPanel />
             </div>
             <div className="mb-6">
-              <h3 className="font-semibold text-gray-900 mb-2">Cost Basis & P&L</h3>
+              <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Cost Basis & P&L</h3>
               <CostBasisInput />
             </div>
           </div>

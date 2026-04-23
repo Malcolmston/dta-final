@@ -373,11 +373,11 @@ export default function PortfolioPieChart() {
           {portfolioData.map((item) => (
             <div
               key={item.category}
-              className={`flex items-center gap-3 p-3 rounded-lg transition cursor-pointer ${
-                selectedCategory === item.category
-                  ? "bg-gray-100 ring-2 ring-blue-500"
-                  : "hover:bg-gray-50"
-              }`}
+              className="flex items-center gap-3 p-3 rounded-lg transition cursor-pointer"
+              style={{
+                backgroundColor: selectedCategory === item.category ? palette.primary + "15" : "transparent",
+                border: selectedCategory === item.category ? `2px solid ${palette.primary}` : "2px solid transparent",
+              }}
               onClick={() =>
                 setSelectedCategory((prev) =>
                   prev === item.category ? null : item.category
@@ -389,9 +389,9 @@ export default function PortfolioPieChart() {
                 style={{ backgroundColor: item.color }}
               />
               <div className="flex-1 min-w-0">
-                <div className="text-sm font-medium text-gray-800">{item.category}</div>
+                <div className="text-sm font-medium" style={{ color: palette.text }}>{item.category}</div>
               </div>
-              <div className="text-sm font-bold text-gray-700">
+              <div className="text-sm font-bold" style={{ color: palette.text }}>
                 {item.percentage}%
               </div>
             </div>
@@ -401,8 +401,8 @@ export default function PortfolioPieChart() {
 
       {/* Selected category details */}
       {selectedCategory && (
-        <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-          <p className="text-sm text-blue-800">
+        <div className="mt-6 p-4 rounded-lg border" style={{ backgroundColor: palette.primary + "15", borderColor: palette.primary }}>
+          <p className="text-sm" style={{ color: palette.text }}>
             <strong>Selected:</strong>{" "}
             {portfolioData.find((p) => p.category === selectedCategory)?.category} -{" "}
             {portfolioData.find((p) => p.category === selectedCategory)?.percentage}% of portfolio.
@@ -418,7 +418,7 @@ export default function PortfolioPieChart() {
         </div>
       )}
 
-      <p className="mt-6 text-sm text-gray-500 text-center">
+      <p className="mt-6 text-sm text-center" style={{ color: palette.text, opacity: 0.6 }}>
         Click on a segment or legend item to select a category. Hover over segments for details.
         Data is simulated for demonstration purposes.
       </p>

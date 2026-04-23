@@ -170,7 +170,7 @@ export default function AssetAllocation() {
 
       {/* All Profiles */}
       <div>
-        <h4 className="font-semibold text-gray-800 mb-3">All Allocation Profiles</h4>
+        <h4 className="font-semibold palette.text mb-3">All Allocation Profiles</h4>
         <div className="space-y-2">
           {ALLOCATION_PROFILES.map((profile) => (
             <div
@@ -178,12 +178,12 @@ export default function AssetAllocation() {
               className={`p-3 rounded-lg border ${
                 profile.name === recommended.name
                   ? "border-blue-300 bg-blue-50"
-                  : "border-gray-200"
+                  : "border-transparent"
               }`}
             >
               <div className="flex items-center justify-between mb-1">
-                <span className="font-medium text-gray-800">{profile.name}</span>
-                <span className="text-xs text-gray-500">
+                <span className="font-medium palette.text">{profile.name}</span>
+                <span className="text-xs palette.text">
                   {profile.stocks}% / {profile.bonds}% / {profile.cash}%
                 </span>
               </div>
@@ -197,8 +197,8 @@ export default function AssetAllocation() {
         </div>
       </div>
 
-      <div className="mt-4 pt-4 border-t border-gray-200">
-        <p className="text-xs text-gray-500">
+      <div className="mt-4 pt-4 border-t border-transparent">
+        <p className="text-xs palette.text">
           <strong>Note:</strong> These are general guidelines. Consult a financial advisor for personalized advice.
           Asset allocation does not guarantee profits or protect against losses.
         </p>

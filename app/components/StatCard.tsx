@@ -15,11 +15,11 @@ export default function StatCard({ label, value, change, trend }: StatCardProps)
   const getTrendColor = (trend?: "up" | "down" | "neutral") => {
     switch (trend) {
       case "up":
-        return "text-green-600 bg-green-50";
+        return { color: palette.positive, backgroundColor: palette.positive + "15" };
       case "down":
-        return "text-red-600 bg-red-50";
+        return { color: palette.negative, backgroundColor: palette.negative + "15" };
       default:
-        return "text-gray-600 bg-gray-50";
+        return { color: palette.text, backgroundColor: palette.gridLines };
     }
   };
 
@@ -35,7 +35,10 @@ export default function StatCard({ label, value, change, trend }: StatCardProps)
       <p className="text-sm" style={{ color: palette.text, opacity: 0.7 }}>{label}</p>
       <p className="text-xl font-bold" style={{ color: palette.text }}>{value}</p>
       {change && (
-        <span className={`inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full ${getTrendColor(trend)}`}>
+        <span
+          className="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full"
+          style={getTrendColor(trend)}
+        >
           {trend === "up" && "↑"}
           {trend === "down" && "↓"}
           {change}

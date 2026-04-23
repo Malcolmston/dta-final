@@ -194,13 +194,13 @@ export default function CashFlowTracking() {
       {/* Cash Flow Table */}
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
-          <thead className="bg-gray-50">
+          <thead className="bg-transparent">
             <tr>
-              <th className="px-4 py-3 text-left text-gray-600 font-medium">Date</th>
-              <th className="px-4 py-3 text-left text-gray-600 font-medium">Type</th>
-              <th className="px-4 py-3 text-left text-gray-600 font-medium">Description</th>
-              <th className="px-4 py-3 text-left text-gray-600 font-medium">Account</th>
-              <th className="px-4 py-3 text-right text-gray-600 font-medium">Amount</th>
+              <th className="px-4 py-3 text-left palette.text font-medium">Date</th>
+              <th className="px-4 py-3 text-left palette.text font-medium">Type</th>
+              <th className="px-4 py-3 text-left palette.text font-medium">Description</th>
+              <th className="px-4 py-3 text-left palette.text font-medium">Account</th>
+              <th className="px-4 py-3 text-right palette.text font-medium">Amount</th>
             </tr>
           </thead>
           <tbody>
@@ -208,15 +208,15 @@ export default function CashFlowTracking() {
               const info = TYPE_INFO[flow.type];
               const isPositive = flow.type !== "withdrawal";
               return (
-                <tr key={flow.id} className="border-t border-gray-100">
-                  <td className="px-4 py-3 text-gray-600">{flow.date}</td>
+                <tr key={flow.id} className="border-t border-transparent">
+                  <td className="px-4 py-3 palette.text">{flow.date}</td>
                   <td className="px-4 py-3">
                     <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${info.color}`}>
                       {info.label}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-gray-800">{flow.description}</td>
-                  <td className="px-4 py-3 text-gray-600">{flow.account}</td>
+                  <td className="px-4 py-3 palette.text">{flow.description}</td>
+                  <td className="px-4 py-3 palette.text">{flow.account}</td>
                   <td className={`px-4 py-3 text-right font-medium ${isPositive ? "text-green-600" : "text-red-600"}`}>
                     {isPositive ? "+" : "-"}${flow.amount.toLocaleString()}
                   </td>
@@ -232,14 +232,14 @@ export default function CashFlowTracking() {
         <h3 className="font-semibold text-blue-800 mb-2">Portfolio Income Summary</h3>
         <div className="grid md:grid-cols-2 gap-4 text-sm">
           <div>
-            <p className="text-gray-600">Dividend Income (Annualized)</p>
+            <p className="palette.text">Dividend Income (Annualized)</p>
             <p className="text-lg font-bold text-blue-800">
               ${((byType.dividend || 0) * 4).toLocaleString()}
             </p>
             <p className="text-xs text-blue-600">Based on quarterly rate</p>
           </div>
           <div>
-            <p className="text-gray-600">Interest Income (Annualized)</p>
+            <p className="palette.text">Interest Income (Annualized)</p>
             <p className="text-lg font-bold text-blue-800">
               ${((byType.interest || 0) * 12).toLocaleString()}
             </p>

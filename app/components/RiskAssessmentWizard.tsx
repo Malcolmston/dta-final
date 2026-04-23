@@ -104,18 +104,28 @@ export default function RiskAssessmentWizard({ onComplete }: RiskAssessmentWizar
               { id: "income", label: "Income Generation", desc: "Regular dividend income" },
               { id: "preservation", label: "Wealth Preservation", desc: "Protect existing assets" },
             ].map(goal => (
-              <label key={goal.id} className="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-transparent">
-                <input
-                  type="checkbox"
-                  checked={profile.goals.includes(goal.id)}
-                  onChange={() => handleGoalToggle(goal.id)}
-                  className="h-5 w-5 text-blue-600"
-                />
-                <div className="ml-3">
-                  <div className="font-medium">{goal.label}</div>
-                  <div className="text-sm palette.text">{goal.desc}</div>
+              <div key={goal.id} className="flex items-center justify-between p-4 border rounded-lg" style={{ borderColor: palette.gridLines }}>
+                <div>
+                  <div className="font-medium" style={{ color: palette.text }}>{goal.label}</div>
+                  <div className="text-sm" style={{ color: palette.text, opacity: 0.6 }}>{goal.desc}</div>
                 </div>
-              </label>
+                <button
+                  type="button"
+                  onClick={() => handleGoalToggle(goal.id)}
+                  className="relative inline-flex h-7 w-14 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none"
+                  style={{
+                    backgroundColor: profile.goals.includes(goal.id) ? palette.primary : palette.gridLines,
+                  }}
+                >
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none inline-block h-6 w-6 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
+                    style={{
+                      transform: profile.goals.includes(goal.id) ? 'translateX(24px)' : 'translateX(0)',
+                    }}
+                  />
+                </button>
+              </div>
             ))}
           </div>
 

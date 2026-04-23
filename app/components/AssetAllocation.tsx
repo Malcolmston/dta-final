@@ -182,12 +182,12 @@ export default function AssetAllocation() {
               }`}
             >
               <div className="flex items-center justify-between mb-1">
-                <span className="font-medium palette.text">{profile.name}</span>
-                <span className="text-xs palette.text">
+                <span className="font-medium" style={{ color: palette.text }}>{profile.name}</span>
+                <span className="text-xs" style={{ color: palette.text, opacity: 0.7 }}>
                   {profile.stocks}% / {profile.bonds}% / {profile.cash}%
                 </span>
               </div>
-              <div className="flex h-1.5 rounded-full overflow-hidden bg-gray-200">
+              <div className="flex h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: palette.gridLines }}>
                 <div className="bg-blue-500" style={{ width: `${profile.stocks}%` }} />
                 <div className="bg-green-500" style={{ width: `${profile.bonds}%` }} />
                 <div className="bg-gray-400" style={{ width: `${profile.cash}%` }} />
@@ -198,7 +198,7 @@ export default function AssetAllocation() {
       </div>
 
       <div className="mt-4 pt-4 border-t border-transparent">
-        <p className="text-xs palette.text">
+        <p className="text-xs" style={{ color: palette.text, opacity: 0.7 }}>
           <strong>Note:</strong> These are general guidelines. Consult a financial advisor for personalized advice.
           Asset allocation does not guarantee profits or protect against losses.
         </p>

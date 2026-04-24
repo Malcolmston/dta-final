@@ -410,7 +410,7 @@ export default function MarketPredictor() {
         .append("path")
         .datum(predictionData)
         .attr("fill", "none")
-        .attr("stroke", "#9ca3af")
+        .attr("stroke", palette.text)
         .attr("stroke-width", 2)
         .attr("stroke-dasharray", "6,4")
         .attr("d", predictionLine as any);
@@ -421,7 +421,7 @@ export default function MarketPredictor() {
         .attr("x", xScale(predictionData[1].date) - 10)
         .attr("y", yScale(predictedEndValue) - 8)
         .attr("text-anchor", "end")
-        .attr("fill", "#9ca3af")
+        .attr("fill", palette.text)
         .attr("font-size", "11px")
         .text(`Hypothetical: ${growthRate > 0 ? "+" : ""}${growthRate.toFixed(1)}%/yr (Educational Only)`);
     }

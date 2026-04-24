@@ -120,7 +120,7 @@ export default function Candlestick3DChart({ ticker: initialTicker = "AAPL" }: {
       .attr("x2", innerWidth)
       .attr("y1", (d) => yScale(d))
       .attr("y2", (d) => yScale(d))
-      .attr("stroke", "#e5e7eb")
+      .attr("stroke", palette.gridLines)
       .attr("stroke-dasharray", "3,3");
 
     const barWidth = xScale.bandwidth();
@@ -174,14 +174,14 @@ export default function Candlestick3DChart({ ticker: initialTicker = "AAPL" }: {
       .attr("transform", `translate(0,${innerHeight})`)
       .call(xAxis)
       .selectAll("text")
-      .attr("fill", "#6b7280")
+      .attr("fill", palette.text)
       .attr("font-size", "11px");
 
     // Y Axis
     g.append("g")
       .call(d3.axisLeft(yScale).ticks(6).tickFormat((d) => `$${d}`))
       .selectAll("text")
-      .attr("fill", "#6b7280")
+      .attr("fill", palette.text)
       .attr("font-size", "11px");
 
     g.append("text")
@@ -189,7 +189,7 @@ export default function Candlestick3DChart({ ticker: initialTicker = "AAPL" }: {
       .attr("y", -45)
       .attr("x", -innerHeight / 2)
       .attr("text-anchor", "middle")
-      .attr("fill", "#6b7280")
+      .attr("fill", palette.text)
       .attr("font-size", "12px")
       .text("Price ($)");
   }, [candlestickData]);

@@ -272,7 +272,7 @@ export default function ConfusionMatrixPlot() {
         .attr("x", x + cellWidth / 2)
         .attr("y", y + cellHeight / 2 - 8)
         .attr("text-anchor", "middle")
-        .attr("fill", d.count > maxCount * 0.5 ? "white" : "#1f2937")
+        .attr("fill", d.count > maxCount * 0.5 ? (palette.isDarkMode ? "#000" : "#fff") : palette.text)
         .attr("font-size", "24px")
         .attr("font-weight", "bold")
         .text(d.count);
@@ -284,7 +284,7 @@ export default function ConfusionMatrixPlot() {
         .attr("x", x + cellWidth / 2)
         .attr("y", y + cellHeight / 2 + 14)
         .attr("text-anchor", "middle")
-        .attr("fill", d.count > maxCount * 0.5 ? "white" : "#4b5563")
+        .attr("fill", d.count > maxCount * 0.5 ? (palette.isDarkMode ? "#000" : "#fff") : palette.text)
         .attr("font-size", "12px")
         .text(`${percentage}%`);
     });
@@ -299,7 +299,7 @@ export default function ConfusionMatrixPlot() {
         .attr("x", x + xScale.bandwidth() / 2)
         .attr("y", margin.top - 15)
         .attr("text-anchor", "middle")
-        .attr("fill", "#374151")
+        .attr("fill", palette.text)
         .attr("font-size", "14px")
         .attr("font-weight", "600")
         .text(`Actual: ${label}`);
@@ -311,7 +311,7 @@ export default function ConfusionMatrixPlot() {
         .attr("x", x + xScale.bandwidth() / 2)
         .attr("y", margin.top - 2)
         .attr("text-anchor", "middle")
-        .attr("fill", "#6b7280")
+        .attr("fill", palette.text)
         .attr("font-size", "11px")
         .text(`(n=${colCount})`);
     });
@@ -327,7 +327,7 @@ export default function ConfusionMatrixPlot() {
         .attr("y", y + yScale.bandwidth() / 2)
         .attr("text-anchor", "end")
         .attr("dominant-baseline", "middle")
-        .attr("fill", "#374151")
+        .attr("fill", palette.text)
         .attr("font-size", "14px")
         .attr("font-weight", "600")
         .text(`Predicted: ${label}`);
@@ -340,7 +340,7 @@ export default function ConfusionMatrixPlot() {
         .attr("y", y + yScale.bandwidth() / 2)
         .attr("text-anchor", "start")
         .attr("dominant-baseline", "middle")
-        .attr("fill", "#6b7280")
+        .attr("fill", palette.text)
         .attr("font-size", "11px")
         .text(`(${rowCount})`);
     });
@@ -363,7 +363,7 @@ export default function ConfusionMatrixPlot() {
       .append("text")
       .attr("x", width / 2 - legendWidth / 2 - 80)
       .attr("y", legendY + 12)
-      .attr("fill", "#374151")
+      .attr("fill", palette.text)
       .attr("font-size", "11px")
       .text("Correct Prediction");
 
@@ -381,7 +381,7 @@ export default function ConfusionMatrixPlot() {
       .append("text")
       .attr("x", width / 2 + 100)
       .attr("y", legendY + 12)
-      .attr("fill", "#374151")
+      .attr("fill", palette.text)
       .attr("font-size", "11px")
       .text("Incorrect Prediction");
 
@@ -401,7 +401,7 @@ export default function ConfusionMatrixPlot() {
       .attr("x", width / 2)
       .attr("y", 48)
       .attr("text-anchor", "middle")
-      .attr("fill", "#6b7280")
+      .attr("fill", palette.text)
       .attr("font-size", "11px")
       .text(`Based on ${totalSignals} total signals (RSI-based)`);
   }, [matrix]);

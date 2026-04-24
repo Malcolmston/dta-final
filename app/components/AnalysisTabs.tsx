@@ -135,103 +135,91 @@ const COLOR_PALETTES = [
   },
 ];
 
-export default function AnalysisTabs() {
+interface AnalysisTabsProps {
+  showSettings?: boolean;
+}
+
+export default function AnalysisTabs({ showSettings = false }: AnalysisTabsProps) {
   const { palette } = useColorPalette();
   const [activeTab, setActiveTab] = useState<TabId>("overview");
   const [ticker, setTicker] = useState("SPY");
   const [refreshKey, setRefreshKey] = useState(0);
-  const [showSettings, setShowSettings] = useState(false);
   const [activePalette, setActivePalette] = useState(0);
 
   const handleRefresh = () => setRefreshKey(k => k + 1);
 
   return (
-    <div className="w-full">
-      {/* Settings Pill */}
-      <div className="flex justify-end mb-4">
-        <button
-          onClick={() => setShowSettings(!showSettings)}
-          className="flex items-center gap-2 px-4 py-2 border rounded-full transition shadow-sm"
-          style={{ backgroundColor: palette.background, borderColor: palette.gridLines, color: palette.text }}
-        >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-          </svg>
-          <span className="text-sm font-medium">Settings</span>
-        </button>
-      </div>
-
-      {/* Color Palette Options */}
+    <div className="w-full relative">
+      {/* Color Palette Options - Absolute Popup */}
       {showSettings && (
-        <div className="mb-6 p-4 border rounded-xl" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
+        <div className="absolute z-50 mt-2 p-4 border rounded-xl shadow-lg" style={{ backgroundColor: palette.background, borderColor: palette.gridLines, minWidth: '280px', right: '2rem', top: '100%' }}>
           <div className="text-sm font-semibold mb-1" style={{ color: palette.text }}>Color Palette</div>
-          <div className="text-xs mb-4" style={{ color: palette.text, opacity: 0.6 }}>Choose colors that work best for your vision</div>
+          <div className="text-xs mb-3" style={{ color: palette.text, opacity: 0.6 }}>Choose colors for charts</div>
 
           {/* Category: Colorblind Safe */}
-          <div className="text-xs font-semibold mb-2 mt-4" style={{ color: palette.text, opacity: 0.7 }}>Colorblind Safe</div>
-          <div className="flex flex-wrap gap-2 mb-3">
+          <div className="text-xs font-semibold mb-2 mt-3" style={{ color: palette.text, opacity: 0.7 }}>Colorblind Safe</div>
+          <div className="flex flex-wrap gap-1.5 mb-2">
             {COLOR_PALETTES.filter(p => p.category === "Colorblind Safe").map((palette) => {
               const actualIndex = COLOR_PALETTES.indexOf(palette);
               return (
                 <button
                   key={palette.name}
                   onClick={() => setActivePalette(actualIndex)}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg border-2 transition ${
+                  className={`flex items-center gap-1.5 px-2 py-1 rounded border transition ${
                     activePalette === actualIndex ? "border-slate-800" : "border-slate-200 hover:border-slate-400"
                   }`}
                 >
-                  <div className="flex gap-1">
-                    <div className="w-3 h-3 rounded-full" style={{ backgroundColor: palette.bullish }} />
-                    <div className="w-3 h-3 rounded-full" style={{ backgroundColor: palette.bearish }} />
+                  <div className="flex gap-0.5">
+                    <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: palette.bullish }} />
+                    <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: palette.bearish }} />
                   </div>
-                  <span className="text-xs font-medium">{palette.label}</span>
+                  <span className="text-xs">{palette.label}</span>
                 </button>
               );
             })}
           </div>
 
           {/* Category: High Contrast */}
-          <div className="text-xs font-semibold text-slate-600 mb-2">High Contrast</div>
-          <div className="flex flex-wrap gap-2 mb-3">
+          <div className="text-xs font-semibold text-slate-600 mb-1.5">High Contrast</div>
+          <div className="flex flex-wrap gap-1.5 mb-2">
             {COLOR_PALETTES.filter(p => p.category === "High Contrast").map((palette) => {
               const actualIndex = COLOR_PALETTES.indexOf(palette);
               return (
                 <button
                   key={palette.name}
                   onClick={() => setActivePalette(actualIndex)}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg border-2 transition ${
+                  className={`flex items-center gap-1.5 px-2 py-1 rounded border transition ${
                     activePalette === actualIndex ? "border-slate-800" : "border-slate-200 hover:border-slate-400"
                   }`}
                 >
-                  <div className="flex gap-1">
-                    <div className="w-3 h-3 rounded-full" style={{ backgroundColor: palette.bullish }} />
-                    <div className="w-3 h-3 rounded-full" style={{ backgroundColor: palette.bearish }} />
+                  <div className="flex gap-0.5">
+                    <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: palette.bullish }} />
+                    <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: palette.bearish }} />
                   </div>
-                  <span className="text-xs font-medium">{palette.label}</span>
+                  <span className="text-xs">{palette.label}</span>
                 </button>
               );
             })}
           </div>
 
           {/* Category: Standard & Other */}
-          <div className="text-xs font-semibold text-slate-600 mb-2">Standard</div>
-          <div className="flex flex-wrap gap-2">
+          <div className="text-xs font-semibold text-slate-600 mb-1.5">Standard</div>
+          <div className="flex flex-wrap gap-1.5">
             {COLOR_PALETTES.filter(p => p.category === "Standard" || p.category === "Dark" || p.category === "Nature").map((palette) => {
               const actualIndex = COLOR_PALETTES.indexOf(palette);
               return (
                 <button
                   key={palette.name}
                   onClick={() => setActivePalette(actualIndex)}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg border-2 transition ${
+                  className={`flex items-center gap-1.5 px-2 py-1 rounded border transition ${
                     activePalette === actualIndex ? "border-slate-800" : "border-slate-200 hover:border-slate-400"
                   }`}
                 >
-                  <div className="flex gap-1">
-                    <div className="w-3 h-3 rounded-full" style={{ backgroundColor: palette.bullish }} />
-                    <div className="w-3 h-3 rounded-full" style={{ backgroundColor: palette.bearish }} />
+                  <div className="flex gap-0.5">
+                    <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: palette.bullish }} />
+                    <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: palette.bearish }} />
                   </div>
-                  <span className="text-xs font-medium">{palette.label}</span>
+                  <span className="text-xs">{palette.label}</span>
                 </button>
               );
             })}

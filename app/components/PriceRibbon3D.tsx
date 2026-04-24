@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import * as d3 from "d3";
+import { useColorPalette } from "../context/ColorPaletteContext";
 import { fetchHistory, StockHistory } from "@/lib/client";
 import { TIME_RANGES_SHORT } from "@/lib/constants";
 import TickerInput from "./TickerInput";
@@ -19,6 +20,7 @@ function processPriceData(data: StockHistory[]): PricePoint[] {
 }
 
 export default function PriceRibbon3D({ ticker: initialTicker = "AAPL" }: { ticker?: string }) {
+  const { palette, isDarkMode } = useColorPalette();
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -181,23 +183,23 @@ export default function PriceRibbon3D({ ticker: initialTicker = "AAPL" }: { tick
     <div ref={containerRef} className="w-full max-w-5xl mx-auto">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h2 className="text-2xl font-bold palette.text">Price Chart</h2>
-          <p className="text-sm palette.text">Price history over time</p>
+          <h2 className="text-2xl font-bold" style={{ color: palette.text }}>Price Chart</h2>
+          <p className="text-sm" style={{ color: palette.text, opacity: 0.7 }}>Price history over time</p>
         </div>
-        <span className="px-3 py-1 bg-indigo-100 text-indigo-700 text-sm font-medium rounded-full">
+        <span className="px-3 py-1 text-sm font-medium rounded-full" style={{ backgroundColor: palette.primary + '20', color: palette.primary }}>
           {ticker}
         </span>
       </div>
 
-      <div className="mb-4 p-4 bg-transparent rounded-lg border border-transparent">
-        <p className="text-sm palette.text">
+      <div className="mb-4 p-4 rounded-lg" style={{ backgroundColor: 'transparent' }}>
+        <p className="text-sm" style={{ color: palette.text, opacity: 0.7 }}>
           Line chart showing price movement over time. Area fill shows the price range.
         </p>
       </div>
 
       <div className="flex flex-wrap gap-3 mb-4">
         <div className="flex-1 min-w-[200px]">
-          <label className="block text-sm font-medium palette.text mb-2">
+          <label className="block text-sm font-medium mb-2" style={{ color: palette.text }}>
             Enter Ticker Symbol
           </label>
           <TickerInput
@@ -213,9 +215,11 @@ export default function PriceRibbon3D({ ticker: initialTicker = "AAPL" }: { tick
             <button
               key={range.value}
               onClick={() => setPeriod(range.value)}
-              className={`px-3 py-1.5 text-sm font-medium rounded-lg transition ${
-                period === range.value ? "bg-indigo-600 text-white" : "bg-transparent palette.text hover:bg-gray-200"
-              }`}
+              className="px-3 py-1.5 text-sm font-medium rounded-lg transition"
+              style={{
+                backgroundColor: period === range.value ? palette.primary : 'transparent',
+                color: period === range.value ? '#fff' : palette.text,
+              }}
             >
               {range.label}
             </button>
@@ -223,9 +227,9 @@ export default function PriceRibbon3D({ ticker: initialTicker = "AAPL" }: { tick
         </div>
       </div>
 
-      {error && <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700">{error}</div>}
+      {error && <div className="mb-4 p-3 rounded-lg" style={{ backgroundColor: palette.negative + '15', border: `1px solid ${palette.negative}`, color: palette.negative }}>{error}</div>}
 
-      <div className="bg-white rounded-xl shadow-lg border border-transparent overflow-hidden">
+      <div className="rounded-xl shadow-lg border overflow-hidden" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
         <svg ref={svgRef} className="w-full" style={{ height: "400px" }} />
       </div>
     </div>

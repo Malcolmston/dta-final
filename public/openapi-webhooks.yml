@@ -1,0 +1,383 @@
+openapi: 3.1.0
+info:
+  title: DTA Final Webhook API
+  description: |
+    Programmatic webhook API for retrieving stock data and exporting charts as images.
+    Provides endpoints for historical data, quotes, forecasts, signals, and chart export.
+  version: 1.0.0
+  contact:
+    name: API Support
+    url: https://github.com/anthropics/claude-code
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://dta-final.vercel.app
+    description: Production server
+  - url: http://localhost:3000
+    description: Development server
+
+tags:
+  - name: Webhook
+    description: Generic webhook endpoints for data retrieval
+  - name: Chart Export
+    description: Chart export and capture endpoints
+  - name: Actions
+    description: Available data actions
+
+paths:
+  /api/webhook:
+    get:
+      summary: Webhook data retrieval
+      description: |
+        Generic webhook endpoint for retrieving various types of stock data.
+        Supports multiple actions: history, quote, growth, forecast, signals, momentum, heatmap, batch.
+      operationId: getWebhookData
+      tags:
+        - Webhook
+      parameters:
+        - name: action
+          in: query
+          required: true
+          description: The type of data to retrieve
+          schema:
+            type: string
+            enum: [history, quote, growth, forecast, signals, momentum, heatmap, batch]
+          example: history
+        - name: symbol
+          in: query
+          description: Stock ticker symbol
+          schema:
+            type: string
+          example: AAPL
+        - name: period
+          in: query
+          description: Time period for historical data
+          schema:
+            type: string
+            default: 1y
+            enum: [1d, 5d, 1w, 1m, 3m, 6m, 1y, 2y, 5y]
+          example: 1y
+        - name: interval
+          in: query
+          description: Data interval
+          schema:
+            type: string
+            default: 1d
+            enum: [1m, 5m, 15m, 30m, 1h, 1d, 1wk, 1mo]
+          example: 1d
+        - name: tickers
+          in: query
+          description: Comma-separated list of tickers for heatmap
+          schema:
+            type: string
+          example: AAPL,GOOGL,MSFT
+        - name: types
+          in: query
+          description: Comma-separated data types for batch requests
+          schema:
+            type: string
+          example: history,quote,growth
+      responses:
+        '200':
+          description: Successful data retrieval
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                  meta:
+                    type: object
+                    properties:
+                      symbol:
+                        type: string
+                      action:
+                        type: string
+                      period:
+                        type: string
+                      timestamp:
+                        type: string
+                        format: date-time
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+
+  /api/webhook?chart={name}.{format}:
+    get:
+      summary: Chart export configuration
+      description: |
+        Returns chart export configuration. Navigate to the captureUrl in a browser
+        to download the chart as an image.
+      operationId: getChartExport
+      tags:
+        - Chart Export
+      parameters:
+        - name: chart
+          in: query
+          required: true
+          description: Chart name and format (e.g., candlestick.png, heatmap.jpg)
+          schema:
+            type: string
+          example: candlestick.png
+        - name: symbol
+          in: query
+          description: Stock ticker symbol
+          schema:
+            type: string
+          example: AAPL
+        - name: tickers
+          in: query
+          description: Comma-separated tickers
+          schema:
+            type: string
+        - name: period
+          in: query
+          description: Time period
+          schema:
+            type: string
+            default: 1y
+        - name: interval
+          in: query
+          description: Data interval
+          schema:
+            type: string
+            default: 1d
+        - name: width
+          in: query
+          description: Chart width in pixels
+          schema:
+            type: integer
+            default: 800
+        - name: height
+          in: query
+          description: Chart height in pixels
+          schema:
+            type: integer
+            default: 400
+        - name: theme
+          in: query
+          description: Chart theme (dark or light)
+          schema:
+            type: string
+            default: dark
+            enum: [dark, light]
+        - name: title
+          in: query
+          description: Custom chart title
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Chart export configuration
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  chart:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      format:
+                        type: string
+                      captureUrl:
+                        type: string
+                      params:
+                        type: object
+
+  /api/webhook/capture:
+    get:
+      summary: Chart capture and download
+      description: |
+        Generates an SVG chart and triggers browser download as an image.
+        Open this URL in a browser to automatically download the chart.
+      operationId: captureChart
+      tags:
+        - Chart Export
+      parameters:
+        - name: chart
+          in: query
+          required: true
+          description: Chart type name
+          schema:
+            type: string
+            enum: [candlestick, candlestick3d, heatmap, volume, volume3d, streamgraph, network, correlation, lag, portfolioage, benchmark, cashflow, dualaxis, forecast, signals, momentum, treemap, treemap3d, pie, diversification, risk, retirement, price3d, rebalancing, income, assetallocation, simplified, technical, confusion]
+          example: candlestick
+        - name: format
+          in: query
+          description: Image format (png, jpg, webp)
+          schema:
+            type: string
+            default: png
+          example: png
+        - name: symbol
+          in: query
+          description: Stock ticker symbol
+          schema:
+            type: string
+          example: AAPL
+        - name: period
+          in: query
+          description: Time period
+          schema:
+            type: string
+            default: 1y
+        - name: interval
+          in: query
+          description: Data interval
+          schema:
+            type: string
+            default: 1d
+        - name: width
+          in: query
+          description: Chart width
+          schema:
+            type: integer
+            default: 800
+        - name: height
+          in: query
+          description: Chart height
+          schema:
+            type: integer
+            default: 400
+        - name: theme
+          in: query
+          description: Theme (dark or light)
+          schema:
+            type: string
+            default: dark
+        - name: title
+          in: query
+          description: Custom title
+          schema:
+            type: string
+      responses:
+        '200':
+          description: HTML page that generates and downloads chart
+          content:
+            text/html:
+              schema:
+                type: string
+        '400':
+          description: Invalid parameters
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+
+components:
+  schemas:
+    WebhookResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          type: object
+        meta:
+          type: object
+          properties:
+            symbol:
+              type: string
+            action:
+              type: string
+            period:
+              type: string
+            interval:
+              type: string
+            cached:
+              type: boolean
+            timestamp:
+              type: string
+              format: date-time
+
+    ChartExportResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        chart:
+          type: object
+          properties:
+            name:
+              type: string
+            format:
+              type: string
+            captureUrl:
+              type: string
+            instructions:
+              type: string
+        meta:
+          type: object
+
+    AvailableChart:
+      type: string
+      enum:
+        - candlestick
+        - candlestick3d
+        - heatmap
+        - volume
+        - volume3d
+        - streamgraph
+        - network
+        - correlation
+        - lag
+        - portfolioage
+        - benchmark
+        - cashflow
+        - dualaxis
+        - forecast
+        - signals
+        - momentum
+        - treemap
+        - treemap3d
+        - pie
+        - diversification
+        - risk
+        - retirement
+        - price3d
+        - rebalancing
+        - income
+        - assetallocation
+        - simplified
+        - technical
+        - confusion
+
+    AvailableAction:
+      type: string
+      enum:
+        - history
+        - quote
+        - growth
+        - forecast
+        - signals
+        - momentum
+        - heatmap
+        - batch

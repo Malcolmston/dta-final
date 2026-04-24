@@ -13,7 +13,7 @@ const AsyncApiComponent = dynamic(
   { ssr: false, loading: () => <p className="p-6 text-sm" style={{ color: 'var(--foreground)', opacity: 0.5 }}>Loading AsyncAPI docs…</p> },
 );
 
-type Tab = 'rest' | 'async' | 'cron';
+type Tab = 'rest' | 'async' | 'cron' | 'webhook';
 
 export default function DocsPage() {
   const [tab, setTab] = useState<Tab>('rest');
@@ -34,7 +34,7 @@ export default function DocsPage() {
                 API Documentation
               </h1>
               <p className="text-sm mt-0.5" style={{ color: palette.text, opacity: 0.6 }}>
-                REST, Async API &amp; Cron Jobs reference
+                REST, Async API, Cron Jobs &amp; Webhooks reference
               </p>
             </div>
             <Link
@@ -51,7 +51,7 @@ export default function DocsPage() {
 
           {/* Tabs */}
           <nav className="flex gap-1 -mb-px">
-            {(['rest', 'async', 'cron'] as Tab[]).map((t) => (
+            {(['rest', 'async', 'cron', 'webhook'] as Tab[]).map((t) => (
               <button
                 key={t}
                 onClick={() => setTab(t)}
@@ -62,7 +62,7 @@ export default function DocsPage() {
                   opacity: tab === t ? 1 : 0.6,
                 }}
               >
-                {t === 'rest' ? 'REST API' : t === 'async' ? 'Async API' : 'Cron Jobs'}
+                {t === 'rest' ? 'REST API' : t === 'async' ? 'Async API' : t === 'cron' ? 'Cron Jobs' : 'Webhooks'}
               </button>
             ))}
           </nav>
@@ -70,8 +70,9 @@ export default function DocsPage() {
       </header>
 
       {/* Content */}
-      <div className={tab === 'rest' ? 'p-4' : ''}>
+      <div className={tab === 'rest' || tab === 'cron' ? 'p-4' : ''}>
         {tab === 'rest' && <SwaggerUI url="/openapi.yml" />}
+        {tab === 'cron' && <SwaggerUI url="/openapi-crons.yml" />}
 
         {tab === 'async' && (
           <div className="asyncapi-wrapper">
@@ -92,6 +93,8 @@ export default function DocsPage() {
             />
           </div>
         )}
+
+        {tab === 'webhook' && <SwaggerUI url="/openapi-webhooks.yml" />}
       </div>
 
       <style>{`
@@ -201,14 +204,35 @@ export default function DocsPage() {
         }
 
         /* ── Code blocks: keep dark for readability (same as Swagger) ── */
-        .asyncapi-wrapper .aui-root .bg-gray-800 {
+        .asyncapi-wrapper .aui-root .bg-gray-800,
+        .asyncapi-wrapper .aui-root .bg-gray-900 {
           background-color: #1e2433 !important;
         }
         .asyncapi-wrapper .aui-root .bg-gray-800 .text-white,
         .asyncapi-wrapper .aui-root .bg-gray-800 span,
-        .asyncapi-wrapper .aui-root .bg-gray-800 p {
+        .asyncapi-wrapper .aui-root .bg-gray-800 p,
+        .asyncapi-wrapper .aui-root .bg-gray-900 .text-white,
+        .asyncapi-wrapper .aui-root .bg-gray-900 span,
+        .asyncapi-wrapper .aui-root .bg-gray-900 p {
           color: #e2e8f0 !important;
           opacity: 1 !important;
+        }
+
+        /* ── Examples section overrides ── */
+        .asyncapi-wrapper .aui-root .examples {
+          background-color: ${palette.background} !important;
+        }
+        .asyncapi-wrapper .aui-root .examples .bg-gray-800,
+        .asyncapi-wrapper .aui-root .examples pre {
+          background-color: #1e2433 !important;
+        }
+        .asyncapi-wrapper .aui-root .examples pre,
+        .asyncapi-wrapper .aui-root .examples code {
+          color: #e2e8f0 !important;
+        }
+        .asyncapi-wrapper .aui-root .examples .text-gray-400,
+        .asyncapi-wrapper .aui-root .examples .text-gray-500 {
+          color: #94a3b8 !important;
         }
 
         /* ── Shadow / card sections ── */

@@ -75,7 +75,7 @@ export default function DocsPage() {
         {tab === 'cron' && <SwaggerUI url="/openapi-crons.yml" />}
 
         {tab === 'async' && (
-          <div className="asyncapi-wrapper">
+          <div className="asyncapi-wrapper" style={{ '--async-bg': palette.background, '--async-text': palette.text, '--async-border': palette.gridLines } as React.CSSProperties}>
             <AsyncApiComponent
               schema={{ url: '/asyncapi.yml' }}
               config={{
@@ -107,7 +107,15 @@ export default function DocsPage() {
         .asyncapi-wrapper > * { flex: 1; }
 
         /* ── Root font & background ── */
-        .asyncapi-wrapper .aui-root {
+        .asyncapi-wrapper {
+          --async-bg: ${palette.background};
+          --async-text: ${palette.text};
+          --async-border: ${palette.gridLines};
+        }
+        .asyncapi-wrapper .aui-root,
+        .asyncapi-wrapper :host,
+        .asyncapi-wrapper [class*="asyncapi"],
+        .asyncapi-wrapper *::slotted(*) {
           font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif !important;
           background-color: ${palette.background} !important;
           color: ${palette.text} !important;
@@ -323,6 +331,24 @@ export default function DocsPage() {
         .asyncapi-wrapper .aui-root div[style*="color: black"],
         .asyncapi-wrapper .aui-root td[style*="color"],
         .asyncapi-wrapper .aui-root th[style*="color"] {
+          color: ${palette.text} !important;
+        }
+
+        /* ── Ultimate override - force everything to use palette colors ── */
+        .asyncapi-wrapper .aui-root > div,
+        .asyncapi-wrapper .aui-root section,
+        .asyncapi-wrapper .aui-root main,
+        .asyncapi-wrapper .aui-root article,
+        .asyncapi-wrapper .aui-root aside {
+          background-color: ${palette.background} !important;
+        }
+        .asyncapi-wrapper .aui-root span,
+        .asyncapi-wrapper .aui-root p,
+        .asyncapi-wrapper .aui-root div,
+        .asyncapi-wrapper .aui-root td,
+        .asyncapi-wrapper .aui-root th,
+        .asyncapi-wrapper .aui-root li,
+        .asyncapi-wrapper .aui-root label {
           color: ${palette.text} !important;
         }
       `}</style>

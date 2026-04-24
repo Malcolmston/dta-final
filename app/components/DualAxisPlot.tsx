@@ -541,7 +541,7 @@ export default function DualAxisPlot({ ticker: initialTicker = "AAPL" }: DualAxi
     return () => {
       tooltip.remove();
     };
-  }, [stockData, period, generatePrediction, findPeaksAndTroughs, generateSignals]);
+  }, [stockData, period, palette, generatePrediction, findPeaksAndTroughs, generateSignals]);
 
   // Handle resize
   useEffect(() => {

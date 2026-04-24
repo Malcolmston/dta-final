@@ -15,8 +15,8 @@ interface BenchmarkData {
 const BENCHMARKS = [
   { symbol: "^GSPC", name: "S&P 500", color: "#3b82f6" },
   { symbol: "^RUT", name: "Russell 2000", color: "#f97316" },
-  { symbol: "^AGG", name: "Bond Index (AGG)", color: "#22c55e" },
-  { symbol: "^MSCI", name: "International (EAFE)", color: "#a855f7" },
+  { symbol: "BND", name: "Bond Index (BND)", color: "#22c55e" },
+  { symbol: "VEA", name: "International (VEA)", color: "#a855f7" },
 ];
 
 const TIME_RANGES = [
@@ -112,7 +112,7 @@ export default function BenchmarkComparison() {
           .tickFormat(() => "")
       )
       .selectAll("line")
-      .attr("stroke", "palette.gridLines")
+      .attr("stroke", palette.gridLines)
       .attr("stroke-dasharray", "2,2");
 
     svg.selectAll(".grid .domain").remove();
@@ -125,7 +125,7 @@ export default function BenchmarkComparison() {
         .attr("x2", width - margin.right)
         .attr("y1", zeroY)
         .attr("y2", zeroY)
-        .attr("stroke", "palette.text")
+        .attr("stroke", palette.text)
         .attr("stroke-width", 1.5)
         .attr("stroke-dasharray", "4,4");
     }
@@ -135,14 +135,14 @@ export default function BenchmarkComparison() {
       .attr("transform", `translate(0,${height - margin.bottom})`)
       .call(d3.axisBottom(xScale).ticks(6))
       .selectAll("text")
-      .attr("fill", "palette.text");
+      .attr("fill", palette.text);
 
     // Y Axis
     svg.append("g")
       .attr("transform", `translate(${margin.left},0)`)
       .call(d3.axisLeft(yScale).ticks(6).tickFormat((d) => `${d}%`))
       .selectAll("text")
-      .attr("fill", "palette.text");
+      .attr("fill", palette.text);
 
     // Y Axis label
     svg.append("text")
@@ -150,7 +150,7 @@ export default function BenchmarkComparison() {
       .attr("y", 15)
       .attr("x", -(height / 2))
       .attr("text-anchor", "middle")
-      .attr("fill", "palette.text")
+      .attr("fill", palette.text)
       .text("% Change");
 
     // Draw benchmark lines
@@ -201,7 +201,7 @@ export default function BenchmarkComparison() {
       g.append("text")
         .attr("x", 18)
         .attr("y", 10)
-        .attr("fill", "palette.text")
+        .attr("fill", palette.text)
         .attr("font-size", "12px")
         .text(bm.name)
         .style("cursor", "pointer")
@@ -215,7 +215,7 @@ export default function BenchmarkComparison() {
       .attr("x", width / 2)
       .attr("y", 15)
       .attr("text-anchor", "middle")
-      .attr("fill", "palette.text")
+      .attr("fill", palette.text)
       .attr("font-size", "14px")
       .attr("font-weight", "bold")
       .text("Benchmark Comparison - Percentage Change");
@@ -242,7 +242,7 @@ export default function BenchmarkComparison() {
       {/* Disclaimer */}
       <div className="mb-4 p-3 rounded-lg border" style={{ backgroundColor: palette.accent + "15", borderColor: palette.accent + "40" }}>
         <p className="text-sm" style={{ color: palette.text }}>
-          <strong>Why Compare to Benchmarks?</strong> A return looks good or bad only in context. The S&P 500 represents large US stocks, Russell 2000 represents small US stocks, and AGG represents US bonds. Use these to understand if your portfolio is performing as expected.
+          <strong>Why Compare to Benchmarks?</strong> A return looks good or bad only in context. The S&P 500 represents large US stocks, Russell 2000 represents small US stocks, and BND represents US bonds. Use these to understand if your portfolio is performing as expected.
         </p>
       </div>
 
@@ -316,9 +316,9 @@ export default function BenchmarkComparison() {
       </div>
 
       {/* Reference Information */}
-      <div className="mt-4 p-3 bg-blue-50 rounded-lg">
-        <p className="text-xs text-blue-700">
-          <strong>Benchmark Reference:</strong> S&P 500 (^GSPC) - 500 large US companies; Russell 2000 (^RUT) - 2000 small US companies; AGG (^AGG) - US investment grade bonds; MSCI EAFE (^MSCI) - International developed market stocks.
+      <div className="mt-4 p-3 rounded-lg" style={{ backgroundColor: palette.primary + "15" }}>
+        <p className="text-xs" style={{ color: palette.text }}>
+          <strong>Benchmark Reference:</strong> S&P 500 (^GSPC) - 500 large US companies; Russell 2000 (^RUT) - 2000 small US companies; BND (BND) - US bonds; VEA (VEA) - International developed market stocks.
         </p>
       </div>
     </div>

@@ -355,7 +355,7 @@ export default function Heatmap() {
     return () => {
       tooltip.remove();
     };
-  }, [performanceData]);
+  }, [performanceData, palette]);
 
   return (
     <div className="w-full max-w-5xl mx-auto p-6 rounded-xl shadow-lg relative" style={{ backgroundColor: palette.background, border: `1px solid ${palette.gridLines}` }}>

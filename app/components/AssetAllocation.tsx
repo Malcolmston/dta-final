@@ -175,11 +175,11 @@ export default function AssetAllocation() {
           {ALLOCATION_PROFILES.map((profile) => (
             <div
               key={profile.name}
-              className={`p-3 rounded-lg border ${
-                profile.name === recommended.name
-                  ? "border-blue-300 bg-blue-50"
-                  : "border-transparent"
-              }`}
+              className="p-3 rounded-lg border transition-all"
+              style={{
+                borderColor: profile.name === recommended.name ? palette.primary : 'transparent',
+                backgroundColor: profile.name === recommended.name ? palette.primary + '15' : 'transparent',
+              }}
             >
               <div className="flex items-center justify-between mb-1">
                 <span className="font-medium" style={{ color: palette.text }}>{profile.name}</span>

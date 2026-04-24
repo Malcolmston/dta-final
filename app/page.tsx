@@ -74,6 +74,7 @@ export default function Home() {
   const [initialized, setInitialized] = useState(false);
   const [activeSection, setActiveSection] = useState<DashboardSection>("overview");
   const [isSimpleMode, setIsSimpleMode] = useState(true);
+  const [showSettings, setShowSettings] = useState(false);
   const { palette, isDarkMode, setIsDarkMode } = useColorPalette();
   const { goals, updateGoals } = useInvestmentGoals();
 
@@ -170,7 +171,7 @@ export default function Home() {
               <SectionAnalytics section="analysis" />
               <div className="mb-6 p-6 rounded-xl border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
                 <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Technical Analysis</h3>
-                <AnalysisTabs />
+                <AnalysisTabs showSettings={showSettings} />
                 <ChartAnalysis chartType="AnalysisTabs" isSimpleMode={isSimpleMode} />
               </div>
               <div className="mb-6 p-6 rounded-xl border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
@@ -376,7 +377,7 @@ export default function Home() {
             <SectionAnalytics section="analysis" />
             <div className="mb-6 p-6 rounded-xl border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
               <h3 className="font-semibold mb-2" style={{ color: palette.text }}>Multi-Indicator Technical Panel</h3>
-              <AnalysisTabs />
+              <AnalysisTabs showSettings={showSettings} />
               <ChartAnalysis chartType="AnalysisTabs" isSimpleMode={isSimpleMode} />
             </div>
             <div className="mb-6 p-6 rounded-xl border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
@@ -448,37 +449,64 @@ export default function Home() {
             </div>
             <div className="flex items-center gap-3">
               {/* Dark Mode Toggle */}
+              <div className="flex items-center gap-2">
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" style={{ color: palette.text }}>
+                  <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+                </svg>
+                <button
+                  type="button"
+                  onClick={() => setIsDarkMode(!isDarkMode)}
+                  className="relative inline-flex h-8 w-16 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-300 focus:outline-none"
+                  style={{
+                    backgroundColor: isDarkMode ? palette.primary : palette.gridLines,
+                  }}
+                >
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none inline-block h-7 w-7 transform rounded-full bg-white shadow-lg ring-0 transition-transform duration-300"
+                    style={{
+                      transform: isDarkMode ? 'translateX(26px)' : 'translateX(1px)',
+                      transitionTimingFunction: 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+                    }}
+                  />
+                </button>
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" style={{ color: palette.text }}>
+                  <path fillRule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <span className="text-xs font-medium" style={{ color: palette.text, opacity: 0.7 }}>Simple</span>
               <button
-                onClick={() => setIsDarkMode(!isDarkMode)}
-                className="flex items-center gap-2 px-3 py-2 rounded-full border transition-all hover:opacity-80"
-                style={{
-                  backgroundColor: isDarkMode ? palette.secondary : palette.background,
-                  borderColor: palette.gridLines,
-                }}
-                title={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
-              >
-                {isDarkMode ? (
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clipRule="evenodd" />
-                  </svg>
-                ) : (
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
-                  </svg>
-                )}
-                <span className="text-sm font-medium" style={{ color: palette.text }}>
-                  {isDarkMode ? "Light" : "Dark"}
-                </span>
-              </button>
-              <button
+                type="button"
                 onClick={() => setIsSimpleMode(!isSimpleMode)}
-                className="px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                className="relative inline-flex h-8 w-16 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-300 focus:outline-none"
                 style={{
                   backgroundColor: isSimpleMode ? palette.primary : palette.gridLines,
-                  color: isSimpleMode ? "#ffffff" : palette.text,
                 }}
               >
-                {isSimpleMode ? "Simple Mode" : "Detailed Mode"}
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none inline-block h-7 w-7 transform rounded-full bg-white shadow-lg ring-0 transition-transform duration-300"
+                  style={{
+                    transform: isSimpleMode ? 'translateX(26px)' : 'translateX(1px)',
+                    transitionTimingFunction: 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+                  }}
+                />
+              </button>
+              <span className="text-xs font-medium" style={{ color: palette.text, opacity: 0.7 }}>Detailed</span>
+              <button
+                onClick={() => setShowSettings(!showSettings)}
+                className="p-2 rounded-lg border transition-all hover:opacity-80"
+                style={{
+                  backgroundColor: showSettings ? palette.primary : palette.background,
+                  borderColor: palette.gridLines,
+                  color: showSettings ? "#ffffff" : palette.text,
+                }}
+                title="Settings"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
               </button>
               <span className="text-xs uppercase tracking-wider" style={{ color: palette.text, opacity: 0.5 }}>
                 Last updated: Today

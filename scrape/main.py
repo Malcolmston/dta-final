@@ -13,6 +13,25 @@ except ImportError:
 import yaml
 import yfinance as yf
 
+# Import from stocs package
+from stocs import (
+    client,
+    constants,
+    indicators,
+    portfolio,
+)
+
+# Re-export for backward compatibility
+from stocs.constants import (
+    BOND_TICKERS,
+    INTERNATIONAL_TICKERS,
+    STOCK_TICKERS,
+    CRYPTO_TICKERS,
+    STOCK_POOLS,
+    BOND_POOL,
+    CRYPTO_POOL,
+)
+
 # ---------------------------------------------------------------------------
 # WebSocket
 # ---------------------------------------------------------------------------
@@ -1208,6 +1227,15 @@ BOND_TICKERS = {
     "LQD": "iShares iBoxx $ Investment Grade Corporate Bond ETF",
 }
 
+INTERNATIONAL_TICKERS = {
+    "EFA": "iShares MSCI EAFE ETF",
+    "VEA": "Vanguard FTSE Developed Markets ETF",
+    "VWO": "Vanguard FTSE Emerging Markets ETF",
+    "IEFA": "iShares Core MSCI EAFE ETF",
+    "IEMG": "iShares Core MSCI Emerging Markets ETF",
+    "SCHF": "Schwab International Equity ETF",
+}
+
 
 def get_bond_indicators(ticker, period="6mo"):
     """
@@ -1371,6 +1399,7 @@ def get_portfolio(strategy="balanced", age=30, capital=10000, top_n=5):
 
     # Bond recommendations
     bond_pool = ["TLT", "IEF", "AGG", "BND", "LQD"]
+    intl_pool = ["VEA", "EFA", "VWO"]
 
     # Get stocks
     stocks_key = strategy if strategy in stock_pools else "balanced"

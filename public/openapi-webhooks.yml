@@ -57,7 +57,7 @@ paths:
           schema:
             type: string
             default: 1y
-            enum: [1d, 5d, 1w, 1m, 3m, 6m, 1y, 2y, 5y]
+            enum: [1d, 5d, 1w, 1m, 3m, 6m, 1y, 2y, 5y, all]
           example: 1y
         - name: interval
           in: query
@@ -153,10 +153,11 @@ paths:
             type: string
         - name: period
           in: query
-          description: Time period
+          description: Time period (1d, 5d, 1w, 1m, 3m, 6m, 1y, 2y, 5y, all)
           schema:
             type: string
             default: 1y
+            enum: [1d, 5d, 1w, 1m, 3m, 6m, 1y, 2y, 5y, all]
         - name: interval
           in: query
           description: Data interval
@@ -242,10 +243,11 @@ paths:
           example: AAPL
         - name: period
           in: query
-          description: Time period
+          description: Time period (1d, 5d, 1w, 1m, 3m, 6m, 1y, 2y, 5y, all)
           schema:
             type: string
             default: 1y
+            enum: [1d, 5d, 1w, 1m, 3m, 6m, 1y, 2y, 5y, all]
         - name: interval
           in: query
           description: Data interval

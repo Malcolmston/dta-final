@@ -23,8 +23,6 @@ tags:
     description: Stock market data endpoints
   - name: Health
     description: System health checks
-  - name: Queue
-    description: Background job queue
   - name: Stocs
     description: Stock data library (new TypeScript implementation)
 
@@ -424,45 +422,6 @@ paths:
           description: Invalid job type
         '500':
           description: Internal server error
-
-  /api/cron/lookup:
-    get:
-      summary: Cron job for stock lookup
-      description: Scheduled job for performing stock lookups
-      operationId: runLookupCron
-      tags:
-        - Cron
-      responses:
-        '200':
-          description: Job completed
-        '500':
-          description: Job failed
-
-  /api/cron/pull:
-    get:
-      summary: Cron job for data pull
-      description: Scheduled job for pulling stock data
-      operationId: runPullCron
-      tags:
-        - Cron
-      responses:
-        '200':
-          description: Job completed
-        '500':
-          description: Job failed
-
-  /api/cron/storage:
-    get:
-      summary: Cron job for storage management
-      description: Scheduled job for managing data storage
-      operationId: runStorageCron
-      tags:
-        - Cron
-      responses:
-        '200':
-          description: Job completed
-        '500':
-          description: Job failed
 
 components:
   schemas:

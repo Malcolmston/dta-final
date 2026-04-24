@@ -246,14 +246,14 @@ export default function TaxAwareFeatures() {
       )}
 
       {/* Tax-Loss Harvesting Section */}
-      <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-        <h3 className="font-semibold text-blue-800 mb-2">Tax-Loss Harvesting</h3>
-        <p className="text-sm text-blue-700 mb-3">
+      <div className="mt-6 p-4 rounded-lg" style={{ backgroundColor: palette.primary + "15", border: `1px solid ${palette.primary}30` }}>
+        <h3 className="font-semibold mb-2" style={{ color: palette.primary }}>Tax-Loss Harvesting</h3>
+        <p className="text-sm mb-3" style={{ color: palette.text, opacity: 0.8 }}>
           If you have losses in taxable accounts, you can sell losing positions to offset gains. This can reduce your tax bill while maintaining your asset allocation.
         </p>
-        <div className="bg-white rounded-lg p-3 text-sm">
-          <p className="font-medium palette.text">Key Points:</p>
-          <ul className="list-disc list-inside palette.text mt-2 space-y-1">
+        <div className="rounded-lg p-3 text-sm" style={{ backgroundColor: palette.background }}>
+          <p className="font-medium" style={{ color: palette.text }}>Key Points:</p>
+          <ul className="list-disc list-inside mt-2 space-y-1" style={{ color: palette.text }}>
             <li>Can offset capital gains dollar-for-dollar</li>
             <li>Up to $3,000 of excess loss can offset ordinary income</li>
             <li>Must wait 30 days before repurchasing same/similar security (wash sale rule)</li>
@@ -263,8 +263,8 @@ export default function TaxAwareFeatures() {
       </div>
 
       {/* Disclaimer */}
-      <div className="mt-6 p-3 bg-amber-50 border border-amber-200 rounded-lg">
-        <p className="text-xs text-amber-700">
+      <div className="mt-6 p-3 rounded-lg" style={{ backgroundColor: palette.secondary + "15", border: `1px solid ${palette.secondary}30` }}>
+        <p className="text-xs" style={{ color: palette.text }}>
           <strong>Disclaimer:</strong> This information is for educational purposes only and does not constitute tax advice. Consult a qualified tax professional for advice specific to your situation.
         </p>
       </div>

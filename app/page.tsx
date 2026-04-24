@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useColorPalette } from "./context/ColorPaletteContext";
+import { useColorPalette, colorPalettes } from "./context/ColorPaletteContext";
 import DashboardTabs, { DashboardSection } from "./components/DashboardTabs";
 import MarketPredictor from "./components/MarketPredictor";
 import TechnicalAnalysis from "./components/TechnicalAnalysis";
@@ -76,7 +76,7 @@ export default function Home() {
   const [isSimpleMode, setIsSimpleMode] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
   const [showAccessibility, setShowAccessibility] = useState(false);
-  const { palette, isDarkMode, setIsDarkMode } = useColorPalette();
+  const { palette, paletteKey, setPaletteKey, isDarkMode, setIsDarkMode } = useColorPalette();
   const { goals, updateGoals } = useInvestmentGoals();
 
   // Load saved configuration on mount
@@ -115,7 +115,7 @@ export default function Home() {
     if (isSimpleMode) {
       switch (activeSection) {
         case "overview":
-          return <OverviewSection showAccessibility={showAccessibility} />;
+          return <OverviewSection />;
 
         case "trends":
           return (
@@ -310,7 +310,7 @@ export default function Home() {
     // Detailed mode content (for advanced users)
     switch (activeSection) {
       case "overview":
-        return <OverviewSection showAccessibility={showAccessibility} />;
+        return <OverviewSection />;
 
       case "trends":
         return (
@@ -626,21 +626,155 @@ export default function Home() {
                   }}
                 />
               </button>
-              {/* Accessibility Button */}
-              <button
-                onClick={() => setShowAccessibility(!showAccessibility)}
-                className="p-2 rounded-lg border transition-all hover:opacity-80"
-                style={{
-                  backgroundColor: showAccessibility ? palette.primary : palette.background,
-                  borderColor: palette.gridLines,
-                  color: showAccessibility ? "#ffffff" : palette.text,
-                }}
-                title="Accessibility Settings"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </button>
+              {/* Accessibility Button with Popup */}
+              <div className="relative">
+                <button
+                  onClick={() => setShowAccessibility(!showAccessibility)}
+                  className="p-2 rounded-lg border transition-all hover:opacity-80"
+                  style={{
+                    backgroundColor: showAccessibility ? palette.primary : palette.background,
+                    borderColor: palette.gridLines,
+                    color: showAccessibility ? "#ffffff" : palette.text,
+                  }}
+                  title="Accessibility Settings"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                </button>
+                {showAccessibility && (
+                  <div
+                    className="absolute right-0 top-full mt-2 w-80 rounded-xl shadow-lg border p-4 z-50"
+                    style={{
+                      backgroundColor: palette.background,
+                      borderColor: palette.gridLines,
+                    }}
+                  >
+                    <div className="mb-3">
+                      <h4 className="font-semibold" style={{ color: palette.text }}>Accessibility Settings</h4>
+                      <p className="text-xs mt-1" style={{ color: palette.text, opacity: 0.6 }}>
+                        Choose colors that work for your vision.
+                      </p>
+                    </div>
+                    <div className="space-y-4 max-h-96 overflow-y-auto">
+                      {Object.entries({
+                        "Standard": ["default", "highContrast"],
+                        "Color Blindness (R-G)": ["colorblind", "protanopia", "deuteranopia", "brownBlue", "tealOrange"],
+                        "Color Blindness (B-Y)": ["tritanopia", "blueYellow", "cyanMagenta"],
+                        "Total Color Blindness": ["grayscale"],
+                        "Low Vision": ["lowVision"],
+                        "Sepia": ["sepia"],
+                      }).map(([categoryTitle, keys]) => (
+                        <div key={categoryTitle}>
+                          <h5 className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: palette.text, opacity: 0.5 }}>
+                            {categoryTitle}
+                          </h5>
+                          <div className="space-y-2">
+                            {keys.map((key) => (
+                              <button
+                                key={key}
+                                onClick={() => setPaletteKey(key as any)}
+                                className={`w-full text-left px-3 py-2 rounded-lg border transition-all ${paletteKey === key ? "ring-2 ring-offset-1" : ""}`}
+                                style={{
+                                  backgroundColor: paletteKey === key ? palette.primary + "10" : "transparent",
+                                  borderColor: paletteKey === key ? palette.primary : palette.gridLines,
+                                }}
+                              >
+                                <div className="flex items-center justify-between">
+                                  <span className="text-sm font-medium" style={{ color: palette.text }}>
+                                    {isDarkMode ? colorPalettes[key as keyof typeof colorPalettes].dark.name : colorPalettes[key as keyof typeof colorPalettes].light.name}
+                                  </span>
+                                  <div
+                                    className="w-6 h-6 rounded-full"
+                                    style={{
+                                      background: `linear-gradient(to bottom, ${colorPalettes[key as keyof typeof colorPalettes].light.background} 50%, ${colorPalettes[key as keyof typeof colorPalettes].dark.background} 50%)`,
+                                      border: `2px solid ${paletteKey === key ? palette.primary : palette.gridLines}`,
+                                    }}
+                                    title="Light (top) / Dark (bottom)"
+                                  />
+                                </div>
+                                {/* Color swatches */}
+                                <div className="flex gap-1 mt-2">
+                                  <div
+                                    className="w-3 h-3 rounded-full"
+                                    style={{
+                                      background: `linear-gradient(135deg, ${colorPalettes[key as keyof typeof colorPalettes].light.primary} 50%, ${colorPalettes[key as keyof typeof colorPalettes].dark.primary} 50%)`,
+                                    }}
+                                    title="Primary"
+                                  />
+                                  <div
+                                    className="w-3 h-3 rounded-full"
+                                    style={{
+                                      background: `linear-gradient(135deg, ${colorPalettes[key as keyof typeof colorPalettes].light.secondary} 50%, ${colorPalettes[key as keyof typeof colorPalettes].dark.secondary} 50%)`,
+                                    }}
+                                    title="Secondary"
+                                  />
+                                  <div
+                                    className="w-3 h-3 rounded-full"
+                                    style={{
+                                      background: `linear-gradient(135deg, ${colorPalettes[key as keyof typeof colorPalettes].light.positive} 50%, ${colorPalettes[key as keyof typeof colorPalettes].dark.positive} 50%)`,
+                                    }}
+                                    title="Positive"
+                                  />
+                                  <div
+                                    className="w-3 h-3 rounded-full"
+                                    style={{
+                                      background: `linear-gradient(135deg, ${colorPalettes[key as keyof typeof colorPalettes].light.negative} 50%, ${colorPalettes[key as keyof typeof colorPalettes].dark.negative} 50%)`,
+                                    }}
+                                    title="Negative"
+                                  />
+                                  <div
+                                    className="w-3 h-3 rounded-full"
+                                    style={{
+                                      background: `linear-gradient(135deg, ${colorPalettes[key as keyof typeof colorPalettes].light.accent} 50%, ${colorPalettes[key as keyof typeof colorPalettes].dark.accent} 50%)`,
+                                    }}
+                                    title="Accent"
+                                  />
+                                </div>
+                                {/* Toggle when selected */}
+                                {paletteKey === key && (
+                                  <div className="mt-3 pt-2 border-t" style={{ borderColor: palette.gridLines }}>
+                                    <div className="flex items-center justify-between">
+                                      <span className="text-xs" style={{ color: palette.text }}>Mode:</span>
+                                      <button
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          setIsDarkMode(!isDarkMode);
+                                        }}
+                                        className="flex items-center gap-2 px-2 py-1 rounded-full text-xs font-medium transition-colors"
+                                        style={{
+                                          backgroundColor: isDarkMode ? palette.secondary : palette.gridLines,
+                                          color: isDarkMode ? palette.background : palette.text,
+                                        }}
+                                      >
+                                        {isDarkMode ? (
+                                          <>
+                                            <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+                                            </svg>
+                                            Dark
+                                          </>
+                                        ) : (
+                                          <>
+                                            <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                              <path fillRule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clipRule="evenodd" />
+                                            </svg>
+                                            Light
+                                          </>
+                                        )}
+                                      </button>
+                                    </div>
+                                  </div>
+                                )}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
               <span className="text-xs uppercase tracking-wider" style={{ color: palette.text, opacity: 0.5 }}>
                 Last updated: Today
               </span>

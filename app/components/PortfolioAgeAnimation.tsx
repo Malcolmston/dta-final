@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useMemo } from "react";
 import * as d3 from "d3";
+import { useColorPalette } from "../context/ColorPaletteContext";
 
 interface PortfolioData {
   id: string;
@@ -90,6 +91,7 @@ function getDominantAsset(portfolio: { stocks: number; bonds: number; cds: numbe
 }
 
 export default function PortfolioAgeAnimation() {
+  const { palette } = useColorPalette();
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
@@ -256,7 +258,7 @@ export default function PortfolioAgeAnimation() {
         .attr("y", centerY + groupRadius + 20)
         .attr("text-anchor", "middle")
         .attr("font-size", "12px")
-        .attr("fill", "#6b7280")
+        .attr("fill", palette.text)
         .attr("class", `allocation-${asset}`)
         .text(`${asset.charAt(0).toUpperCase() + asset.slice(1)}`);
     });
@@ -341,17 +343,17 @@ export default function PortfolioAgeAnimation() {
           };
           const dominant = getDominantAsset(d.portfolio);
           tooltip.innerHTML = `
-            <div style="font-weight: 600; margin-bottom: 4px;">Age: ${d.age}</div>
-            <div style="font-size: 11px; color: #6b7280; margin-bottom: 4px;">
+            <div style="font-weight: 600; margin-bottom: 4px; color: ${palette.text};">Age: ${d.age}</div>
+            <div style="font-size: 11px; color: ${palette.text}; opacity: 0.7; margin-bottom: 4px;">
               Stocks: <span style="color: ${assetColors.stocks}">${d.portfolio.stocks.toFixed(1)}%</span> |
               Bonds: <span style="color: ${assetColors.bonds}">${d.portfolio.bonds.toFixed(1)}%</span> |
               CDs: <span style="color: ${assetColors.cds}">${d.portfolio.cds.toFixed(1)}%</span> |
               Crypto: <span style="color: ${assetColors.crypto}">${d.portfolio.crypto.toFixed(1)}%</span>
             </div>
-            <div style="font-size: 11px; color: #6b7280;">
+            <div style="font-size: 11px; color: ${palette.text}; opacity: 0.7;">
               Dominant: <strong style="color: ${GROUP_CONFIG[dominant].color}">${GROUP_CONFIG[dominant].label}</strong>
             </div>
-            <div style="font-size: 11px; color: #6b7280;">
+            <div style="font-size: 11px; color: ${palette.text}; opacity: 0.7;">
               Total: $${d.totalValue.toLocaleString()}
             </div>
           `;

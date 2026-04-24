@@ -334,7 +334,7 @@ export default function NetworkGraph() {
       .attr("width", legendWidth)
       .attr("height", legendHeight)
       .attr("fill", "white")
-      .attr("stroke", "#e5e7eb")
+      .attr("stroke", palette.gridLines)
       .attr("rx", 8)
       .attr("opacity", 0.95);
 
@@ -457,14 +457,15 @@ export default function NetworkGraph() {
       .attr("class", "tooltip")
       .style("position", "absolute")
       .style("visibility", "hidden")
-      .style("background", "white")
-      .style("border", "1px solid #e5e7eb")
+      .style("background", palette.background)
+      .style("border", `1px solid ${palette.gridLines}`)
       .style("border-radius", "6px")
       .style("padding", "8px 12px")
       .style("font-size", "12px")
-      .style("box-shadow", "0 2px 8px rgba(0,0,0,0.1)")
+      .style("box-shadow", "0 2px 8px rgba(0,0,0,0.15)")
       .style("pointer-events", "none")
-      .style("z-index", "10");
+      .style("z-index", "10")
+      .style("color", palette.text);
 
     // Node hover
     node.on("mouseover", (event, d) => {
@@ -482,9 +483,9 @@ export default function NetworkGraph() {
         .style("left", `${event.offsetX + 15}px`)
         .style("top", `${event.offsetY - 10}px`)
         .html(
-          `<div style="font-weight: 600; margin-bottom: 4px;">${d.symbol}</div>
-           <div>Performance: ${d.performance >= 0 ? "+" : ""}${d.performance.toFixed(2)}%</div>
-           ${corrInfo ? `<div style="margin-top: 4px; border-top: 1px solid #e5e7eb; padding-top: 4px;"><strong>Correlations:</strong><br/>${corrInfo}</div>` : ""}`
+          `<div style="font-weight: 600; margin-bottom: 4px; color: ${palette.text};">${d.symbol}</div>
+           <div style="color: ${palette.text};">Performance: ${d.performance >= 0 ? "+" : ""}${d.performance.toFixed(2)}%</div>
+           ${corrInfo ? `<div style="margin-top: 4px; border-top: 1px solid ${palette.gridLines}; padding-top: 4px;"><strong style="color: ${palette.text};">Correlations:</strong><br/>${corrInfo}</div>` : ""}`
         );
     })
     .on("mouseout", () => {

@@ -217,7 +217,7 @@ export default function LagCorrelationPlot() {
       .select(".domain")
       .remove();
 
-    svg.selectAll(".grid line").attr("stroke", "#e5e7eb").attr("stroke-dasharray", "3,3");
+    svg.selectAll(".grid line").attr("stroke", palette.gridLines).attr("stroke-dasharray", "3,3");
 
     // Zero line (y = 0)
     svg
@@ -226,7 +226,7 @@ export default function LagCorrelationPlot() {
       .attr("x2", width - margin.right)
       .attr("y1", yScale(0))
       .attr("y2", yScale(0))
-      .attr("stroke", "#374151")
+      .attr("stroke", palette.text)
       .attr("stroke-width", 2);
 
     // Significance threshold lines
@@ -315,10 +315,10 @@ export default function LagCorrelationPlot() {
       .attr("transform", `translate(0,${height - margin.bottom})`)
       .call(d3.axisBottom(xScale).ticks(lagRange * 2 + 1))
       .select(".domain")
-      .attr("stroke", "#374151");
+      .attr("stroke", palette.text);
 
-    svg.selectAll(".tick line").attr("stroke", "#9ca3af");
-    svg.selectAll(".tick text").attr("fill", "#374151").attr("font-size", "11px");
+    svg.selectAll(".tick line").attr("stroke", palette.gridLines);
+    svg.selectAll(".tick text").attr("fill", palette.text).attr("font-size", "11px");
 
     // X Axis label
     svg
@@ -336,10 +336,10 @@ export default function LagCorrelationPlot() {
       .attr("transform", `translate(${margin.left},0)`)
       .call(d3.axisLeft(yScale).ticks(5))
       .select(".domain")
-      .attr("stroke", "#374151");
+      .attr("stroke", palette.text);
 
-    svg.selectAll(".tick line").attr("stroke", "#9ca3af");
-    svg.selectAll(".tick text").attr("fill", "#374151").attr("font-size", "11px");
+    svg.selectAll(".tick line").attr("stroke", palette.gridLines);
+    svg.selectAll(".tick text").attr("fill", palette.text).attr("font-size", "11px");
 
     // Y Axis label
     svg
@@ -359,14 +359,15 @@ export default function LagCorrelationPlot() {
       .attr("class", "lag-tooltip")
       .style("position", "absolute")
       .style("visibility", "hidden")
-      .style("background", "white")
-      .style("border", "1px solid #e5e7eb")
+      .style("background", palette.background)
+      .style("border", `1px solid ${palette.gridLines}`)
       .style("border-radius", "6px")
       .style("padding", "10px 14px")
       .style("font-size", "12px")
       .style("box-shadow", "0 4px 12px rgba(0,0,0,0.15)")
       .style("pointer-events", "none")
-      .style("z-index", "10");
+      .style("z-index", "10")
+      .style("color", palette.text);
 
     // Add hover interactions
     svg
@@ -380,10 +381,10 @@ export default function LagCorrelationPlot() {
              <div style="color: ${data.correlation >= 0 ? "#22c55e" : "#ef4444"}; font-weight: 600; font-size: 14px;">
                r = ${data.correlation.toFixed(4)}
              </div>
-             <div style="color: #6b7280; font-size: 11px; margin-top: 4px;">
+             <div style="color: ${palette.text}; font-size: 11px; margin-top: 4px; opacity: 0.7;">
                ${data.significant ? "Statistically significant (p < 0.05)" : "Not significant"}
              </div>
-             <div style="color: #9ca3af; font-size: 10px; margin-top: 4px;">
+             <div style="color: ${palette.text}; font-size: 10px; margin-top: 4px; opacity: 0.6;">
                ${data.lag < 0 ? "Past values → Future" : data.lag > 0 ? "Future values → Past" : "Autocorrelation (lag 0)"}
              </div>`
           );

@@ -186,7 +186,7 @@ export default function Streamgraph() {
           .tickFormat(() => "")
       )
       .selectAll("line")
-      .attr("stroke", "#e5e7eb")
+      .attr("stroke", palette.gridLines)
       .attr("stroke-dasharray", "2,2");
 
     svg.selectAll(".grid .domain").remove();
@@ -275,14 +275,15 @@ export default function Streamgraph() {
       .attr("class", "tooltip")
       .style("position", "absolute")
       .style("visibility", "hidden")
-      .style("background", "white")
-      .style("border", "1px solid #e5e7eb")
+      .style("background", palette.background)
+      .style("border", `1px solid ${palette.gridLines}`)
       .style("border-radius", "6px")
       .style("padding", "8px 12px")
       .style("font-size", "12px")
-      .style("box-shadow", "0 2px 8px rgba(0,0,0,0.1)")
+      .style("box-shadow", "0 2px 8px rgba(0,0,0,0.15)")
       .style("pointer-events", "none")
-      .style("z-index", "10");
+      .style("z-index", "10")
+      .style("color", palette.text);
 
     // Hover overlay
     svg

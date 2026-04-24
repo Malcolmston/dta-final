@@ -1,4 +1,4 @@
-asyncapi: 3.1.0
+asyncapi: 3.0.0
 info:
   title: DTA Final Stock API
   description: |
@@ -33,8 +33,7 @@ servers:
     description: Redis server for queue and cache
 
 channels:
-  # Job Queue Channels
-  job/lookup:
+  job-lookup:
     address: job/lookup
     description: Channel for stock lookup background jobs
     messages:
@@ -43,7 +42,7 @@ channels:
       redis:
         isVirtualChannel: true
 
-  job/pull:
+  job-pull:
     address: job/pull
     description: Channel for data pull background jobs
     messages:
@@ -52,7 +51,7 @@ channels:
       redis:
         isVirtualChannel: true
 
-  job/storage:
+  job-storage:
     address: job/storage
     description: Channel for storage management background jobs
     messages:
@@ -61,33 +60,37 @@ channels:
       redis:
         isVirtualChannel: true
 
-  # Real-time Data Channels
-  realtime/quote:
+  realtime-quote:
     address: realtime/quote
     description: Channel for real-time stock quotes (future WebSocket)
     messages:
       $ref: '#/components/messages/QuoteUpdate'
     bindings:
-      websocket:
+      ws:
         method: GET
         query:
-          type: string
-          description: Stock ticker symbol to subscribe to
+          type: object
+          properties:
+            ticker:
+              type: string
+              description: Stock ticker symbol to subscribe to
 
-  realtime/signals:
+  realtime-signals:
     address: realtime/signals
     description: Channel for real-time trading signals (future WebSocket)
     messages:
       $ref: '#/components/messages/SignalUpdate'
     bindings:
-      websocket:
+      ws:
         method: GET
         query:
-          type: string
-          description: Stock ticker symbol to subscribe to
+          type: object
+          properties:
+            ticker:
+              type: string
+              description: Stock ticker symbol to subscribe to
 
-  # Server-Sent Events
-  events/heatmap:
+  events-heatmap:
     address: events/heatmap
     description: SSE endpoint for heatmap updates
     messages:
@@ -97,7 +100,7 @@ channels:
         method: GET
         path: /api/events/heatmap
 
-  events/notifications:
+  events-notifications:
     address: events/notifications
     description: SSE endpoint for user notifications
     messages:
@@ -107,8 +110,7 @@ channels:
         method: GET
         path: /api/events/notifications
 
-  # Cache Invalidation
-  cache/invalidate:
+  cache-invalidate:
     address: cache/invalidate
     description: Channel for cache invalidation events
     messages:
@@ -118,11 +120,10 @@ channels:
         isVirtualChannel: true
 
 operations:
-  # Job Producers (API endpoints that queue jobs)
   sendLookupJob:
     action: send
     channel:
-      $ref: '#/channels/job/lookup'
+      $ref: '#/channels/job-lookup'
     summary: Submit a stock lookup job to the queue
     description: |
       Called when a user requests a stock lookup. The job is queued
@@ -131,7 +132,7 @@ operations:
   sendPullJob:
     action: send
     channel:
-      $ref: '#/channels/job/pull'
+      $ref: '#/channels/job-pull'
     summary: Submit a data pull job to the queue
     description: |
       Called during scheduled data pulls or manual refresh requests.
@@ -139,16 +140,15 @@ operations:
   sendStorageJob:
     action: send
     channel:
-      $ref: '#/channels/job/storage'
+      $ref: '#/channels/job-storage'
     summary: Submit a storage management job to the queue
     description: |
       Called for cache cleanup, data archival, or storage optimization.
 
-  # Job Consumers (background workers)
   processLookupJob:
     action: receive
     channel:
-      $ref: '#/channels/job/lookup'
+      $ref: '#/channels/job-lookup'
     summary: Process stock lookup jobs
     description: |
       Background worker that processes lookup requests.
@@ -156,7 +156,7 @@ operations:
   processPullJob:
     action: receive
     channel:
-      $ref: '#/channels/job/pull'
+      $ref: '#/channels/job-pull'
     summary: Process data pull jobs
     description: |
       Background worker that fetches and processes stock data.
@@ -164,16 +164,15 @@ operations:
   processStorageJob:
     action: receive
     channel:
-      $ref: '#/channels/job/storage'
+      $ref: '#/channels/job-storage'
     summary: Process storage management jobs
     description: |
       Background worker that handles storage operations.
 
-  # Real-time Consumers
   subscribeToQuotes:
     action: receive
     channel:
-      $ref: '#/channels/realtime/quote'
+      $ref: '#/channels/realtime-quote'
     summary: Subscribe to real-time quote updates
     description: |
       WebSocket connection for receiving live price updates.
@@ -181,16 +180,15 @@ operations:
   subscribeToSignals:
     action: receive
     channel:
-      $ref: '#/channels/realtime/signals'
+      $ref: '#/channels/realtime-signals'
     summary: Subscribe to real-time signal updates
     description: |
       WebSocket connection for receiving trading signal updates.
 
-  # SSE Consumers
   streamHeatmap:
     action: receive
     channel:
-      $ref: '#/channels/events/heatmap'
+      $ref: '#/channels/events-heatmap'
     summary: Stream heatmap updates via SSE
     description: |
       Server-Sent Events endpoint for heatmap data updates.
@@ -198,272 +196,33 @@ operations:
   streamNotifications:
     action: receive
     channel:
-      $ref: '#/channels/events/notifications'
+      $ref: '#/channels/events-notifications'
     summary: Stream notifications via SSE
     description: |
       Server-Sent Events endpoint for user notifications.
 
 components:
   messages:
-    LookupJob:
-      name: lookupJob
-      title: Stock Lookup Job
-      description: Background job for stock symbol lookup
-      payload:
-        type: object
-        required:
-          - ticker
-        properties:
-          ticker:
-            type: string
-            description: Stock symbol to look up
-            example: AAPL
-          forceRefresh:
-            type: boolean
-            description: Force fresh lookup instead of cache
-            default: false
-          priority:
-            type: integer
-            description: Job priority (higher = more urgent)
-            default: 1
-          userId:
-            type: string
-            description: User who initiated the lookup
-
-    PullJob:
-      name: pullJob
-      title: Data Pull Job
-      description: Background job for pulling stock data
-      payload:
-        type: object
-        required:
-          - tickers
-          - period
-        properties:
-          tickers:
-            type: array
-            items:
-              type: string
-            description: List of stock symbols
-            example: [AAPL, MSFT, GOOGL]
-          period:
-            type: string
-            description: Time period to pull
-            enum: [1d, 5d, 1mo, 3mo, 6mo, 1y]
-          interval:
-            type: string
-            description: Data interval
-            default: 1d
-          destination:
-            type: string
-            enum: [cache, database, both]
-            default: cache
-
-    StorageJob:
-      name: storageJob
-      title: Storage Management Job
-      description: Background job for storage operations
-      payload:
-        type: object
-        properties:
-          operation:
-            type: string
-            enum: [cleanup, archive, optimize, backup]
-            description: Type of storage operation
-          olderThan:
-            type: integer
-            description: Age threshold in days for cleanup operations
-          targetSize:
-            type: integer
-            description: Target size in MB for optimization
-
-    QuoteUpdate:
-      name: quoteUpdate
-      title: Real-time Quote Update
-      description: Live price update for a stock
-      payload:
-        type: object
-        required:
-          - symbol
-          - price
-          - timestamp
-        properties:
-          symbol:
-            type: string
-            description: Stock symbol
-            example: AAPL
-          price:
-            type: number
-            format: double
-            description: Current price
-            example: 175.50
-          change:
-            type: number
-            format: double
-            description: Price change
-            example: 2.30
-          changePct:
-            type: number
-            format: double
-            description: Percentage change
-            example: 1.33
-          volume:
-            type: integer
-            format: int64
-            description: Trading volume
-            example: 50000000
-          timestamp:
-            type: string
-            format: date-time
-            description: Update timestamp
-
-    SignalUpdate:
-      name: signalUpdate
-      title: Trading Signal Update
-      description: Real-time trading signal notification
-      payload:
-        type: object
-        required:
-          - symbol
-          - signal
-          - timestamp
-        properties:
-          symbol:
-            type: string
-            description: Stock symbol
-            example: AAPL
-          signal:
-            type: string
-            enum: [BUY, SELL, HOLD]
-            description: Trading signal
-          confidence:
-            type: number
-            format: double
-            description: Signal confidence (0-100)
-            example: 85.5
-          trigger:
-            type: string
-            description: What triggered the signal
-            example: RSI oversold
-          timestamp:
-            type: string
-            format: date-time
-
-    HeatmapEvent:
-      name: heatmapEvent
-      title: Heatmap Update Event
-      description: Server-Sent Event for heatmap data updates
-      payload:
-        type: object
-        properties:
-          type:
-            type: string
-            const: heatmap
-          tickers:
-            type: array
-            items:
-              type: string
-          data:
-            type: array
-            items:
-              type: object
-              properties:
-                ticker:
-                  type: string
-                period:
-                  type: string
-                performance:
-                  type: number
-          timestamp:
-            type: string
-            format: date-time
-
-    NotificationEvent:
-      name: notificationEvent
-      title: User Notification Event
-      description: Server-Sent Event for user notifications
-      payload:
-        type: object
-        properties:
-          id:
-            type: string
-            format: uuid
-          type:
-            type: string
-            enum: [info, warning, error, success]
-          title:
-            type: string
-          message:
-            type: string
-          timestamp:
-            type: string
-            format: date-time
-          read:
-            type: boolean
-
-    CacheInvalidation:
-      name: cacheInvalidation
-      title: Cache Invalidation Event
-      description: Event indicating cached data has been invalidated
-      payload:
-        type: object
-        required:
-          - key
-        properties:
-          key:
-            type: string
-            description: Cache key that was invalidated
-            example: stock:AAPL:1y
-          reason:
-            type: string
-            enum: [expired, manual, updated]
-          timestamp:
-            type: string
-            format: date-time
+    LookupJob: {}
+    PullJob: {}
+    StorageJob: {}
+    QuoteUpdate: {}
+    SignalUpdate: {}
+    HeatmapEvent: {}
+    NotificationEvent: {}
+    CacheInvalidation: {}
 
   securitySchemes:
     apiKey:
-      type: apiKey
-      in: header
+      type: httpApiKey
       name: X-API-Key
+      in: header
 
   parameters:
     tickerParam:
-      name: ticker
-      in: path
       description: Stock ticker symbol
-      schema:
-        type: string
-        example: AAPL
+      location: $message.payload#/ticker
 
     periodParam:
-      name: period
-      in: query
-      description: Time period
-      schema:
-        type: string
-        enum: [1d, 5d, 1mo, 3mo, 6mo, 1y, 2y, 5y]
-
-  examples:
-    lookupJob:
-      - summary: Example lookup job
-        payload:
-          ticker: AAPL
-          forceRefresh: false
-          priority: 1
-
-    quoteUpdate:
-      - summary: Example quote update
-        payload:
-          symbol: AAPL
-          price: 175.50
-          change: 2.30
-          changePct: 1.33
-          volume: 50000000
-          timestamp: 2026-04-24T10:30:00Z
-
-externalDocs:
-  description: OpenAPI Specification
-  url: /openapi.yml
-  description: Project Repository
-  url: https://github.com/anthropics/claude-code
+      description: Time period for data queries
+      enum: [1d, 5d, 1mo, 3mo, 6mo, 1y, 2y, 5y]

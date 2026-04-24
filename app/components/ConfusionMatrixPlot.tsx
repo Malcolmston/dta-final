@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
+import { useColorPalette } from "../context/ColorPaletteContext";
 import { fetchHistory, StockHistory } from "@/lib/client";
 import TickerInput from "./TickerInput";
 
@@ -117,6 +118,7 @@ function calculateConfusionMatrix(signals: SignalData[]): ConfusionMatrixCell[] 
 }
 
 export default function ConfusionMatrixPlot() {
+  const { palette, isDarkMode } = useColorPalette();
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -404,19 +406,19 @@ export default function ConfusionMatrixPlot() {
   }, [matrix]);
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-6 bg-white rounded-xl shadow-lg">
-      <h2 className="text-2xl font-bold mb-2 palette.text">Signal Accuracy / Confusion Matrix</h2>
-      <p className="text-sm palette.text mb-6">
+    <div className="w-full max-w-4xl mx-auto p-4 rounded-xl shadow-lg overflow-x-auto" style={{ backgroundColor: palette.background, border: `1px solid ${palette.gridLines}` }}>
+      <h2 className="text-2xl font-bold mb-2" style={{ color: palette.text }}>Signal Accuracy / Confusion Matrix</h2>
+      <p className="text-sm mb-6" style={{ color: palette.text, opacity: 0.7 }}>
         Evaluating trading strategy predictions using RSI indicator
       </p>
 
       <div className="mb-6 p-4 bg-transparent rounded-lg border border-transparent">
-        <p className="text-sm palette.text">
+        <p className="text-sm" style={{ color: palette.text, opacity: 0.8 }}>
           <strong>How to read this matrix:</strong> This confusion matrix evaluates trading signals
           (BUY/SELL) against actual stock outcomes (PROFIT/LOSS).{" "}
-          <span className="text-green-600 font-medium">Green cells</span> show correct predictions
+          <span className="font-medium" style={{ color: palette.positive }}>Green cells</span> show correct predictions
           (True Positive / True Negative), while{" "}
-          <span className="text-red-600 font-medium">red cells</span> show incorrect predictions
+          <span className="font-medium" style={{ color: palette.negative }}>red cells</span> show incorrect predictions
           (False Positive / False Negative). The signal is generated using RSI:{" "}
           <strong>BUY</strong> when RSI &lt; 30 (oversold), <strong>SELL</strong> when RSI &gt; 70
           (overbought).
@@ -425,7 +427,7 @@ export default function ConfusionMatrixPlot() {
 
       <div className="flex flex-wrap gap-4 mb-4">
         <div className="min-w-[200px]">
-          <label className="block text-sm font-medium palette.text mb-2">Enter Ticker Symbol</label>
+          <label className="block text-sm font-medium mb-2" style={{ color: palette.text }}>Enter Ticker Symbol</label>
           <TickerInput
             value={ticker}
             onChange={setTicker}
@@ -446,7 +448,7 @@ export default function ConfusionMatrixPlot() {
       </div>
 
       {error && (
-        <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">{error}</div>
+        <div className="mb-4 p-4 rounded-lg" style={{ backgroundColor: palette.negative + '15', border: `1px solid ${palette.negative}`, color: palette.negative }}>{error}</div>
       )}
 
       <div ref={containerRef} className="relative w-full">
@@ -454,21 +456,21 @@ export default function ConfusionMatrixPlot() {
       </div>
 
       <div className="mt-4 grid grid-cols-2 gap-4 text-sm">
-        <div className="p-3 bg-green-50 rounded-lg border border-green-200">
-          <h4 className="font-semibold text-green-800 mb-1">True Positive (TP)</h4>
-          <p className="palette.text">Predicted BUY, actual PROFIT - Correct buy signal</p>
+        <div className="p-3 rounded-lg" style={{ backgroundColor: palette.positive + '15', border: `1px solid ${palette.gridLines}` }}>
+          <h4 className="font-semibold mb-1" style={{ color: palette.positive }}>True Positive (TP)</h4>
+          <p style={{ color: palette.text }}>Predicted BUY, actual PROFIT - Correct buy signal</p>
         </div>
-        <div className="p-3 bg-red-50 rounded-lg border border-red-200">
-          <h4 className="font-semibold text-red-800 mb-1">False Positive (FP)</h4>
-          <p className="palette.text">Predicted BUY, actual LOSS - Wrong buy signal</p>
+        <div className="p-3 rounded-lg" style={{ backgroundColor: palette.negative + '15', border: `1px solid ${palette.gridLines}` }}>
+          <h4 className="font-semibold mb-1" style={{ color: palette.negative }}>False Positive (FP)</h4>
+          <p style={{ color: palette.text }}>Predicted BUY, actual LOSS - Wrong buy signal</p>
         </div>
-        <div className="p-3 bg-red-50 rounded-lg border border-red-200">
-          <h4 className="font-semibold text-red-800 mb-1">False Negative (FN)</h4>
-          <p className="palette.text">Predicted SELL, actual PROFIT - Missed profit opportunity</p>
+        <div className="p-3 rounded-lg" style={{ backgroundColor: palette.negative + '15', border: `1px solid ${palette.gridLines}` }}>
+          <h4 className="font-semibold mb-1" style={{ color: palette.negative }}>False Negative (FN)</h4>
+          <p style={{ color: palette.text }}>Predicted SELL, actual PROFIT - Missed profit opportunity</p>
         </div>
-        <div className="p-3 bg-green-50 rounded-lg border border-green-200">
-          <h4 className="font-semibold text-green-800 mb-1">True Negative (TN)</h4>
-          <p className="palette.text">Predicted SELL, actual LOSS - Correct sell signal</p>
+        <div className="p-3 rounded-lg" style={{ backgroundColor: palette.positive + '15', border: `1px solid ${palette.gridLines}` }}>
+          <h4 className="font-semibold mb-1" style={{ color: palette.positive }}>True Negative (TN)</h4>
+          <p style={{ color: palette.text }}>Predicted SELL, actual LOSS - Correct sell signal</p>
         </div>
       </div>
     </div>

@@ -304,14 +304,15 @@ export default function CandlestickChart({ ticker: initialTicker = "AAPL" }: Can
       .attr("class", "candlestick-tooltip")
       .style("position", "absolute")
       .style("visibility", "hidden")
-      .style("background", "white")
-      .style("border", "1px solid palette.gridLines")
+      .style("background", palette.background)
+      .style("border", `1px solid ${palette.gridLines}`)
       .style("border-radius", "6px")
       .style("padding", "10px 14px")
       .style("font-size", "12px")
       .style("box-shadow", "0 2px 8px rgba(0,0,0,0.15)")
       .style("pointer-events", "none")
-      .style("z-index", "10");
+      .style("z-index", "10")
+      .style("color", palette.text);
 
     // Hover overlay
     svg.append("rect")
@@ -349,25 +350,25 @@ export default function CandlestickChart({ ticker: initialTicker = "AAPL" }: Can
           .style("left", `${Math.min(event.offsetX + 15, width - 180)}px`)
           .style("top", `${Math.max(event.offsetY - 10, 10)}px`)
           .html(`
-            <div style="font-weight: 600; margin-bottom: 6px; border-bottom: 1px solid palette.gridLines; padding-bottom: 6px;">
+            <div style="font-weight: 600; margin-bottom: 6px; border-bottom: 1px solid ${palette.gridLines}; padding-bottom: 6px;">
               ${d.date.toLocaleDateString()}
             </div>
             <div style="display: grid; grid-template-columns: auto auto; gap: 4px 12px;">
-              <span style="color: #6b7280;">Open:</span>
+              <span style="color: ${palette.text}; opacity: 0.7;">Open:</span>
               <span style="font-weight: 500;">$${d.open.toFixed(2)}</span>
-              <span style="color: #6b7280;">High:</span>
+              <span style="color: ${palette.text}; opacity: 0.7;">High:</span>
               <span style="font-weight: 500;">$${d.high.toFixed(2)}</span>
-              <span style="color: #6b7280;">Low:</span>
+              <span style="color: ${palette.text}; opacity: 0.7;">Low:</span>
               <span style="font-weight: 500;">$${d.low.toFixed(2)}</span>
-              <span style="color: #6b7280;">Close:</span>
+              <span style="color: ${palette.text}; opacity: 0.7;">Close:</span>
               <span style="font-weight: 500; color: ${isBullish ? palette.positive : palette.negative};">$${d.close.toFixed(2)}</span>
             </div>
-            <div style="margin-top: 6px; padding-top: 6px; border-top: 1px solid palette.gridLines; font-size: 11px;">
+            <div style="margin-top: 6px; padding-top: 6px; border-top: 1px solid ${palette.gridLines}; font-size: 11px;">
               <span style="color: ${isBullish ? palette.positive : palette.negative};">
                 ${isBullish ? "+" : ""}${change.toFixed(2)} (${isBullish ? "+" : ""}${changePercent}%)
               </span>
             </div>
-            <div style="margin-top: 4px; font-size: 11px; color: #6b7280;">
+            <div style="margin-top: 4px; font-size: 11px; color: ${palette.text}; opacity: 0.7;">
               Volume: ${(d.volume / 1000000).toFixed(2)}M
             </div>
           `);
@@ -467,7 +468,7 @@ export default function CandlestickChart({ ticker: initialTicker = "AAPL" }: Can
 
       <div className="mb-6 p-4 rounded-lg border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
         <p className="text-sm" style={{ color: palette.text, opacity: 0.8 }}>
-          <strong>How to read this chart:</strong> A <span style={{ color: palette.positive, fontWeight: 500 }}>green candle</span> means the price went up (bullish), while a <span style={{ color: palette.negative, fontWeight: 500 }}>red candle</span> means the price went down (bearish). The thin line (wick) extending above and below each candle shows the high and low range for that period.
+          <strong>How to read this chart:</strong> A <span style={{ color: palette.positive, fontWeight: 500 }}>green candle</span> means the price went up (bullish), while a <span style={{ color: palette.negative, fontWeight: 500 }}>red candle</span> means the price went down (bearish). The thin line (wick) extending above and below each candle shows the high and low range for that period. The <span style={{ color: "#8b5cf6", fontWeight: 500 }}>purple line</span> shows the 20-day Simple Moving Average (SMA), which smooths out price fluctuations to show the overall trend.
         </p>
       </div>
 

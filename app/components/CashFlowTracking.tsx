@@ -228,22 +228,22 @@ export default function CashFlowTracking() {
       </div>
 
       {/* Income Summary */}
-      <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-        <h3 className="font-semibold text-blue-800 mb-2">Portfolio Income Summary</h3>
+      <div className="mt-6 p-4 rounded-lg" style={{ backgroundColor: palette.primary + '15' }}>
+        <h3 className="font-semibold mb-2" style={{ color: palette.primary }}>Portfolio Income Summary</h3>
         <div className="grid md:grid-cols-2 gap-4 text-sm">
           <div>
             <p className="palette.text">Dividend Income (Annualized)</p>
-            <p className="text-lg font-bold text-blue-800">
+            <p className="text-lg font-bold" style={{ color: palette.primary }}>
               ${((byType.dividend || 0) * 4).toLocaleString()}
             </p>
-            <p className="text-xs text-blue-600">Based on quarterly rate</p>
+            <p className="text-xs" style={{ color: palette.text, opacity: 0.6 }}>Based on quarterly rate</p>
           </div>
           <div>
             <p className="palette.text">Interest Income (Annualized)</p>
-            <p className="text-lg font-bold text-blue-800">
+            <p className="text-lg font-bold" style={{ color: palette.primary }}>
               ${((byType.interest || 0) * 12).toLocaleString()}
             </p>
-            <p className="text-xs text-blue-600">Based on monthly rate</p>
+            <p className="text-xs" style={{ color: palette.text, opacity: 0.6 }}>Based on monthly rate</p>
           </div>
         </div>
       </div>

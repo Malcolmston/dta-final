@@ -1,11 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import SwaggerUI from 'swagger-ui-react';
 import 'swagger-ui-react/swagger-ui.css';
 import '@asyncapi/react-component/styles/default.min.css';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { useColorPalette } from '../context/ColorPaletteContext';
 
 const AsyncApiComponent = dynamic(
@@ -13,11 +15,21 @@ const AsyncApiComponent = dynamic(
   { ssr: false, loading: () => <p className="p-6 text-sm" style={{ color: 'var(--foreground)', opacity: 0.5 }}>Loading AsyncAPI docs…</p> },
 );
 
-type Tab = 'rest' | 'async' | 'cron' | 'webhook';
+type Tab = 'rest' | 'async' | 'cron' | 'webhook' | 'plots';
 
 export default function DocsPage() {
   const [tab, setTab] = useState<Tab>('rest');
+  const [plotsContent, setPlotsContent] = useState<string>('');
   const { palette } = useColorPalette();
+
+  useEffect(() => {
+    if (tab === 'plots' && !plotsContent) {
+      fetch('/PLOTS.md')
+        .then(res => res.text())
+        .then(text => setPlotsContent(text))
+        .catch(err => console.error('Failed to load PLOTS.md:', err));
+    }
+  }, [tab, plotsContent]);
 
   return (
     <div className="min-h-screen transition-colors duration-300" style={{ backgroundColor: palette.background, color: palette.text }}>
@@ -51,7 +63,7 @@ export default function DocsPage() {
 
           {/* Tabs */}
           <nav className="flex gap-1 -mb-px">
-            {(['rest', 'async', 'cron', 'webhook'] as Tab[]).map((t) => (
+            {(['rest', 'async', 'cron', 'webhook', 'plots'] as Tab[]).map((t) => (
               <button
                 key={t}
                 onClick={() => setTab(t)}
@@ -62,7 +74,7 @@ export default function DocsPage() {
                   opacity: tab === t ? 1 : 0.6,
                 }}
               >
-                {t === 'rest' ? 'REST API' : t === 'async' ? 'Async API' : t === 'cron' ? 'Cron Jobs' : 'Webhooks'}
+                {t === 'rest' ? 'REST API' : t === 'async' ? 'Async API' : t === 'cron' ? 'Cron Jobs' : t === 'webhook' ? 'Webhooks' : 'Plots'}
               </button>
             ))}
           </nav>
@@ -95,6 +107,38 @@ export default function DocsPage() {
         )}
 
         {tab === 'webhook' && <SwaggerUI url="/openapi-webhooks.yml" />}
+
+        {tab === 'plots' && (
+          <div className="p-6 max-w-4xl mx-auto prose-wrapper" style={{ color: palette.text }}>
+            {plotsContent ? (
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                components={{
+                  h1: ({ children }) => <h1 className="text-3xl font-bold mb-6" style={{ color: palette.text }}>{children}</h1>,
+                  h2: ({ children }) => <h2 className="text-2xl font-bold mt-8 mb-4" style={{ color: palette.text }}>{children}</h2>,
+                  h3: ({ children }) => <h3 className="text-xl font-semibold mt-6 mb-3" style={{ color: palette.text }}>{children}</h3>,
+                  p: ({ children }) => <p className="mb-4 leading-relaxed" style={{ color: palette.text, opacity: 0.9 }}>{children}</p>,
+                  ul: ({ children }) => <ul className="list-disc pl-6 mb-4" style={{ color: palette.text, opacity: 0.9 }}>{children}</ul>,
+                  ol: ({ children }) => <ol className="list-decimal pl-6 mb-4" style={{ color: palette.text, opacity: 0.9 }}>{children}</ol>,
+                  li: ({ children }) => <li className="mb-1" style={{ color: palette.text, opacity: 0.85 }}>{children}</li>,
+                  code: ({ children }) => <code className="px-1.5 py-0.5 rounded text-sm font-mono" style={{ backgroundColor: palette.gridLines, color: palette.text }}>{children}</code>,
+                  pre: ({ children }) => <pre className="p-4 rounded-lg overflow-x-auto mb-4" style={{ backgroundColor: '#1e2433', color: '#e2e8f0' }}>{children}</pre>,
+                  a: ({ children, href }) => <a href={href} className="underline hover:opacity-80" style={{ color: palette.primary }}>{children}</a>,
+                  hr: () => <hr className="my-8" style={{ borderColor: palette.gridLines }} />,
+                  table: ({ children }) => <div className="overflow-x-auto mb-6"><table className="min-w-full" style={{ borderColor: palette.gridLines }}>{children}</table></div>,
+                  th: ({ children }) => <th className="px-4 py-2 text-left font-semibold border-b" style={{ borderColor: palette.gridLines, color: palette.text }}>{children}</th>,
+                  td: ({ children }) => <td className="px-4 py-2 border-b" style={{ borderColor: palette.gridLines, color: palette.text, opacity: 0.85 }}>{children}</td>,
+                  strong: ({ children }) => <strong style={{ color: palette.text }}>{children}</strong>,
+                  em: ({ children }) => <em style={{ color: palette.text, opacity: 0.8 }}>{children}</em>,
+                }}
+              >
+                {plotsContent}
+              </ReactMarkdown>
+            ) : (
+              <p style={{ color: palette.text, opacity: 0.6 }}>Loading PLOTS.md...</p>
+            )}
+          </div>
+        )}
       </div>
 
       <style>{`

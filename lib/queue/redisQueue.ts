@@ -88,7 +88,7 @@ export const processStockJob = async (job: Job<DataJob>): Promise<any> => {
 
   const pythonScript = path.join(process.cwd(), "scrape", "main.py");
 
-  let args = ["-t", symbol, "-p", period];
+  const args = ["-t", symbol, "-p", period];
 
   switch (type) {
     case "history":

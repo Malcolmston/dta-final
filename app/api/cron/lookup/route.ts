@@ -43,7 +43,7 @@ export async function GET(request: NextRequest) {
 
     // Get top searched symbols from analytics
     const topSearchesJson = await redis.get("analytics:top_searches");
-    let pagesToCache = [...POPULAR_PAGES];
+    const pagesToCache = [...POPULAR_PAGES];
 
     if (topSearchesJson) {
       const topSearches = JSON.parse(topSearchesJson) as [string, number][];

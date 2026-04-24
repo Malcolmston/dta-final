@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
 
     // Process the job immediately
     const pythonScript = path.join(process.cwd(), "scrape", "main.py");
-    let args = ["-t", symbol.toUpperCase(), "-p", period];
+    const args = ["-t", symbol.toUpperCase(), "-p", period];
 
     switch (type) {
       case "history":

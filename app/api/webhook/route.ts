@@ -36,7 +36,9 @@ export async function GET(request: NextRequest) {
   const { searchParams } = url;
   const action = searchParams.get("action");
   const symbol = searchParams.get("symbol")?.toUpperCase();
-  const period = searchParams.get("period") || "1y";
+  // Translate "all" to "max" for Yahoo Finance
+  const rawPeriod = searchParams.get("period") || "1y";
+  const period = rawPeriod === "all" ? "max" : rawPeriod;
   const interval = searchParams.get("interval") || "1d";
   const baseUrl = `${url.protocol}//${url.host}`;
 

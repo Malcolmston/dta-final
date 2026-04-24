@@ -113,6 +113,37 @@ export default function DocsPage() {
           color: ${palette.text} !important;
         }
 
+        /* ── Right side content panel ── */
+        .asyncapi-wrapper .aui-root .panel,
+        .asyncapi-wrapper .aui-root .content,
+        .asyncapi-wrapper .aui-root .operation-content,
+        .asyncapi-wrapper .aui-root .message-content,
+        .asyncapi-wrapper .aui-root .schema-content {
+          background-color: ${palette.background} !important;
+          color: ${palette.text} !important;
+        }
+
+        /* ── All elements in main content area ── */
+        .asyncapi-wrapper .aui-root .panel *,
+        .asyncapi-wrapper .aui-root .content *,
+        .asyncapi-wrapper .aui-root .operation-content *,
+        .asyncapi-wrapper .aui-root .message-content *,
+        .asyncapi-wrapper .aui-root .schema-content * {
+          color: ${palette.text} !important;
+        }
+
+        /* ── Override any remaining black text ── */
+        .asyncapi-wrapper .aui-root .panel [style*="color"],
+        .asyncapi-wrapper .aui-root .content [style*="color"],
+        .asyncapi-wrapper .aui-root [style*="color: black"],
+        .asyncapi-wrapper .aui-root [style*="color:#000000"],
+        .asyncapi-wrapper .aui-root [style*="color: #000000"],
+        .asyncapi-wrapper .aui-root [style*="color: rgb"],
+        .asyncapi-wrapper .aui-root span[style*="color"],
+        .asyncapi-wrapper .aui-root p[style*="color"] {
+          color: ${palette.text} !important;
+        }
+
         /* ── Sidebar ── */
         .asyncapi-wrapper .aui-root .sidebar,
         .asyncapi-wrapper .aui-root .sidebar--wrapper {
@@ -246,12 +277,53 @@ export default function DocsPage() {
           color: #94a3b8 !important;
         }
 
+        /* ── Panel layout overrides ── */
+        .asyncapi-wrapper .aui-root .panel-item--right {
+          background-color: ${palette.background} !important;
+          width: 100% !important;
+        }
+        .asyncapi-wrapper .aui-root .panel--center {
+          display: block !important;
+        }
+        .asyncapi-wrapper .aui-root .panel-item--center,
+        .asyncapi-wrapper .aui-root .panel-item--right {
+          width: 100% !important;
+        }
+
         /* ── Shadow / card sections ── */
         .asyncapi-wrapper .aui-root .shadow {
           box-shadow: 0 1px 3px 0 rgba(0,0,0,0.06), 0 1px 2px 0 rgba(0,0,0,0.04) !important;
         }
         .asyncapi-wrapper .aui-root .rounded {
           border-radius: 0.375rem;
+        }
+
+        /* ── Right side main content area - catch all ── */
+        .asyncapi-wrapper .aui-root #undefined,
+        .asyncapi-wrapper .aui-root .operation,
+        .asyncapi-wrapper .aui-root .operation-details,
+        .asyncapi-wrapper .aui-root .channels,
+        .asyncapi-wrapper .aui-root .channel {
+          background-color: ${palette.background} !important;
+        }
+        .asyncapi-wrapper .aui-root #undefined *,
+        .asyncapi-wrapper .aui-root .operation-details *,
+        .asyncapi-wrapper .aui-root .channels *,
+        .asyncapi-wrapper .aui-root .channel * {
+          color: ${palette.text} !important;
+        }
+
+        /* ── Aggressive black text override ── */
+        .asyncapi-wrapper .aui-root font[color="black"],
+        .asyncapi-wrapper .aui-root font[color="#000000"],
+        .asyncapi-wrapper .aui-root span[style*="color: black"],
+        .asyncapi-wrapper .aui-root span[style*="color:#000"],
+        .asyncapi-wrapper .aui-root span[style*="color: #000"],
+        .asyncapi-wrapper .aui-root p[style*="color: black"],
+        .asyncapi-wrapper .aui-root div[style*="color: black"],
+        .asyncapi-wrapper .aui-root td[style*="color"],
+        .asyncapi-wrapper .aui-root th[style*="color"] {
+          color: ${palette.text} !important;
         }
       `}</style>
     </div>

@@ -105,7 +105,7 @@ export default function MarketFactorsTab({ ticker, refreshKey, colors }: MarketF
   }, [stockData, palette]);
 
   if (loading) {
-    return <div className="p-6 text-center text-slate-500">Loading market factor data...</div>;
+    return <div className="p-6 text-center" style={{ color: palette.text }}>Loading market factor data...</div>;
   }
 
   // Factor analysis
@@ -121,90 +121,90 @@ export default function MarketFactorsTab({ ticker, refreshKey, colors }: MarketF
     <div className="p-6">
       {/* Factors Grid - Diagram Style Boxes */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-        <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">
-          <div className="text-xs text-slate-500 uppercase tracking-wide mb-1 font-semibold">Economic</div>
-          <div className="text-sm text-slate-700">Interest rates, inflation, GDP growth, employment data</div>
+        <div className="rounded-xl p-4" style={{ backgroundColor: isDarkMode ? palette.background : '#f8fafc', border: `1px solid ${palette.gridLines}` }}>
+          <div className="text-xs uppercase tracking-wide mb-1 font-semibold" style={{ color: palette.text, opacity: 0.6 }}>Economic</div>
+          <div className="text-sm" style={{ color: palette.text }}>Interest rates, inflation, GDP growth, employment data</div>
         </div>
-        <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">
-          <div className="text-xs text-slate-500 uppercase tracking-wide mb-1 font-semibold">Corporate</div>
-          <div className="text-sm text-slate-700">Company profits, revenue growth, earnings guidance</div>
+        <div className="rounded-xl p-4" style={{ backgroundColor: isDarkMode ? palette.background : '#f8fafc', border: `1px solid ${palette.gridLines}` }}>
+          <div className="text-xs uppercase tracking-wide mb-1 font-semibold" style={{ color: palette.text, opacity: 0.6 }}>Corporate</div>
+          <div className="text-sm" style={{ color: palette.text }}>Company profits, revenue growth, earnings guidance</div>
         </div>
-        <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">
-          <div className="text-xs text-slate-500 uppercase tracking-wide mb-1 font-semibold">Sentiment</div>
-          <div className="text-sm text-slate-700">Fear/greed index, investor confidence, news cycles</div>
+        <div className="rounded-xl p-4" style={{ backgroundColor: isDarkMode ? palette.background : '#f8fafc', border: `1px solid ${palette.gridLines}` }}>
+          <div className="text-xs uppercase tracking-wide mb-1 font-semibold" style={{ color: palette.text, opacity: 0.6 }}>Sentiment</div>
+          <div className="text-sm" style={{ color: palette.text }}>Fear/greed index, investor confidence, news cycles</div>
         </div>
-        <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">
-          <div className="text-xs text-slate-500 uppercase tracking-wide mb-1 font-semibold">Global</div>
-          <div className="text-sm text-slate-700">Geopolitics, pandemics, trade agreements, regulations</div>
+        <div className="rounded-xl p-4" style={{ backgroundColor: isDarkMode ? palette.background : '#f8fafc', border: `1px solid ${palette.gridLines}` }}>
+          <div className="text-xs uppercase tracking-wide mb-1 font-semibold" style={{ color: palette.text, opacity: 0.6 }}>Global</div>
+          <div className="text-sm" style={{ color: palette.text }}>Geopolitics, pandemics, trade agreements, regulations</div>
         </div>
       </div>
 
       {/* Chart */}
-      <div className="relative h-[350px] mb-6 border border-slate-200 rounded-lg p-4 bg-slate-50">
+      <div className="relative h-[350px] mb-6 rounded-lg p-4" style={{ backgroundColor: isDarkMode ? palette.background : '#f8fafc', border: `1px solid ${palette.gridLines}` }}>
         <svg ref={svgRef} className="w-full h-full" />
       </div>
 
       {/* Metrics */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">
-          <div className="text-xs text-slate-500 uppercase tracking-wide">Avg Daily Return</div>
-          <div className={`text-xl font-bold ${avgReturn >= 0 ? "text-emerald-600" : "text-red-600"}`}>
+        <div className="rounded-xl p-4" style={{ backgroundColor: isDarkMode ? palette.background : '#f8fafc', border: `1px solid ${palette.gridLines}` }}>
+          <div className="text-xs uppercase tracking-wide mb-1" style={{ color: palette.text, opacity: 0.6 }}>Avg Daily Return</div>
+          <div className="text-xl font-bold" style={{ color: avgReturn >= 0 ? palette.positive : palette.negative }}>
             {(avgReturn * 100).toFixed(3)}%
           </div>
         </div>
-        <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">
-          <div className="text-xs text-slate-500 uppercase tracking-wide">Volatility</div>
-          <div className="text-xl font-bold text-slate-800">{(volatility * 100).toFixed(2)}%</div>
+        <div className="rounded-xl p-4" style={{ backgroundColor: isDarkMode ? palette.background : '#f8fafc', border: `1px solid ${palette.gridLines}` }}>
+          <div className="text-xs uppercase tracking-wide mb-1" style={{ color: palette.text, opacity: 0.6 }}>Volatility</div>
+          <div className="text-xl font-bold" style={{ color: palette.text }}>{(volatility * 100).toFixed(2)}%</div>
         </div>
-        <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">
-          <div className="text-xs text-slate-500 uppercase tracking-wide">Up Days</div>
-          <div className="text-xl font-bold text-emerald-600">{positiveDays}</div>
+        <div className="rounded-xl p-4" style={{ backgroundColor: isDarkMode ? palette.background : '#f8fafc', border: `1px solid ${palette.gridLines}` }}>
+          <div className="text-xs uppercase tracking-wide mb-1" style={{ color: palette.text, opacity: 0.6 }}>Up Days</div>
+          <div className="text-xl font-bold" style={{ color: palette.positive }}>{positiveDays}</div>
         </div>
-        <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">
-          <div className="text-xs text-slate-500 uppercase tracking-wide">Down Days</div>
-          <div className="text-xl font-bold text-red-600">{negativeDays}</div>
+        <div className="rounded-xl p-4" style={{ backgroundColor: isDarkMode ? palette.background : '#f8fafc', border: `1px solid ${palette.gridLines}` }}>
+          <div className="text-xs uppercase tracking-wide mb-1" style={{ color: palette.text, opacity: 0.6 }}>Down Days</div>
+          <div className="text-xl font-bold" style={{ color: palette.negative }}>{negativeDays}</div>
         </div>
       </div>
 
       {/* Insights */}
-      <div className="bg-gradient-to-r from-slate-50 to-slate-100 rounded-xl p-5 border border-slate-200 mb-6">
-        <h4 className="font-semibold text-slate-800 mb-3 flex items-center gap-2">
-          <span className="w-6 h-6 rounded-full bg-slate-800 text-white text-xs flex items-center justify-center">i</span>
+      <div className="rounded-xl p-5 mb-6" style={{ backgroundColor: palette.primary + '10', border: `1px solid ${palette.gridLines}` }}>
+        <h4 className="font-semibold mb-3 flex items-center gap-2" style={{ color: palette.text }}>
+          <span className="w-6 h-6 rounded-full flex items-center justify-center text-xs" style={{ backgroundColor: palette.primary, color: '#ffffff' }}>i</span>
           Key Insights
         </h4>
-        <ul className="space-y-2 text-slate-600">
+        <ul className="space-y-2" style={{ color: palette.text, opacity: 0.7 }}>
           <li className="flex items-start gap-2">
-            <span className="text-emerald-500 mt-1">-</span>
+            <span style={{ color: palette.positive, marginTop: '4px' }}>-</span>
             <span><strong>Economic factors</strong> like interest rates have the broadest market impact - when rates rise, stocks often decline</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="text-emerald-500 mt-1">-</span>
+            <span style={{ color: palette.positive, marginTop: '4px' }}>-</span>
             <span><strong>Corporate earnings</strong> are the primary driver of individual stock prices - companies that grow profits tend to see their stocks rise</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="text-emerald-500 mt-1">-</span>
+            <span style={{ color: palette.positive, marginTop: '4px' }}>-</span>
             <span><strong>Market volatility</strong> ({(volatility * 100).toFixed(1)}%) measures price swings - higher volatility means more risk but also more opportunity</span>
           </li>
         </ul>
       </div>
 
       {/* Recommendations */}
-      <div className="bg-emerald-50 rounded-xl p-5 border border-emerald-200">
-        <h4 className="font-semibold text-emerald-800 mb-3 flex items-center gap-2">
-          <span className="w-6 h-6 rounded-full bg-emerald-600 text-white text-xs flex items-center justify-center">R</span>
+      <div className="rounded-xl p-5" style={{ backgroundColor: palette.positive + '15', border: `1px solid ${palette.gridLines}` }}>
+        <h4 className="font-semibold mb-3 flex items-center gap-2" style={{ color: palette.text }}>
+          <span className="w-6 h-6 rounded-full flex items-center justify-center text-xs" style={{ backgroundColor: palette.positive, color: '#ffffff' }}>R</span>
           Recommendations
         </h4>
-        <ul className="space-y-2 text-emerald-700">
+        <ul className="space-y-2" style={{ color: palette.text, opacity: 0.8 }}>
           <li className="flex items-start gap-2">
-            <span className="text-emerald-500 mt-1">-</span>
+            <span style={{ color: palette.positive, marginTop: '4px' }}>-</span>
             <span>Stay informed about major economic indicators - Fed rate decisions, CPI inflation reports, and employment data</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="text-emerald-500 mt-1">-</span>
+            <span style={{ color: palette.positive, marginTop: '4px' }}>-</span>
             <span>Diversify across sectors to reduce exposure to any single factor - don't put all your eggs in one basket</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="text-emerald-500 mt-1">-</span>
+            <span style={{ color: palette.positive, marginTop: '4px' }}>-</span>
             <span>During high volatility periods, consider holding more cash or defensive stocks (utilities, consumer staples)</span>
           </li>
         </ul>

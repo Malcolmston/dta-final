@@ -218,11 +218,13 @@ export default function CandlestickChart({ ticker: initialTicker = "AAPL" }: Can
     // X Axis
     const xTicks = period === "1mo" || period === "3mo" ? 6 : 8;
 
-    svg.append("g")
-      .attr("transform", `translate(0,${priceHeight - margin.bottom})`)
-      .call(d3.axisBottom(xScale).ticks(xTicks))
-      .selectAll("text")
-      .attr("fill", palette.text);
+    const xAxisGroup = svg.append("g")
+      .attr("class", "x-axis")
+      .attr("transform", `translate(0,${priceHeight - margin.bottom})`);
+
+    xAxisGroup.call(d3.axisBottom(xScale).ticks(xTicks));
+    xAxisGroup.selectAll("text").attr("fill", palette.text);
+    xAxisGroup.select(".domain").attr("stroke", palette.gridLines);
 
     // Y Axis (price)
     svg.append("g")
@@ -430,10 +432,11 @@ export default function CandlestickChart({ ticker: initialTicker = "AAPL" }: Can
             .attr("d", smaLine as any);
         }
 
-        // Redraw X axis
-        svg.select<SVGGElement>("g:nth-child(5)").call(
-          d3.axisBottom(newXScale).ticks(xTicks) as any
-        );
+        // Redraw X axis using class selector
+        const xAxisGroup = svg.select<SVGGElement>(".x-axis");
+        xAxisGroup.call(d3.axisBottom(newXScale).ticks(xTicks) as any);
+        xAxisGroup.selectAll("text").attr("fill", palette.text);
+        xAxisGroup.select(".domain").attr("stroke", palette.gridLines);
       });
 
     svg.call(zoom);

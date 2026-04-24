@@ -1,13 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { spawn } from "child_process";
-import path from "path";
 import { rateLimit, getClientIp } from "@/lib/rateLimit";
 
 // Cache responses for 60 seconds
 export const revalidate = 60;
 
 export async function GET(request: NextRequest) {
-  // Apply rate limiting (30 requests per minute per IP - more restrictive due to Python processing)
+  // Apply rate limiting
   const clientIp = getClientIp(request);
   const limit = rateLimit(`stocks-forecast-${clientIp}`, { windowMs: 60000, maxRequests: 30 });
 
@@ -27,42 +25,120 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    // Call Python script directly
-    const pythonScript = path.join(process.cwd(), "scrape", "main.py");
-    const result = await new Promise<any>((resolve, reject) => {
-      const proc = spawn("python3", [
-        pythonScript,
-        "-t", ticker,
-        "-p", period,
-        "--forecast",
-        "-f", "json"
-      ]);
+    // Fetch historical data from history endpoint
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    const historyResponse = await fetch(
+      `${baseUrl}/api/stocks/history?symbol=${encodeURIComponent(ticker)}&period=${period}&interval=1d`
+    );
 
-      let stdout = "";
-      let stderr = "";
+    if (!historyResponse.ok) {
+      throw new Error("Failed to fetch history data");
+    }
 
-      proc.stdout.on("data", (data) => { stdout += data.toString(); });
-      proc.stderr.on("data", (data) => { stderr += data.toString(); });
+    const historyResult = await historyResponse.json();
+    const data = historyResult.data;
 
-      proc.on("close", (code) => {
-        if (code !== 0) {
-          reject(new Error(`Python script failed: ${stderr}`));
-        } else {
-          try {
-            resolve(JSON.parse(stdout));
-          } catch {
-            reject(new Error("Invalid JSON from Python"));
-          }
-        }
-      });
-    });
+    if (!data || data.length === 0) {
+      throw new Error("No historical data available");
+    }
 
-    return NextResponse.json({ data: result });
-  } catch (error) {
-    console.error("Forecast API error:", error);
+    // Generate simple forecast based on technical analysis
+    const forecastData = generateForecast(data, ticker);
+
+    return NextResponse.json({ data: forecastData });
+  } catch (err) {
+    console.error("Forecast generation error:", err);
     return NextResponse.json(
-      { error: "Failed to fetch forecast" },
+      { error: err instanceof Error ? err.message : "Failed to generate forecast" },
       { status: 500 }
     );
   }
+}
+
+function generateForecast(data: any[], ticker: string) {
+  const closes = data.map(d => d.close);
+  const dates = data.map(d => new Date(d.date));
+
+  // Calculate simple moving averages
+  const sma20 = calculateSMA(closes, 20);
+  const sma50 = calculateSMA(closes, 50);
+
+  // Calculate RSI (14 periods)
+  const rsi = calculateRSI(closes, 14);
+
+  // Generate forecast points
+  const forecast: Array<{Date: string; Close: number; score: string; signal: string}> = [];
+
+  for (let i = 0; i < data.length; i++) {
+    const close = closes[i];
+    const date = dates[i].toISOString();
+
+    // Determine signal based on indicators
+    let signal = "HOLD";
+    let score = "2-1"; // neutral
+
+    if (sma20 && sma50) {
+      const currentSMA20 = calculateSMA(closes.slice(0, i + 1), Math.min(20, i + 1));
+      const currentSMA50 = calculateSMA(closes.slice(0, i + 1), Math.min(50, i + 1));
+
+      if (currentSMA20 && currentSMA50) {
+        if (currentSMA20 > currentSMA50) {
+          signal = "BUY";
+          score = "3-0";
+        } else if (currentSMA20 < currentSMA50) {
+          signal = "SELL";
+          score = "0-3";
+        }
+      }
+    }
+
+    // RSI modifier
+    if (i >= 14) {
+      const currentRSI = calculateRSI(closes.slice(0, i + 1), 14);
+      if (currentRSI > 70) {
+        signal = "SELL";
+        score = "1-2";
+      } else if (currentRSI < 30) {
+        signal = "BUY";
+        score = "2-1";
+      }
+    }
+
+    forecast.push({
+      Date: date,
+      Close: close,
+      score,
+      signal
+    });
+  }
+
+  return forecast;
+}
+
+function calculateSMA(values: number[], period: number): number | null {
+  if (values.length < period) return null;
+
+  const slice = values.slice(-period);
+  const sum = slice.reduce((a, b) => a + b, 0);
+  return sum / period;
+}
+
+function calculateRSI(values: number[], period: number): number {
+  if (values.length < period + 1) return 50; // neutral
+
+  let gains = 0;
+  let losses = 0;
+
+  for (let i = values.length - period; i < values.length; i++) {
+    const change = values[i] - values[i - 1];
+    if (change > 0) gains += change;
+    else losses -= change;
+  }
+
+  const avgGain = gains / period;
+  const avgLoss = losses / period;
+
+  if (avgLoss === 0) return 100;
+  const rs = avgGain / avgLoss;
+  return 100 - (100 / (1 + rs));
 }

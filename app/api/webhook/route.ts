@@ -60,14 +60,31 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    // Extended query parameters for chart customization
+    const tickers = searchParams.get("tickers")?.split(",").map(s => s.trim().toUpperCase()).filter(s => s) || (symbol ? [symbol] : []);
+    const interval = searchParams.get("interval") || "1d";
+    const width = searchParams.get("width") || "800";
+    const height = searchParams.get("height") || "400";
+    const theme = searchParams.get("theme") || "dark";
+    const title = searchParams.get("title") || "";
+
     // Return chart configuration for client-side capture
     return NextResponse.json({
       success: true,
       chart: {
         name: chartName,
         format,
-        captureUrl: `${baseUrl}/api/webhook/capture?chart=${chartName}&format=${format}&symbol=${symbol || ""}&period=${period}`,
-        instructions: "Use html2canvas to capture the chart element and download as image"
+        captureUrl: `${baseUrl}/api/webhook/capture?chart=${chartName}&format=${format}&symbol=${tickers.join(",")}&period=${period}&interval=${interval}&width=${width}&height=${height}&theme=${theme}&title=${encodeURIComponent(title)}`,
+        params: {
+          tickers,
+          period,
+          interval,
+          width: Number(width),
+          height: Number(height),
+          theme,
+          title
+        },
+        instructions: "Navigate to captureUrl in browser to download chart image"
       },
       meta: {
         timestamp: new Date().toISOString()

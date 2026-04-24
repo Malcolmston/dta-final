@@ -47,8 +47,14 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const chartName = searchParams.get("chart")?.toLowerCase();
   const format = searchParams.get("format") || "png";
-  const symbol = searchParams.get("symbol")?.toUpperCase() || "AAPL";
+  const tickers = searchParams.get("symbol")?.toUpperCase() || "AAPL";
+  const symbol = tickers.split(",")[0];
   const period = searchParams.get("period") || "1y";
+  const interval = searchParams.get("interval") || "1d";
+  const width = searchParams.get("width") || "800";
+  const height = searchParams.get("height") || "400";
+  const theme = searchParams.get("theme") || "dark";
+  const title = searchParams.get("title") || decodeURIComponent(searchParams.get("title") || "");
 
   if (!chartName || !CHART_COMPONENTS[chartName]) {
     return NextResponse.json(
@@ -60,8 +66,10 @@ export async function GET(request: NextRequest) {
   const componentName = CHART_COMPONENTS[chartName];
 
   // Return HTML page that captures the chart
-  const html = `
-<!DOCTYPE html>
+  const bgColor = theme === "light" ? "#ffffff" : "#0f172a";
+  const textColor = theme === "light" ? "#1f2937" : "#ffffff";
+
+  const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -72,7 +80,7 @@ export async function GET(request: NextRequest) {
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #0f172a;
+      background: ${bgColor};
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -81,7 +89,7 @@ export async function GET(request: NextRequest) {
       padding: 20px;
     }
     .loading {
-      color: #fff;
+      color: ${textColor};
       font-size: 18px;
       text-align: center;
     }
@@ -96,7 +104,7 @@ export async function GET(request: NextRequest) {
     }
     @keyframes spin { to { transform: rotate(360deg); } }
     #chart-container {
-      background: #0f172a;
+      background: ${bgColor};
       padding: 20px;
       border-radius: 12px;
     }
@@ -114,8 +122,18 @@ export async function GET(request: NextRequest) {
   <script>
     const CHART_NAME = "${chartName}";
     const FORMAT = "${format}";
-    const SYMBOL = "${symbol}";
+    const TICKERS = "${tickers}";
+    const SYMBOL = TICKERS.split(",")[0];
     const PERIOD = "${period}";
+    const INTERVAL = "${interval}";
+    const WIDTH = ${width};
+    const HEIGHT = ${height};
+    const THEME = "${theme}";
+    const CUSTOM_TITLE = "${title}";
+
+    // Theme colors from server
+    const BG_COLOR = "${bgColor}";
+    const TEXT_COLOR = "${textColor}";
 
     async function loadChart() {
       try {
@@ -156,17 +174,21 @@ export async function GET(request: NextRequest) {
     }
 
     async function renderCandlestick(data, symbol) {
-      if (!data.data || data.data.length === 0) return '<div style="color:#fff;">No data</div>';
+      if (!data.data || data.data.length === 0) return '<div style="color:' + TEXT_COLOR + ';">No data</div>';
 
       const prices = data.data.map(d => ({
         date: new Date(d.date).toLocaleDateString(),
         open: d.open, high: d.high, low: d.low, close: d.close
       }));
 
-      const width = 800, height = 400;
+      const width = WIDTH, height = HEIGHT;
       const candleW = Math.max(2, width / prices.length - 2);
 
-      let svg = '<svg width="' + width + '" height="' + height + '" style="background:#0f172a;font-family:system-ui;">';
+      let svg = '<svg width="' + width + '" height="' + height + '" style="background:' + BG_COLOR + ';font-family:system-ui;">';
+
+      if (CUSTOM_TITLE) {
+        svg += '<text x="' + (width/2) + '" y="25" fill="' + TEXT_COLOR + '" font-size="18" font-weight="bold" text-anchor="middle">' + CUSTOM_TITLE + '</text>';
+      }
 
       // Find min/max
       const minP = Math.min(...prices.flatMap(p => p.low));
@@ -203,17 +225,22 @@ export async function GET(request: NextRequest) {
 
     async function renderHeatmap(symbol, period) {
       // Get sector heatmap data
-      const res = await fetch('/api/heatmap?tickers=' + encodeURIComponent(symbol));
+      const tickersList = TICKERS.split(",").filter(t => t);
+      const res = await fetch('/api/heatmap?tickers=' + encodeURIComponent(tickersList.join(",")));
       const data = await res.json();
 
-      const width = 600, height = 400;
-      const tickers = Object.keys(data || {}).slice(0, 12);
+      const tickers = tickersList.length > 0 ? tickersList : Object.keys(data || {}).slice(0, 12);
 
-      let svg = '<svg width="' + width + '" height="' + height + '" style="background:#0f172a;font-family:system-ui;">';
-      svg += '<text x="20" y="30" fill="#fff" font-size="16" font-weight="bold">Heatmap - ' + symbol + '</text>';
+      let svg = '<svg width="' + WIDTH + '" height="' + HEIGHT + '" style="background:' + BG_COLOR + ';font-family:system-ui;">';
 
-      const cellW = (width - 40) / 4;
-      const cellH = (height - 60) / 3;
+      if (CUSTOM_TITLE) {
+        svg += '<text x="' + (WIDTH/2) + '" y="30" fill="' + TEXT_COLOR + '" font-size="18" font-weight="bold" text-anchor="middle">' + CUSTOM_TITLE + '</text>';
+      } else {
+        svg += '<text x="20" y="30" fill="' + TEXT_COLOR + '" font-size="16" font-weight="bold">Heatmap - ' + TICKERS + '</text>';
+      }
+
+      const cellW = (WIDTH - 40) / 4;
+      const cellH = (HEIGHT - 80) / 3;
 
       tickers.forEach((t, i) => {
         const change = (data[t]?.change || 0);

@@ -211,7 +211,7 @@ export default function CandlestickChart({ ticker: initialTicker = "AAPL" }: Can
           .tickFormat(() => "")
       )
       .selectAll("line")
-      .attr("stroke", "palette.gridLines")
+      .attr("stroke", palette.gridLines)
       .attr("stroke-dasharray", "2,2");
 
     gridGroup.selectAll(".grid .domain").remove();
@@ -240,7 +240,7 @@ export default function CandlestickChart({ ticker: initialTicker = "AAPL" }: Can
       .attr("y", 15)
       .attr("x", -(priceHeight / 2))
       .attr("text-anchor", "middle")
-      .attr("fill", "#6b7280")
+      .attr("fill", palette.text)
       .attr("font-size", "12px")
       .text("Price ($)");
 
@@ -249,7 +249,7 @@ export default function CandlestickChart({ ticker: initialTicker = "AAPL" }: Can
       .attr("transform", `translate(${width - margin.right},0)`)
       .call(d3.axisRight(volumeScale).ticks(3).tickFormat((d) => `${(+d / 1000000).toFixed(0)}M`))
       .selectAll("text")
-      .attr("fill", "#6b7280")
+      .attr("fill", palette.text)
       .attr("font-size", "10px");
 
     // Legend
@@ -265,7 +265,7 @@ export default function CandlestickChart({ ticker: initialTicker = "AAPL" }: Can
     legendBullish.append("text")
       .attr("x", 16)
       .attr("y", 10)
-      .attr("fill", "palette.text")
+      .attr("fill", palette.text)
       .attr("font-size", "11px")
       .text("Bullish (Close > Open)");
 
@@ -278,7 +278,7 @@ export default function CandlestickChart({ ticker: initialTicker = "AAPL" }: Can
     legendBearish.append("text")
       .attr("x", 16)
       .attr("y", 10)
-      .attr("fill", "palette.text")
+      .attr("fill", palette.text)
       .attr("font-size", "11px")
       .text("Bearish (Close < Open)");
 
@@ -294,7 +294,7 @@ export default function CandlestickChart({ ticker: initialTicker = "AAPL" }: Can
     legendSMA.append("text")
       .attr("x", 16)
       .attr("y", 10)
-      .attr("fill", "palette.text")
+      .attr("fill", palette.text)
       .attr("font-size", "11px")
       .text("20-day SMA");
 
@@ -544,7 +544,7 @@ export default function CandlestickChart({ ticker: initialTicker = "AAPL" }: Can
         </svg>
       </div>
 
-      <p className="mt-4 text-sm palette.text">
+      <p className="mt-4 text-sm" style={{ color: palette.text }}>
         Scroll to zoom, drag to pan. Hover over candles to see OHLC values. Green indicates bullish (close &gt; open), red indicates bearish (close &lt; open).
       </p>
     </div>

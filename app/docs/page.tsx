@@ -226,6 +226,12 @@ export default function DocsPage() {
         .asyncapi-wrapper .aui-root .examples pre {
           background-color: #1e2433 !important;
         }
+        .asyncapi-wrapper .aui-root .examples * {
+          color: ${palette.text} !important;
+        }
+        .asyncapi-wrapper .aui-root .examples .text-black {
+          color: ${palette.text} !important;
+        }
         .asyncapi-wrapper .aui-root .examples pre,
         .asyncapi-wrapper .aui-root .examples code {
           color: #e2e8f0 !important;

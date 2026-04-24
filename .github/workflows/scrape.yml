@@ -61,31 +61,7 @@ jobs:
       - name: Install test tools
         run: pip install pytest pytest-cov -q
 
-      - name: Run unit tests
-        run: pytest scrape/ -m "not integration" -q
-
-  coverage:
-    name: Coverage Report
-    runs-on: ubuntu-latest
-    needs: test
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-          cache: 'pip'
-          cache-dependency-path: scrape/requirements.txt
-
-      - name: Install dependencies
-        run: pip install -r scrape/requirements.txt -q
-
-      - name: Install test tools
-        run: pip install pytest pytest-cov -q
-
-      - name: Generate coverage report
+      - name: Run unit tests with coverage
         run: pytest scrape/ -m "not integration" --cov=main --cov-report=term-missing --cov-report=html:coverage -q
 
       - name: Upload coverage reports
@@ -98,7 +74,7 @@ jobs:
   jest:
     name: Jest Tests
     runs-on: ubuntu-latest
-    needs: test
+    needs: lint
     steps:
       - name: Checkout code
         uses: actions/checkout@v4

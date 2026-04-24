@@ -7,6 +7,7 @@ import pandas as pd
 
 try:
     import pandas_ta as ta
+
     PANDAS_TA_AVAILABLE = True
 except ImportError:
     PANDAS_TA_AVAILABLE = False
@@ -1287,8 +1288,14 @@ def calculate_cd_return(principal, term, rate=None):
 
     # Calculate simple interest
     term_months = {
-        "3_month": 3, "6_month": 6, "9_month": 9, "1_year": 12,
-        "18_month": 18, "2_year": 24, "3_year": 36, "5_year": 60
+        "3_month": 3,
+        "6_month": 6,
+        "9_month": 9,
+        "1_year": 12,
+        "18_month": 18,
+        "2_year": 24,
+        "3_year": 36,
+        "5_year": 60,
     }
     months = term_months.get(term, 12)
 
@@ -1404,13 +1411,15 @@ def get_portfolio(strategy="balanced", age=30, capital=10000, top_n=5):
             close = data["Close"].iloc[-1] if len(data) > 0 else 0
             shares = int(stock_value / close / len(stock_tickers)) if close > 0 else 0
 
-            portfolio["stocks"]["tickers"].append({
-                "ticker": ticker,
-                "shares": shares,
-                "price": float(close),
-                "value": float(shares * close),
-                "allocation_pct": 100 / len(stock_tickers),
-            })
+            portfolio["stocks"]["tickers"].append(
+                {
+                    "ticker": ticker,
+                    "shares": shares,
+                    "price": float(close),
+                    "value": float(shares * close),
+                    "allocation_pct": 100 / len(stock_tickers),
+                }
+            )
         except Exception:
             pass
 
@@ -1426,13 +1435,15 @@ def get_portfolio(strategy="balanced", age=30, capital=10000, top_n=5):
                 close = data["Close"].iloc[-1] if len(data) > 0 else 0
                 shares = float(crypto_value / close / len(crypto_pool[:top_n])) if close > 0 else 0
 
-                portfolio["crypto"]["tickers"].append({
-                    "ticker": ticker,
-                    "shares": shares,
-                    "price": float(close),
-                    "value": float(shares * close),
-                    "allocation_pct": 100 / len(crypto_pool[:top_n]),
-                })
+                portfolio["crypto"]["tickers"].append(
+                    {
+                        "ticker": ticker,
+                        "shares": shares,
+                        "price": float(close),
+                        "value": float(shares * close),
+                        "allocation_pct": 100 / len(crypto_pool[:top_n]),
+                    }
+                )
             except Exception:
                 pass
 
@@ -1448,13 +1459,15 @@ def get_portfolio(strategy="balanced", age=30, capital=10000, top_n=5):
                 close = data["Close"].iloc[-1] if len(data) > 0 else 0
                 shares = int(bond_value / close / len(bond_pool[:top_n])) if close > 0 else 0
 
-                portfolio["bonds"]["tickers"].append({
-                    "ticker": ticker,
-                    "shares": shares,
-                    "price": float(close),
-                    "value": float(shares * close),
-                    "allocation_pct": 100 / len(bond_pool[:top_n]),
-                })
+                portfolio["bonds"]["tickers"].append(
+                    {
+                        "ticker": ticker,
+                        "shares": shares,
+                        "price": float(close),
+                        "value": float(shares * close),
+                        "allocation_pct": 100 / len(bond_pool[:top_n]),
+                    }
+                )
             except Exception:
                 pass
 
@@ -1549,11 +1562,9 @@ def get_forecast(ticker, period="3mo"):
         else:
             signal = "HOLD"
 
-        signals_list.append({
-            "Close": df.iloc[idx]["Close"],
-            "score": f"{buy_score}-{sell_score}",
-            "signal": signal
-        })
+        signals_list.append(
+            {"Close": df.iloc[idx]["Close"], "score": f"{buy_score}-{sell_score}", "signal": signal}
+        )
 
     result = pd.DataFrame(signals_list)
     result["Date"] = forecast["Date"]
@@ -1645,7 +1656,9 @@ def get_backtest(ticker, period="6mo", initial_cash=10000):
     # Add trade log
     trades = pf.trades.records_readable
     if len(trades) > 0:
-        stats["trades"] = trades[["Entry Date", "Exit Date", "Entry Price", "Exit Price", "Return"]].to_dict("records")
+        stats["trades"] = trades[
+            ["Entry Date", "Exit Date", "Entry Price", "Exit Price", "Return"]
+        ].to_dict("records")
 
     return stats
 
@@ -1685,26 +1698,21 @@ def get_metrics(ticker, period="6mo", initial_cash=10000):
         "initial_cash": initial_cash,
         "final_value": float(portfolio_value.iloc[-1]),
         "total_return": float((portfolio_value.iloc[-1] - initial_cash) / initial_cash),
-
         # Volatility
         "volatility": float(qs.stats.volatility(returns)),
         "avg_return": float(qs.stats.avg_return(returns)),
-
         # Risk metrics
         "sharpe_ratio": float(qs.stats.sharpe(returns)),
         "sortino_ratio": float(qs.stats.sortino(returns)),
         "calmar": float(qs.stats.calmar(returns)),
         "max_drawdown": float(qs.stats.max_drawdown(returns)),
-
         # Win rate
         "win_rate": float(qs.stats.win_rate(returns)),
-
         # Trade statistics
         "avg_win": float(qs.stats.avg_win(returns)),
         "avg_loss": float(qs.stats.avg_loss(returns)),
         "best_day": float(qs.stats.best(returns)),
         "worst_day": float(qs.stats.worst(returns)),
-
         # Additional metrics
         "skew": float(qs.stats.skew(returns)),
         "kurtosis": float(qs.stats.kurtosis(returns)),
@@ -1876,20 +1884,38 @@ if __name__ == "__main__":
     )
 
     # prediction / technical analysis
-    parser.add_argument("--indicators", action="store_true", help="Technical indicators (RSI, MACD, SMA, etc.)")
-    parser.add_argument("--signals", action="store_true", help="Trading signals based on indicators")
+    parser.add_argument(
+        "--indicators", action="store_true", help="Technical indicators (RSI, MACD, SMA, etc.)"
+    )
+    parser.add_argument(
+        "--signals", action="store_true", help="Trading signals based on indicators"
+    )
     parser.add_argument("--momentum", action="store_true", help="Momentum indicators")
     parser.add_argument("--trend", action="store_true", help="Trend indicators")
-    parser.add_argument("--forecast", action="store_true", help="Buy/Sell/Hold forecast based on indicators")
-    parser.add_argument("--short", action="store_true", help="Short-term indicators for quick trades")
+    parser.add_argument(
+        "--forecast", action="store_true", help="Buy/Sell/Hold forecast based on indicators"
+    )
+    parser.add_argument(
+        "--short", action="store_true", help="Short-term indicators for quick trades"
+    )
     parser.add_argument("--backtest", action="store_true", help="Backtest RSI/MACD strategy")
-    parser.add_argument("--metrics", action="store_true", help="Portfolio metrics (Sharpe, Sortino, drawdown, etc.)")
+    parser.add_argument(
+        "--metrics", action="store_true", help="Portfolio metrics (Sharpe, Sortino, drawdown, etc.)"
+    )
 
     # portfolio generation
-    parser.add_argument("--portfolio", type=str, help="Generate portfolio (day_trading, swing, long_term, growth, value, dividend, conservative, balanced, aggressive)")
+    parser.add_argument(
+        "--portfolio",
+        type=str,
+        help="Generate portfolio (day_trading, swing, long_term, growth, value, dividend, conservative, balanced, aggressive)",
+    )
     parser.add_argument("--age", type=int, default=30, help="User age for allocation (default: 30)")
-    parser.add_argument("--capital", type=int, default=10000, help="Total capital for portfolio (default: 10000)")
-    parser.add_argument("--top", type=int, default=5, help="Number of stocks per category (default: 5)")
+    parser.add_argument(
+        "--capital", type=int, default=10000, help="Total capital for portfolio (default: 10000)"
+    )
+    parser.add_argument(
+        "--top", type=int, default=5, help="Number of stocks per category (default: 5)"
+    )
 
     # crypto & bonds
     parser.add_argument("--crypto", type=str, help="Get crypto price (e.g., BTC-USD, ETH-USD)")
@@ -1899,8 +1925,12 @@ if __name__ == "__main__":
 
     # CDs
     parser.add_argument("--cd-rates", action="store_true", help="Get typical CD rates")
-    parser.add_argument("--cd-calculate", type=str, help="Calculate CD return (e.g., 1_year, 6_month)")
-    parser.add_argument("--principal", type=float, default=10000, help="CD principal amount (default: 10000)")
+    parser.add_argument(
+        "--cd-calculate", type=str, help="Calculate CD return (e.g., 1_year, 6_month)"
+    )
+    parser.add_argument(
+        "--principal", type=float, default=10000, help="CD principal amount (default: 10000)"
+    )
 
     args = parser.parse_args()
 

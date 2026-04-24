@@ -170,7 +170,7 @@ export default function InvestmentGoalsWizard({
                     className="p-4 rounded-lg border-2 text-left transition-all hover:shadow-md"
                     style={{
                       borderColor: localGoals.primaryGoal === goal ? palette.primary : palette.gridLines,
-                      backgroundColor: localGoals.primaryGoal === goal ? palette.primary + '10' : 'white',
+                      backgroundColor: localGoals.primaryGoal === goal ? palette.primary + '10' : palette.background,
                     }}
                   >
                     <div className="w-8 h-8 rounded-full mb-2 flex items-center justify-center font-bold" style={{ backgroundColor: palette.primary + '20', color: palette.primary }}>
@@ -219,7 +219,7 @@ export default function InvestmentGoalsWizard({
                     className="p-4 rounded-lg border-2 text-center transition-all hover:shadow-md"
                     style={{
                       borderColor: localGoals.timeHorizon === years ? palette.primary : palette.gridLines,
-                      backgroundColor: localGoals.timeHorizon === years ? palette.primary + '10' : 'white',
+                      backgroundColor: localGoals.timeHorizon === years ? palette.primary + '10' : palette.background,
                     }}
                   >
                     <div className="text-3xl font-bold mb-2" style={{ color: palette.primary }}>
@@ -281,7 +281,7 @@ export default function InvestmentGoalsWizard({
                     className="w-full p-4 rounded-lg border-2 text-left transition-all hover:shadow-md"
                     style={{
                       borderColor: localGoals.riskTolerance === key ? color : palette.gridLines,
-                      backgroundColor: localGoals.riskTolerance === key ? color + '10' : 'white',
+                      backgroundColor: localGoals.riskTolerance === key ? color + '10' : palette.background,
                     }}
                   >
                     <div className="flex items-center justify-between">

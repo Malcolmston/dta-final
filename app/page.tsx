@@ -91,6 +91,18 @@ export default function Home() {
     setInitialized(true);
   }, [initialized, setIsDarkMode]);
 
+  // Pre-cache heatmap data on mount for faster loading
+  useEffect(() => {
+    if (!initialized) return;
+
+    // Pre-cache default heatmap tickers in background
+    fetch("/api/heatmap", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ tickers: "AAPL,GOOGL,MSFT,AMZN,NVDA" }),
+    }).catch(() => {}); // Silent fail - cache is optional
+  }, [initialized]);
+
   // Toggle .dark class on body for CSS variable support
   useEffect(() => {
     if (isDarkMode) {

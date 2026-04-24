@@ -42,6 +42,7 @@ import BenchmarkComparison from "./components/BenchmarkComparison";
 import CashFlowTracking from "./components/CashFlowTracking";
 import ErrorBoundary from "./components/ErrorBoundary";
 import VolumeChart from "./components/VolumeChart";
+import Link from "next/link";
 
 const CHART_CONFIG_KEY = "chart_config";
 
@@ -825,7 +826,15 @@ export default function Home() {
         <div className="max-w-5xl mx-auto px-4 sm:px-8 py-6">
           <div className="flex items-center justify-between text-sm" style={{ color: palette.text, opacity: 0.6 }}>
             <p>Stock Market Dashboard - Educational & Analysis Tools</p>
-            <p>Data provided for educational purposes</p>
+            <div className="flex items-center gap-4">
+              <Link
+                href="/docs"
+                className="hover:opacity-100 transition-opacity underline underline-offset-2"
+              >
+                API Docs
+              </Link>
+              <p>Data provided for educational purposes</p>
+            </div>
           </div>
         </div>
       </footer>

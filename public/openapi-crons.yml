@@ -1,0 +1,186 @@
+openapi: 3.1.0
+info:
+  title: DTA Final Cron Jobs API
+  description: |
+    Scheduled cron job endpoints for automated data fetching and maintenance tasks.
+    These endpoints are designed to be called by Vercel Cron or external schedulers.
+  version: 1.0.0
+  contact:
+    name: API Support
+    url: https://github.com/anthropics/claude-code
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://dta-final.vercel.app
+    description: Production server
+  - url: http://localhost:3000
+    description: Development server
+
+tags:
+  - name: Data Fetch
+    description: Scheduled data fetching jobs
+  - name: Maintenance
+    description: Cache and storage maintenance jobs
+
+paths:
+  /api/cron/fetch-all:
+    get:
+      summary: Fetch all stock data
+      description: |
+        Scheduled job to fetch data for all tracked tickers.
+        Runs daily at 6 AM UTC to update historical data.
+      operationId: fetchAllStocks
+      tags:
+        - Data Fetch
+      parameters:
+        - name: period
+          in: query
+          description: Historical period to fetch
+          schema:
+            type: string
+            default: 1y
+        - name: force
+          in: query
+          description: Force refresh even if cached
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: Data fetch completed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  fetched:
+                    type: integer
+                    example: 150
+                  timestamp:
+                    type: string
+                    format: date-time
+
+  /api/cron/update-quotes:
+    get:
+      summary: Update real-time quotes
+      description: |
+        Updates real-time quote data for all active tickers.
+        Runs every 15 minutes during market hours.
+      operationId: updateQuotes
+      tags:
+        - Data Fetch
+      responses:
+        '200':
+          description: Quote update completed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  updated:
+                    type: integer
+                    example: 42
+
+  /api/cron/calculate-signals:
+    get:
+      summary: Calculate trading signals
+      description: |
+        Recalculates trading signals for all tracked securities.
+        Runs after market close (4 PM UTC) and before market open.
+      operationId: calculateSignals
+      tags:
+        - Data Fetch
+      responses:
+        '200':
+          description: Signal calculation completed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  signalsGenerated:
+                    type: integer
+                    example: 85
+
+  /api/cron/heatmap:
+    get:
+      summary: Generate heatmap data
+      description: |
+        Generates sector heatmap data for the dashboard.
+        Runs hourly during market hours.
+      operationId: generateHeatmap
+      tags:
+        - Data Fetch
+      responses:
+        '200':
+          description: Heatmap generation completed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  sectors:
+                    type: integer
+                    example: 11
+
+  /api/cron/cleanup-cache:
+    get:
+      summary: Clean up expired cache
+      description: |
+        Removes expired cache entries and optimizes storage.
+        Runs daily at 2 AM UTC.
+      operationId: cleanupCache
+      tags:
+        - Maintenance
+      responses:
+        '200':
+          description: Cache cleanup completed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  removed:
+                    type: integer
+                    example: 234
+
+  /api/cron/sync-watches:
+    get:
+      summary: Sync watchlist data
+      description: |
+        Syncs user watchlists with external services.
+        Runs every 6 hours.
+      operationId: syncWatches
+      tags:
+        - Maintenance
+      responses:
+        '200':
+          description: Watchlist sync completed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  synced:
+                    type: integer
+                    example: 12

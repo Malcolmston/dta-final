@@ -1,6 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { rateLimit, getClientIp } from "@/lib/rateLimit";
 
+// Available charts for export (all chart components)
+const AVAILABLE_CHARTS = [
+  "candlestick", "candlestick3d", "heatmap", "volume", "volume3d",
+  "streamgraph", "network", "correlation", "lag", "portfolioage",
+  "benchmark", "cashflow", "dualaxis", "forecast", "signals",
+  "momentum", "treemap", "treemap3d", "pie", "diversification",
+  "risk", "retirement", "price3d", "rebalancing", "income",
+  "assetallocation", "simplified", "technical", "confusion"
+];
+
 // Cache responses for different data types
 const CACHE_DURATIONS: Record<string, number> = {
   history: 60,      // 1 minute for history
@@ -29,6 +39,41 @@ export async function GET(request: NextRequest) {
   const period = searchParams.get("period") || "1y";
   const interval = searchParams.get("interval") || "1d";
   const baseUrl = `${url.protocol}//${url.host}`;
+
+  // Chart export parameter: chart=candlestick.png or chart=heatmap.jpg
+  const chartParam = searchParams.get("chart");
+  if (chartParam) {
+    const match = chartParam.match(/^(.+)\.(png|jpg|jpeg|webp)$/i);
+    if (!match) {
+      return NextResponse.json(
+        { error: "Invalid chart format. Use: chart=<name>.<png|jpg|webp>" },
+        { status: 400 }
+      );
+    }
+    const chartName = match[1].toLowerCase();
+    const format = match[2].toLowerCase();
+
+    if (!AVAILABLE_CHARTS.includes(chartName)) {
+      return NextResponse.json(
+        { error: `Unknown chart: ${chartName}`, availableCharts: AVAILABLE_CHARTS },
+        { status: 400 }
+      );
+    }
+
+    // Return chart configuration for client-side capture
+    return NextResponse.json({
+      success: true,
+      chart: {
+        name: chartName,
+        format,
+        captureUrl: `${baseUrl}/api/webhook/capture?chart=${chartName}&format=${format}&symbol=${symbol || ""}&period=${period}`,
+        instructions: "Use html2canvas to capture the chart element and download as image"
+      },
+      meta: {
+        timestamp: new Date().toISOString()
+      }
+    });
+  }
 
   if (!symbol) {
     return NextResponse.json(

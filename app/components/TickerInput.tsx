@@ -106,7 +106,7 @@ export default function TickerInput({
     const val = e.target.value.toUpperCase();
     if (/^[A-Z]{0,5}$/.test(val)) {
       setInputValue(val);
-      onChange(val);
+      // Don't call onChange on every keystroke - only update local state
     }
   };
 

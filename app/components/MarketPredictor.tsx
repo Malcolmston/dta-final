@@ -138,9 +138,13 @@ export default function MarketPredictor() {
     }
   };
 
-  // Initial load
+  // Initial load - only run once when tickers or period changes
   useEffect(() => {
-    fetchData();
+    // Use a small timeout to ensure state is ready
+    const timer = setTimeout(() => {
+      fetchData();
+    }, 100);
+    return () => clearTimeout(timer);
   }, []);
 
   // Auto-fetch when period changes

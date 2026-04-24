@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import { fetchHistory, fetchGrowthEstimate, fetchForecast, StockHistory, GrowthEstimate, ForecastData } from "@/lib/client";
 import { TIME_RANGES } from "@/lib/constants";
@@ -67,7 +67,7 @@ export default function MarketPredictor() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setLoading(true);
     setError(null);
 
@@ -136,23 +136,23 @@ export default function MarketPredictor() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [tickers, period]);
 
-  // Initial load - only run once when tickers or period changes
+  // Initial load - only run once when component mounts
   useEffect(() => {
     // Use a small timeout to ensure state is ready
     const timer = setTimeout(() => {
       fetchData();
     }, 100);
     return () => clearTimeout(timer);
-  }, []);
+  }, [fetchData]);
 
   // Auto-fetch when period changes
   useEffect(() => {
     if (Object.keys(stockData).length > 0) {
       fetchData();
     }
-  }, [period]);
+  }, [period, fetchData]);
 
   // D3 chart rendering
   useEffect(() => {

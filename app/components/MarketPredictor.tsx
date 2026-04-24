@@ -616,13 +616,30 @@ export default function MarketPredictor() {
         </div>
       )}
 
-      <div ref={containerRef} className="relative w-full">
-        <svg ref={svgRef} className="w-full" />
-      </div>
+      {loading && (
+        <div className="flex items-center justify-center py-12">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2" style={{ borderColor: palette.primary }}></div>
+          <span className="ml-3" style={{ color: palette.text }}>Loading chart data...</span>
+        </div>
+      )}
 
-      <p className="mt-4 text-sm" style={{ color: palette.text }}>
-        Chart shows percentage change from the start of the period. Enter multiple tickers separated by commas. Hover over the chart to see exact values.
-      </p>
+      {!loading && Object.keys(stockData).length === 0 && !error && (
+        <div className="flex items-center justify-center py-12">
+          <span style={{ color: palette.text }}>No data loaded. Enter ticker symbols and press Enter to load data.</span>
+        </div>
+      )}
+
+      {!loading && Object.keys(stockData).length > 0 && (
+        <div ref={containerRef} className="relative w-full">
+          <svg ref={svgRef} className="w-full" />
+        </div>
+      )}
+
+      {!loading && Object.keys(stockData).length > 0 && (
+        <p className="mt-4 text-sm" style={{ color: palette.text }}>
+          Chart shows percentage change from the start of the period. Enter multiple tickers separated by commas. Hover over the chart to see exact values.
+        </p>
+      )}
     </div>
   );
 }

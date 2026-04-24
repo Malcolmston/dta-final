@@ -3,8 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useColorPalette } from "../context/ColorPaletteContext";
 import * as d3 from "d3";
-import { fetchHistory, StockHistory } from "@/lib/client";
-import { TIME_RANGES_EXTENDED } from "@/lib/constants";
 import TickerInput from "./TickerInput";
 import HelpPopup from "./HelpPopup";
 
@@ -12,18 +10,6 @@ interface PerformanceData {
   ticker: string;
   period: string;
   performance: number; // percentage change
-}
-
-// Calculate percentage change from start to end of data
-function calculatePerformance(stockData: StockHistory[]): number {
-  if (!stockData || stockData.length < 2) return 0;
-
-  const startPrice = stockData[0].close;
-  const endPrice = stockData[stockData.length - 1].close;
-
-  if (startPrice === 0) return 0;
-
-  return ((endPrice - startPrice) / startPrice) * 100;
 }
 
 export default function Heatmap() {
@@ -92,33 +78,17 @@ export default function Heatmap() {
     }
 
     try {
-      const results: PerformanceData[] = [];
+      const params = new URLSearchParams({ tickers: symbols.join(",") });
+      const response = await fetch(`/api/heatmap?${params}`);
 
-      // Fetch data for each ticker and each time period
-      for (const symbol of symbols) {
-        for (const period of TIME_RANGES_EXTENDED) {
-          try {
-            const history = await fetchHistory(symbol, period.value, "1d");
-            const performance = calculatePerformance(history);
-
-            results.push({
-              ticker: symbol,
-              period: period.label,
-              performance,
-            });
-          } catch (err) {
-            console.error(`Failed to fetch ${symbol} for ${period.label}:`, err);
-            // Add entry with 0 performance for failed fetches
-            results.push({
-              ticker: symbol,
-              period: period.label,
-              performance: 0,
-            });
-          }
-        }
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to fetch heatmap data");
       }
 
-      if (results.length === 0) {
+      const results: PerformanceData[] = await response.json();
+
+      if (!results || results.length === 0) {
         throw new Error("No data found for any of the specified tickers");
       }
 
@@ -199,7 +169,7 @@ export default function Heatmap() {
         .style("cursor", "pointer")
         .on("mouseover", function (event) {
           d3.select(this)
-            .attr("stroke", "palette.text")
+            .attr("stroke", palette.text)
             .attr("stroke-width", 2);
         })
         .on("mouseout", function () {
@@ -214,7 +184,7 @@ export default function Heatmap() {
         .attr("y", y + yScale.bandwidth() / 2)
         .attr("text-anchor", "middle")
         .attr("dominant-baseline", "middle")
-        .attr("fill", Math.abs(d.performance) > maxAbsValue * 0.5 ? "white" : "palette.text")
+        .attr("fill", Math.abs(d.performance) > maxAbsValue * 0.5 ? "white" : palette.text)
         .attr("font-size", "11px")
         .attr("font-weight", "600")
         .text(`${d.performance >= 0 ? "+" : ""}${d.performance.toFixed(1)}%`);
@@ -230,7 +200,7 @@ export default function Heatmap() {
 
     svg
       .selectAll(".tick text")
-      .attr("fill", "palette.text")
+      .attr("fill", palette.text)
       .attr("font-size", "12px")
       .attr("font-weight", "600");
 
@@ -402,22 +372,24 @@ export default function Heatmap() {
         <button
           onClick={() => setViewMode("chart")}
           className={`px-3 py-1.5 text-sm font-medium rounded-lg transition focus:ring-2 focus:ring-blue-500 focus:outline-none ${
-            viewMode === "chart" ? "bg-blue-600 text-white" : "bg-transparent palette.text hover:bg-gray-200"
+            viewMode === "chart" ? "bg-blue-600 text-white" : "bg-transparent hover:bg-gray-200"
           }`}
+          style={{ color: viewMode === "chart" ? "#fff" : palette.text }}
         >
           Chart View
         </button>
         <button
           onClick={() => setViewMode("table")}
           className={`px-3 py-1.5 text-sm font-medium rounded-lg transition focus:ring-2 focus:ring-blue-500 focus:outline-none ${
-            viewMode === "table" ? "bg-blue-600 text-white" : "bg-transparent palette.text hover:bg-gray-200"
+            viewMode === "table" ? "bg-blue-600 text-white" : "bg-transparent hover:bg-gray-200"
           }`}
+          style={{ color: viewMode === "table" ? "#fff" : palette.text }}
         >
           Table View
         </button>
       </div>
 
-      <p className="text-xs palette.text mb-2">
+      <p className="text-xs mb-2" style={{ color: palette.text }}>
         Use arrow keys to navigate. Press Enter to select.
       </p>
 
@@ -430,16 +402,16 @@ export default function Heatmap() {
           <table className="w-full text-sm border-collapse">
             <thead>
               <tr>
-                <th className="p-2 text-left font-medium palette.text border-b">Ticker</th>
+                <th className="p-2 text-left font-medium border-b" style={{ color: palette.text }}>Ticker</th>
                 {periodList.map(period => (
-                  <th key={period} className="p-2 text-center font-medium palette.text border-b">{period}</th>
+                  <th key={period} className="p-2 text-center font-medium border-b" style={{ color: palette.text }}>{period}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {tickerList.map(ticker => (
                 <tr key={ticker}>
-                  <td className="p-2 font-medium palette.text border-b">{ticker}</td>
+                  <td className="p-2 font-medium border-b" style={{ color: palette.text }}>{ticker}</td>
                   {periodList.map(period => {
                     const data = performanceData.find(d => d.ticker === ticker && d.period === period);
                     const isPositive = data && data.performance >= 0;
@@ -469,7 +441,7 @@ export default function Heatmap() {
         </div>
       )}
 
-      <p className="mt-4 text-sm palette.text">
+      <p className="mt-4 text-sm" style={{ color: palette.text }}>
         Heatmap shows percentage change for each ticker across different time periods. Green indicates positive performance, red indicates negative performance.
       </p>
     </div>

@@ -6,6 +6,7 @@ import { fetchHistory, StockHistory } from "@/lib/client";
 import { TIME_RANGES_SHORT } from "@/lib/constants";
 import { useColorPalette } from "@/app/context/ColorPaletteContext";
 import TickerInput from "./TickerInput";
+import HelpPopup from "./HelpPopup";
 
 const PREDICTED_COLOR = "#8b5cf6"; // purple
 const ACTUAL_COLOR = "#10b981"; // green
@@ -555,7 +556,14 @@ export default function DualAxisPlot({ ticker: initialTicker = "AAPL" }: DualAxi
   }, [stockData.length, fetchData]);
 
   return (
-    <div className="w-full max-w-6xl mx-auto p-6 rounded-xl shadow-lg" style={{ backgroundColor: palette.background, border: `1px solid ${palette.gridLines}` }}>
+    <div className="w-full max-w-6xl mx-auto p-6 rounded-xl shadow-lg relative" style={{ backgroundColor: palette.background, border: `1px solid ${palette.gridLines}` }}>
+      <HelpPopup
+        title="Dual Axis Plot"
+        whatItDoes="Compares predicted stock prices (using a simple model) against actual prices. Shows both data series on separate axes to compare trends."
+        whyItMatters="Helps understand how well simple predictions work and identify where models succeed or fail. Educational tool for understanding forecasting limitations."
+        whoItMattersFor="Students and traders learning about prediction models and their accuracy."
+        howToRead="Left axis = actual price, Right axis = predicted price (purple). Red circles = actual peaks, Blue circles = predicted peaks. Compare lines to see model accuracy."
+      />
       <h2 className="text-2xl font-bold mb-2" style={{ color: palette.text }}>
         Prediction vs Reality - {ticker.toUpperCase()}
       </h2>

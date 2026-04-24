@@ -6,6 +6,7 @@ import { useColorPalette } from "../context/ColorPaletteContext";
 import { fetchHistory, StockHistory } from "@/lib/client";
 import { TIME_RANGES_SHORT } from "@/lib/constants";
 import TickerInput from "./TickerInput";
+import HelpPopup from "./HelpPopup";
 
 interface PricePoint {
   date: Date;
@@ -180,7 +181,14 @@ export default function PriceRibbon3D({ ticker: initialTicker = "AAPL" }: { tick
   }, [priceData]);
 
   return (
-    <div ref={containerRef} className="w-full max-w-5xl mx-auto">
+    <div ref={containerRef} className="w-full max-w-5xl mx-auto relative">
+      <HelpPopup
+        title="Price Chart"
+        whatItDoes="Shows the historical price movement of a stock over time. The area fill shows the price range, and the line shows the closing price trajectory."
+        whyItMatters="Helps investors understand how a stock has performed historically, identify support/resistance levels, and spot patterns."
+        whoItMattersFor="Any investor wanting to see price history and trends for a specific stock."
+        howToRead="Line shows closing price over time. Area fill shows the price range. Use period buttons (1W, 1M, 3M, etc.) to change the time view. Hover for exact prices."
+      />
       <div className="flex items-center justify-between mb-4">
         <div>
           <h2 className="text-2xl font-bold" style={{ color: palette.text }}>Price Chart</h2>

@@ -6,6 +6,7 @@ import { fetchHistory, fetchGrowthEstimate, fetchForecast, StockHistory, GrowthE
 import { TIME_RANGES } from "@/lib/constants";
 import { useColorPalette } from "../context/ColorPaletteContext";
 import TickerInput from "./TickerInput";
+import HelpPopup from "./HelpPopup";
 
 interface StockDataMap {
   [symbol: string]: StockHistory[];
@@ -509,7 +510,14 @@ export default function MarketPredictor() {
   }, [stockData, period, palette]);
 
   return (
-    <div className="w-full max-w-5xl mx-auto p-6 rounded-xl shadow-lg" style={{ backgroundColor: palette.background, border: `1px solid ${palette.gridLines}` }}>
+    <div className="w-full max-w-5xl mx-auto p-6 rounded-xl shadow-lg relative" style={{ backgroundColor: palette.background, border: `1px solid ${palette.gridLines}` }}>
+      <HelpPopup
+        title="Market Predictor"
+        whatItDoes="Analyzes market sentiment by combining multiple technical indicators ( RSI, MACD, moving averages) to generate a bullish/bearish score for major market indices."
+        whyItMatters="Provides a quick overview of market conditions without analyzing individual stocks. Helps understand overall market sentiment and potential direction."
+        whoItMattersFor="Investors wanting a quick market health check before making trading decisions."
+        howToRead="Green bar = bullish sentiment, Red bar = bearish sentiment. The gauge shows the overall score from very bearish to very bullish. Use for educational purposes only - not financial advice."
+      />
       <div className="flex items-center gap-3 mb-4">
         <h2 className="text-2xl font-bold" style={{ color: palette.text }}>Market Predictor</h2>
         <span className="px-3 py-1 text-xs font-bold rounded-full" style={{ backgroundColor: palette.accent + "20", color: palette.accent }}>

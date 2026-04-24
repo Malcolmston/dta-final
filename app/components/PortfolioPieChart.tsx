@@ -5,6 +5,7 @@ import * as d3 from "d3";
 import { fetchHistory, StockHistory } from "@/lib/client";
 import { useColorPalette } from "../context/ColorPaletteContext";
 import TickerInput from "./TickerInput";
+import HelpPopup from "./HelpPopup";
 
 interface PortfolioCategory {
   category: string;
@@ -326,7 +327,14 @@ export default function PortfolioPieChart() {
   }, [portfolioData, selectedCategory, hoveredCategory, palette]);
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-6 rounded-xl shadow-lg" style={{ backgroundColor: palette.background, border: `1px solid ${palette.gridLines}` }}>
+    <div className="w-full max-w-4xl mx-auto p-6 rounded-xl shadow-lg relative" style={{ backgroundColor: palette.background, border: `1px solid ${palette.gridLines}` }}>
+      <HelpPopup
+        title="Portfolio Pie Chart"
+        whatItDoes="Shows how a portfolio is distributed across different asset classes (stocks, bonds, cash, etc.). Each slice represents the percentage allocated to that category."
+        whyItMatters="Asset allocation is a primary driver of portfolio returns and risk. Understanding your allocation helps ensure proper diversification."
+        whoItMattersFor="All investors wanting to understand their portfolio composition and diversification."
+        howToRead="Larger slice = bigger allocation. Hover over slices to see exact percentages and dollar amounts. Click on a category to see underlying holdings."
+      />
       <h2 className="text-2xl font-bold mb-2" style={{ color: palette.text }}>Portfolio Allocation</h2>
 
       <div className="mb-6 p-4 rounded-lg border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>

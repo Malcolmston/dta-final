@@ -6,6 +6,7 @@ import * as d3 from "d3";
 import { fetchHistory, StockHistory } from "@/lib/client";
 import { TIME_RANGES_EXTENDED } from "@/lib/constants";
 import TickerInput from "./TickerInput";
+import HelpPopup from "./HelpPopup";
 
 interface PerformanceData {
   ticker: string;
@@ -357,7 +358,14 @@ export default function Heatmap() {
   }, [performanceData]);
 
   return (
-    <div className="w-full max-w-5xl mx-auto p-6 rounded-xl shadow-lg" style={{ backgroundColor: palette.background, border: `1px solid ${palette.gridLines}` }}>
+    <div className="w-full max-w-5xl mx-auto p-6 rounded-xl shadow-lg relative" style={{ backgroundColor: palette.background, border: `1px solid ${palette.gridLines}` }}>
+      <HelpPopup
+        title="Sector Heatmap"
+        whatItDoes="Displays performance of different stocks or sectors across multiple time periods. Each cell shows the percentage change in price, with color intensity indicating the magnitude."
+        whyItMatters="Allows quick visual comparison of many securities at once, identifying top performers and underperformers. Helps spot sector rotation patterns and market trends."
+        whoItMattersFor="Investors looking to diversify, traders scanning for opportunities, and analysts identifying sector trends."
+        howToRead="Green = positive returns, Red = negative returns. Darker colors mean stronger performance. Read rows horizontally to compare timeframes, vertically to compare stocks."
+      />
       <h2 className="text-2xl font-bold mb-6" style={{ color: palette.text }}>Stock Performance Heatmap</h2>
 
       <div className="mb-6 p-4 rounded-lg border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>

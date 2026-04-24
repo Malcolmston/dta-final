@@ -6,6 +6,7 @@ import { fetchHistory, StockHistory } from "@/lib/client";
 import { TIME_RANGES } from "@/lib/constants";
 import { useColorPalette } from "@/app/context/ColorPaletteContext";
 import TickerInput from "./TickerInput";
+import HelpPopup from "./HelpPopup";
 
 interface StockDataMap {
   [symbol: string]: StockHistory[];
@@ -332,7 +333,14 @@ export default function Streamgraph() {
   }, [stockData, period]);
 
   return (
-    <div className="w-full max-w-5xl mx-auto p-6 rounded-xl shadow-lg" style={{ backgroundColor: palette.background, border: `1px solid ${palette.gridLines}` }}>
+    <div className="w-full max-w-5xl mx-auto p-6 rounded-xl shadow-lg relative" style={{ backgroundColor: palette.background, border: `1px solid ${palette.gridLines}` }}>
+      <HelpPopup
+        title="Streamgraph"
+        whatItDoes="Shows how multiple stocks' performance changes over time. Each colored stream represents a stock, with width indicating relative performance."
+        whyItMatters="Reveals how leadership changes over time - which stocks dominate different periods and how trends emerge and fade."
+        whoItMattersFor="Investors tracking sector rotation and wanting to see historical performance trends."
+        howToRead="Wider stream = better relative performance. Colors distinguish stocks. Overlapping streams show similar performance. Use time range buttons to change the view."
+      />
       <h2 className="text-2xl font-bold mb-2" style={{ color: palette.text }}>Sector/Stock Performance</h2>
 
       <div className="mb-6 p-4 rounded-lg border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>

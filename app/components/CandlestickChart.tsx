@@ -6,6 +6,7 @@ import { fetchHistory, StockHistory } from "@/lib/client";
 import { TIME_RANGES_SHORT } from "@/lib/constants";
 import { useColorPalette } from "@/app/context/ColorPaletteContext";
 import TickerInput from "./TickerInput";
+import HelpPopup from "./HelpPopup";
 
 // Chart constants
 const PRICE_AREA_HEIGHT_RATIO = 0.7;
@@ -446,7 +447,7 @@ export default function CandlestickChart({ ticker: initialTicker = "AAPL" }: Can
     return () => {
       tooltip.remove();
     };
-  }, [stockData, period]);
+  }, [stockData, period, palette]);
 
   // Handle resize
   useEffect(() => {
@@ -461,7 +462,14 @@ export default function CandlestickChart({ ticker: initialTicker = "AAPL" }: Can
   }, [stockData.length, fetchData]);
 
   return (
-    <div className="w-full max-w-6xl mx-auto p-6 rounded-xl shadow-lg" style={{ backgroundColor: palette.background, border: `1px solid ${palette.gridLines}` }}>
+    <div className="w-full max-w-6xl mx-auto p-6 rounded-xl shadow-lg relative" style={{ backgroundColor: palette.background, border: `1px solid ${palette.gridLines}` }}>
+      <HelpPopup
+        title="Candlestick Chart"
+        whatItDoes="Displays price movements for a stock showing Open, High, Low, and Close (OHLC) for each trading day. The 20-day SMA line shows the average closing price over the past 20 days."
+        whyItMatters="Helps traders identify trend direction, support/resistance levels, and potential reversal points. The SMA filters out daily noise to show the underlying trend."
+        whoItMattersFor="Active traders, technical analysts, and investors who want to understand price action and make informed entry/exit decisions."
+        howToRead="Green candles = price went up (bullish), red candles = price went down (bearish). The wick shows the high/low range. When price is above the purple SMA line, the trend is bullish; below indicates bearish."
+      />
       <h2 className="text-2xl font-bold mb-6" style={{ color: palette.text }}>
         Candlestick Chart - {ticker.toUpperCase()}
       </h2>

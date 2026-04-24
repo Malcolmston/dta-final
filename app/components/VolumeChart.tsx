@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import { fetchHistory, StockHistory } from "@/lib/client";
+import { useColorPalette } from "@/app/context/ColorPaletteContext";
+import HelpPopup from "./HelpPopup";
 
 interface VolumeChartProps {
   ticker?: string;
@@ -11,6 +13,7 @@ interface VolumeChartProps {
 export default function VolumeChart({ ticker = "AAPL" }: VolumeChartProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const { palette } = useColorPalette();
   const [data, setData] = useState<StockHistory[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -77,7 +80,14 @@ export default function VolumeChart({ ticker = "AAPL" }: VolumeChartProps) {
   if (error) return <div className="p-4 text-red-500">Error: {error}</div>;
 
   return (
-    <div ref={containerRef} className="w-full">
+    <div ref={containerRef} className="w-full relative">
+      <HelpPopup
+        title="Volume Chart"
+        whatItDoes="Displays trading volume (number of shares traded) over time. Volume bars are colored based on whether the price went up (green) or down (red)."
+        whyItMatters="High volume often accompanies significant price movements and can indicate trend strength. Volume spikes may signal important market events."
+        whoItMattersFor="Traders looking to confirm price movements and identify potential trend reversals."
+        howToRead="Green bars = price went up, Red bars = price went down. Taller bar = more trading activity. Compare volume to price movements for confirmation."
+      />
       <svg ref={svgRef} className="w-full" style={{ height: "300px" }} />
     </div>
   );

@@ -6,6 +6,7 @@ import { fetchHistory, StockHistory } from "@/lib/client";
 import { TIME_RANGES_EXTENDED } from "@/lib/constants";
 import { useColorPalette } from "@/app/context/ColorPaletteContext";
 import TickerInput from "./TickerInput";
+import HelpPopup from "./HelpPopup";
 
 interface TreemapData {
   symbol: string;
@@ -343,7 +344,14 @@ export default function Treemap() {
   }, [treemapData]);
 
   return (
-    <div className="w-full max-w-5xl mx-auto p-6 rounded-xl shadow-lg" style={{ backgroundColor: palette.background, border: `1px solid ${palette.gridLines}` }}>
+    <div className="w-full max-w-5xl mx-auto p-6 rounded-xl shadow-lg relative" style={{ backgroundColor: palette.background, border: `1px solid ${palette.gridLines}` }}>
+      <HelpPopup
+        title="Treemap"
+        whatItDoes="Displays portfolio allocation as nested rectangles where size represents the value/weight of each holding and color indicates performance."
+        whyItMatters="Provides a quick visual overview of your portfolio composition. Shows which positions are largest and how they're performing at a glance."
+        whoItMattersFor="Investors wanting to understand their portfolio diversification and concentration risk."
+        howToRead="Larger rectangles = larger positions. Green = positive returns, Red = negative returns. Click on rectangles to drill down into sectors."
+      />
       <h2 className="text-2xl font-bold mb-6" style={{ color: palette.text }}>Portfolio Allocation Treemap</h2>
 
       <div className="mb-6 p-4 rounded-lg border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>

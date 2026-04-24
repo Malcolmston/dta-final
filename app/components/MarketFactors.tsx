@@ -1,6 +1,7 @@
 "use client";
 
 import { useColorPalette } from "@/app/context/ColorPaletteContext";
+import HelpPopup from "./HelpPopup";
 
 interface MarketFactor {
   id: string;
@@ -92,7 +93,14 @@ export default function MarketFactors() {
   const { palette } = useColorPalette();
 
   return (
-    <div className="p-6" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
+    <div className="p-6 relative" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>
+      <HelpPopup
+        title="Market Factors"
+        whatItDoes="Lists key economic and market factors that influence stock prices. Each factor shows its current status and potential impact on the market."
+        whyItMatters="Understanding what drives the market helps make more informed investment decisions. These factors represent the fundamental forces behind price movements."
+        whoItMattersFor="All investors wanting to understand the broader market context and fundamental drivers."
+        howToRead="Green = positive impact, Red = negative impact, Gray = neutral. Click on each factor to learn more about how it affects the market."
+      />
       <div className="mb-6">
         <h2 className="text-xl font-bold" style={{ color: palette.text }}>What Influences the Stock Market?</h2>
         <p className="mt-2" style={{ color: palette.text, opacity: 0.7 }}>

@@ -6,6 +6,7 @@ import { fetchHistory, StockHistory } from "@/lib/client";
 import { TIME_RANGES_EXTENDED } from "@/lib/constants";
 import { useColorPalette } from "@/app/context/ColorPaletteContext";
 import TickerInput from "./TickerInput";
+import HelpPopup from "./HelpPopup";
 
 interface StockDataMap {
   [symbol: string]: StockHistory[];
@@ -526,7 +527,14 @@ export default function NetworkGraph() {
   }, [stockData, correlationThreshold]);
 
   return (
-    <div className="w-full max-w-5xl mx-auto p-6 rounded-xl shadow-lg" style={{ backgroundColor: palette.background, border: `1px solid ${palette.gridLines}` }}>
+    <div className="w-full max-w-5xl mx-auto p-6 rounded-xl shadow-lg relative" style={{ backgroundColor: palette.background, border: `1px solid ${palette.gridLines}` }}>
+      <HelpPopup
+        title="Stock Network Graph"
+        whatItDoes="Shows relationships between stocks based on how similarly they move. Each node is a stock, and lines represent correlation strength and direction."
+        whyItMatters="Helps identify stocks that move together (for diversification) or opposite (for hedging). Understanding correlations improves portfolio risk management."
+        whoItMattersFor="Traders and investors building diversified portfolios or looking for hedging opportunities."
+        howToRead="Nodes = stocks, Lines = correlations. Green lines = positive correlation (move together), Red lines = negative correlation (move opposite). Thicker lines = stronger correlation. Drag nodes to rearrange."
+      />
       <h2 className="text-2xl font-bold mb-6" style={{ color: palette.text }}>Stock Correlation Network</h2>
 
       <div className="mb-6 p-4 rounded-lg border" style={{ backgroundColor: palette.background, borderColor: palette.gridLines }}>

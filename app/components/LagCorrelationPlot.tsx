@@ -5,6 +5,7 @@ import * as d3 from "d3";
 import { useColorPalette } from "../context/ColorPaletteContext";
 import { fetchHistory, StockHistory } from "@/lib/client";
 import TickerInput from "./TickerInput";
+import HelpPopup from "./HelpPopup";
 
 interface LagCorrelationData {
   lag: number;
@@ -407,7 +408,14 @@ export default function LagCorrelationPlot() {
   }, [correlationData, lagRange]);
 
   return (
-    <div className="w-full max-w-5xl mx-auto p-6 rounded-xl shadow-lg" style={{ backgroundColor: palette.background, border: `1px solid ${palette.gridLines}` }}>
+    <div className="w-full max-w-5xl mx-auto p-6 rounded-xl shadow-lg relative" style={{ backgroundColor: palette.background, border: `1px solid ${palette.gridLines}` }}>
+      <HelpPopup
+        title="Lag Correlation Plot"
+        whatItDoes="Measures how a stock's price correlates with itself at different time lags. Shows whether past prices can predict future prices (autocorrelation)."
+        whyItMatters="Helps identify potential predictive patterns in price movements. Significant correlations at certain lags might indicate exploitable patterns for forecasting."
+        whoItMattersFor="Traders and analysts exploring predictive relationships and time series analysis."
+        howToRead="Center (lag 0) = correlation with itself. Positive lags = past vs current. Negative lags = current vs future. Green zones = statistically significant. Look for peaks/troughs outside the zones."
+      />
       <h2 className="text-2xl font-bold mb-2" style={{ color: palette.text }}>Lag Correlation Plot</h2>
       <p className="text-sm mb-6" style={{ color: palette.text, opacity: 0.7 }}>Autocorrelation analysis for time series forecasting</p>
 

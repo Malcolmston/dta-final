@@ -75,6 +75,7 @@ export default function Home() {
   const [activeSection, setActiveSection] = useState<DashboardSection>("overview");
   const [isSimpleMode, setIsSimpleMode] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
+  const [showAccessibility, setShowAccessibility] = useState(false);
   const { palette, isDarkMode, setIsDarkMode } = useColorPalette();
   const { goals, updateGoals } = useInvestmentGoals();
 
@@ -114,7 +115,7 @@ export default function Home() {
     if (isSimpleMode) {
       switch (activeSection) {
         case "overview":
-          return <OverviewSection />;
+          return <OverviewSection showAccessibility={showAccessibility} />;
 
         case "trends":
           return (
@@ -309,7 +310,7 @@ export default function Home() {
     // Detailed mode content (for advanced users)
     switch (activeSection) {
       case "overview":
-        return <OverviewSection />;
+        return <OverviewSection showAccessibility={showAccessibility} />;
 
       case "trends":
         return (
@@ -448,64 +449,102 @@ export default function Home() {
               </p>
             </div>
             <div className="flex items-center gap-3">
-              {/* Dark Mode Toggle */}
-              <div className="flex items-center gap-2">
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" style={{ color: palette.text }}>
-                  <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
-                </svg>
-                <button
-                  type="button"
-                  onClick={() => setIsDarkMode(!isDarkMode)}
-                  className="relative inline-flex h-8 w-16 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-300 focus:outline-none"
-                  style={{
-                    backgroundColor: isDarkMode ? palette.primary : palette.gridLines,
-                  }}
+              {/* Dark Mode Toggle - with sun/moon icons */}
+              <button
+                type="button"
+                onClick={() => setIsDarkMode(!isDarkMode)}
+                className="relative inline-flex h-8 w-20 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-all duration-300 focus:outline-none hover:scale-105 active:scale-95"
+                style={{
+                  backgroundColor: isDarkMode ? palette.primary : palette.gridLines,
+                }}
+              >
+                {/* Moon icon (dark mode) */}
+                <span
+                  className="absolute left-2 top-1/2 -translate-y-1/2 transition-all duration-300"
+                  style={{ color: isDarkMode ? '#fff' : palette.text, opacity: isDarkMode ? 1 : 0.3, transform: isDarkMode ? 'scale(1)' : 'scale(0.8)' }}
                 >
-                  <span
-                    aria-hidden="true"
-                    className="pointer-events-none inline-block h-7 w-7 transform rounded-full bg-white shadow-lg ring-0 transition-transform duration-300"
-                    style={{
-                      transform: isDarkMode ? 'translateX(26px)' : 'translateX(1px)',
-                      transitionTimingFunction: 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
-                    }}
-                  />
-                </button>
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" style={{ color: palette.text }}>
-                  <path fillRule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clipRule="evenodd" />
-                </svg>
-              </div>
-              <span className="text-xs font-medium" style={{ color: palette.text, opacity: 0.7 }}>Simple</span>
+                  <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+                  </svg>
+                </span>
+                {/* Sun icon (light mode) */}
+                <span
+                  className="absolute right-2 top-1/2 -translate-y-1/2 transition-all duration-300"
+                  style={{ color: isDarkMode ? palette.text : '#fff', opacity: isDarkMode ? 0.3 : 1, transform: isDarkMode ? 'scale(0.8)' : 'scale(1)' }}
+                >
+                  <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clipRule="evenodd" />
+                  </svg>
+                </span>
+                {/* Toggle knob */}
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none inline-block h-6 w-6 rounded-full bg-white shadow-md ring-0"
+                  style={{
+                    position: 'absolute',
+                    top: '3px',
+                    left: isDarkMode ? '50px' : '3px',
+                    transition: 'left 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                  }}
+                />
+              </button>
+
+              {/* Simple/Detailed Toggle - with S/D labels */}
               <button
                 type="button"
                 onClick={() => setIsSimpleMode(!isSimpleMode)}
-                className="relative inline-flex h-8 w-16 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-300 focus:outline-none"
+                className="relative inline-flex h-8 w-20 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-all duration-300 focus:outline-none hover:scale-105 active:scale-95"
                 style={{
                   backgroundColor: isSimpleMode ? palette.primary : palette.gridLines,
                 }}
               >
+                {/* Simple label */}
+                <span
+                  className="absolute left-2.5 top-1/2 -translate-y-1/2 text-xs font-bold transition-all duration-300"
+                  style={{
+                    color: isSimpleMode ? '#fff' : palette.text,
+                    opacity: isSimpleMode ? 1 : 0.3,
+                    transform: isSimpleMode ? 'scale(1)' : 'scale(0.8)',
+                  }}
+                >
+                  S
+                </span>
+                {/* Detailed label */}
+                <span
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-xs font-bold transition-all duration-300"
+                  style={{
+                    color: isSimpleMode ? '#fff' : palette.text,
+                    opacity: isSimpleMode ? 0.3 : 1,
+                    transform: isSimpleMode ? 'scale(0.8)' : 'scale(1)',
+                  }}
+                >
+                  D
+                </span>
+                {/* Toggle knob */}
                 <span
                   aria-hidden="true"
-                  className="pointer-events-none inline-block h-7 w-7 transform rounded-full bg-white shadow-lg ring-0 transition-transform duration-300"
+                  className="pointer-events-none inline-block h-6 w-6 rounded-full bg-white shadow-md ring-0"
                   style={{
-                    transform: isSimpleMode ? 'translateX(26px)' : 'translateX(1px)',
-                    transitionTimingFunction: 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+                    position: 'absolute',
+                    top: '3px',
+                    left: isSimpleMode ? '3px' : '50px',
+                    transition: 'left 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
                   }}
                 />
               </button>
-              <span className="text-xs font-medium" style={{ color: palette.text, opacity: 0.7 }}>Detailed</span>
+              {/* Accessibility Button */}
               <button
-                onClick={() => setShowSettings(!showSettings)}
+                onClick={() => setShowAccessibility(!showAccessibility)}
                 className="p-2 rounded-lg border transition-all hover:opacity-80"
                 style={{
-                  backgroundColor: showSettings ? palette.primary : palette.background,
+                  backgroundColor: showAccessibility ? palette.primary : palette.background,
                   borderColor: palette.gridLines,
-                  color: showSettings ? "#ffffff" : palette.text,
+                  color: showAccessibility ? "#ffffff" : palette.text,
                 }}
-                title="Settings"
+                title="Accessibility Settings"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </button>
               <span className="text-xs uppercase tracking-wider" style={{ color: palette.text, opacity: 0.5 }}>

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
+import { useColorPalette } from "../context/ColorPaletteContext";
 import { fetchHistory, StockHistory } from "@/lib/client";
 import TickerInput from "./TickerInput";
 
@@ -109,6 +110,7 @@ function calculatePearsonCorrelation(x: number[], y: number[]): number {
 }
 
 export default function LagCorrelationPlot() {
+  const { palette, isDarkMode } = useColorPalette();
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -405,23 +407,23 @@ export default function LagCorrelationPlot() {
   }, [correlationData, lagRange]);
 
   return (
-    <div className="w-full max-w-5xl mx-auto p-6 bg-white rounded-xl shadow-lg">
-      <h2 className="text-2xl font-bold mb-2 palette.text">Lag Correlation Plot</h2>
-      <p className="text-sm palette.text mb-6">Autocorrelation analysis for time series forecasting</p>
+    <div className="w-full max-w-5xl mx-auto p-6 rounded-xl shadow-lg" style={{ backgroundColor: palette.background, border: `1px solid ${palette.gridLines}` }}>
+      <h2 className="text-2xl font-bold mb-2" style={{ color: palette.text }}>Lag Correlation Plot</h2>
+      <p className="text-sm mb-6" style={{ color: palette.text, opacity: 0.7 }}>Autocorrelation analysis for time series forecasting</p>
 
-      <div className="mb-6 p-4 bg-transparent rounded-lg border border-transparent">
-        <p className="text-sm palette.text">
+      <div className="mb-6 p-4 rounded-lg">
+        <p className="text-sm" style={{ color: palette.text, opacity: 0.8 }}>
           <strong>What is lag correlation?</strong> This plot shows how each day&apos;s price correlates with prices at different time lags.
-          <span className="text-green-600 font-medium"> Positive lags</span> (right side) show how past prices relate to current price,
-          while <span className="text-blue-600 font-medium"> negative lags</span> (left side) show how current price relates to future prices.
-          <span className="text-green-600 font-medium"> Green zones</span> indicate statistically significant correlations (p &lt; 0.05).
+          <span className="font-medium" style={{ color: palette.positive }}> Positive lags</span> (right side) show how past prices relate to current price,
+          while <span className="font-medium" style={{ color: palette.primary }}> negative lags</span> (left side) show how current price relates to future prices.
+          <span className="font-medium" style={{ color: palette.positive }}> Green zones</span> indicate statistically significant correlations (p &lt; 0.05).
           Look for patterns that might suggest predictive relationships for forecasting.
         </p>
       </div>
 
       <div className="flex flex-wrap gap-4 mb-4">
         <div className="flex-1 min-w-[200px]">
-          <label className="block text-sm font-medium palette.text mb-2">
+          <label className="block text-sm font-medium mb-2" style={{ color: palette.text }}>
             Enter Ticker Symbol
           </label>
           <TickerInput
@@ -433,13 +435,14 @@ export default function LagCorrelationPlot() {
           />
         </div>
         <div className="flex-1 min-w-[200px]">
-          <label className="block text-sm font-medium palette.text mb-2">
+          <label className="block text-sm font-medium mb-2" style={{ color: palette.text }}>
             Lag Range (days)
           </label>
           <select
             value={lagRange}
             onChange={(e) => setLagRange(Number(e.target.value))}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+            className="w-full px-4 py-2 rounded-lg outline-none transition"
+            style={{ border: `1px solid ${palette.gridLines}`, color: palette.text, backgroundColor: palette.background }}
           >
             <option value={5}>±5 days</option>
             <option value={10}>±10 days</option>

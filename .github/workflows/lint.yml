@@ -1,0 +1,53 @@
+name: Lint
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  frontend-lint:
+    name: Frontend Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run linter
+        run: npm run lint
+
+  scrape-lint:
+    name: Scrape Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: 'pip'
+          cache-dependency-path: scrape/requirements.txt
+
+      - name: Install dependencies
+        run: pip install -r scrape/requirements.txt -q
+
+      - name: Install ruff
+        run: pip install ruff -q
+
+      - name: Run linter
+        run: ruff check scrape/main.py scrape/build_tickers_csv.py
+
+      - name: Check formatting
+        run: ruff format --check scrape/main.py scrape/build_tickers_csv.py

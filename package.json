@@ -16,6 +16,8 @@
     "dev:all": "npm run redis:start && npm run dev"
   },
   "dependencies": {
+    "@asyncapi/react-component": "^3.1.0",
+    "@types/swagger-ui-react": "^5.18.0",
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
     "bullmq": "^5.28.2",
@@ -24,7 +26,8 @@
     "next": "16.2.1",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "redis": "^5.12.1"
+    "redis": "^5.12.1",
+    "swagger-ui-react": "^5.32.4"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

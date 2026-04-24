@@ -145,10 +145,12 @@ export default function Heatmap() {
 
     // Calculate color scale - green for positive, red for negative
     const maxAbsValue = d3.max(performanceData, (d) => Math.abs(d.performance)) || 10;
+    // Use a middle color that contrasts with both light and dark backgrounds
+    const middleColor = palette.isDarkMode ? "#6b7280" : "#d1d5db";
     const colorScale = d3
       .scaleLinear<string>()
       .domain([-maxAbsValue, 0, maxAbsValue])
-      .range(["#ef4444", "#f3f4f6", "#22c55e"]);
+      .range([palette.negative, middleColor, palette.positive]);
 
     // Draw heatmap cells
     performanceData.forEach((d) => {
@@ -178,13 +180,16 @@ export default function Heatmap() {
         });
 
       // Add percentage text
+      // Use contrasting text color based on background brightness
+      const isExtremeValue = Math.abs(d.performance) > maxAbsValue * 0.5;
+      const textColor = isExtremeValue ? (palette.isDarkMode ? "#000000" : "#ffffff") : palette.text;
       svg
         .append("text")
         .attr("x", x + xScale.bandwidth() / 2)
         .attr("y", y + yScale.bandwidth() / 2)
         .attr("text-anchor", "middle")
         .attr("dominant-baseline", "middle")
-        .attr("fill", Math.abs(d.performance) > maxAbsValue * 0.5 ? "white" : palette.text)
+        .attr("fill", textColor)
         .attr("font-size", "11px")
         .attr("font-weight", "600")
         .text(`${d.performance >= 0 ? "+" : ""}${d.performance.toFixed(1)}%`);
@@ -229,9 +234,9 @@ export default function Heatmap() {
       .attr("x1", "0%")
       .attr("x2", "100%");
 
-    gradient.append("stop").attr("offset", "0%").attr("stop-color", "#ef4444");
-    gradient.append("stop").attr("offset", "50%").attr("stop-color", "#f3f4f6");
-    gradient.append("stop").attr("offset", "100%").attr("stop-color", "#22c55e");
+    gradient.append("stop").attr("offset", "0%").attr("stop-color", palette.negative);
+    gradient.append("stop").attr("offset", "50%").attr("stop-color", middleColor);
+    gradient.append("stop").attr("offset", "100%").attr("stop-color", palette.positive);
 
     // Legend background
     svg

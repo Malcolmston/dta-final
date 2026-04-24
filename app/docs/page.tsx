@@ -232,6 +232,11 @@ export default function DocsPage() {
         .asyncapi-wrapper .aui-root .examples .text-black {
           color: ${palette.text} !important;
         }
+        .asyncapi-wrapper .aui-root [style*="color: black"],
+        .asyncapi-wrapper .aui-root [style*="color:#000"],
+        .asyncapi-wrapper .aui-root [style*="color: #000"] {
+          color: ${palette.text} !important;
+        }
         .asyncapi-wrapper .aui-root .examples pre,
         .asyncapi-wrapper .aui-root .examples code {
           color: #e2e8f0 !important;

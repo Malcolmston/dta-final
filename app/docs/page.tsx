@@ -351,6 +351,266 @@ export default function DocsPage() {
         .asyncapi-wrapper .aui-root label {
           color: ${palette.text} !important;
         }
+
+        /* ── Override hardcoded black backgrounds ── */
+        .asyncapi-wrapper .aui-root [style*="background-color: black"],
+        .asyncapi-wrapper .aui-root [style*="background-color:#000"],
+        .asyncapi-wrapper .aui-root [style*="background-color: #000"],
+        .asyncapi-wrapper .aui-root [style*="background:#000"],
+        .asyncapi-wrapper .aui-root [style*="background: black"],
+        .asyncapi-wrapper .aui-root [bgcolor="black"],
+        .asyncapi-wrapper .aui-root [bgcolor="#000000"] {
+          background-color: ${palette.background} !important;
+        }
+
+        /* ── Override any remaining black text in all elements ── */
+        .asyncapi-wrapper .aui-root *:not(code):not(pre) {
+          color: ${palette.text} !important;
+        }
+
+        /* ── Make code blocks keep dark theme ── */
+        .asyncapi-wrapper .aui-root code,
+        .asyncapi-wrapper .aui-root pre {
+          background-color: #1e2433 !important;
+          color: #e2e8f0 !important;
+        }
+
+        /* ── Override inline styles with black values ── */
+        .asyncapi-wrapper .aui-root [style*="color:rgb(0,0,0)"],
+        .asyncapi-wrapper .aui-root [style*="color: rgb(0, 0, 0)"],
+        .asyncapi-wrapper .aui-root [style*="Color: black"],
+        .asyncapi-wrapper .aui-root [STYLE*="color: black"],
+        .asyncapi-wrapper .aui-root font:not([color]) {
+          color: ${palette.text} !important;
+        }
+
+        /* ── Table cells and rows ── */
+        .asyncapi-wrapper .aui-root tr,
+        .asyncapi-wrapper .aui-root tbody,
+        .asyncapi-wrapper .aui-root thead,
+        .asyncapi-wrapper .aui-root table {
+          background-color: ${palette.background} !important;
+          color: ${palette.text} !important;
+        }
+
+        /* ── Schema/parameter tables ── */
+        .asyncapi-wrapper .aui-root .table-wrapper,
+        .asyncapi-wrapper .aui-root .schema-table,
+        .asyncapi-wrapper .aui-root .parameters-table {
+          background-color: ${palette.background} !important;
+        }
+        .asyncapi-wrapper .aui-root .table-wrapper td,
+        .asyncapi-wrapper .aui-root .table-wrapper th,
+        .asyncapi-wrapper .aui-root .schema-table td,
+        .asyncapi-wrapper .aui-root .schema-table th {
+          background-color: ${palette.background} !important;
+          color: ${palette.text} !important;
+          border-color: ${palette.gridLines} !important;
+        }
+
+        /* ── Specific AsyncAPI sections ── */
+        .asyncapi-wrapper .aui-root .server,
+        .asyncapi-wrapper .aui-root .channel-item,
+        .asyncapi-wrapper .aui-root .operation-item,
+        .asyncapi-wrapper .aui-root .message-item,
+        .asyncapi-wrapper .aui-root .schema-item {
+          background-color: ${palette.background} !important;
+        }
+        .asyncapi-wrapper .aui-root .server *,
+        .asyncapi-wrapper .aui-root .channel-item *,
+        .asyncapi-wrapper .aui-root .operation-item *,
+        .asyncapi-wrapper .aui-root .message-item *,
+        .asyncapi-wrapper .aui-root .schema-item * {
+          color: ${palette.text} !important;
+        }
+
+        /* ── Force everything under aui-root to use palette ── */
+        .asyncapi-wrapper .aui-root .row,
+        .asyncapi-wrapper .aui-root .col,
+        .asyncapi-wrapper .aui-root .card,
+        .asyncapi-wrapper .aui-root .badge,
+        .asyncapi-wrapper .aui-root .tag,
+        .asyncapi-wrapper .aui-root .label {
+          background-color: ${palette.background} !important;
+          color: ${palette.text} !important;
+        }
+
+        /* ── Last resort: any element with black background ── */
+        .asyncapi-wrapper .aui-root [style*="000"] {
+          background-color: ${palette.background} !important;
+        }
+
+        /* ── Override specific dark patterns ── */
+        .asyncapi-wrapper .aui-root .bg-gray-400,
+        .asyncapi-wrapper .aui-root .bg-gray-500,
+        .asyncapi-wrapper .aui-root .bg-gray-600,
+        .asyncapi-wrapper .aui-root .bg-gray-700 {
+          background-color: ${palette.gridLines} !important;
+        }
+
+        /* ── Override dark text classes ── */
+        .asyncapi-wrapper .aui-root .text-black {
+          color: ${palette.text} !important;
+        }
+
+        /* ── Override any RGB black ── */
+        .asyncapi-wrapper .aui-root [style*="rgb(0, 0, 0)"],
+        .asyncapi-wrapper .aui-root [style*="rgb(0,0,0)"],
+        .asyncapi-wrapper .aui-root [style*="#00000000"] {
+          background-color: ${palette.background} !important;
+          color: ${palette.text} !important;
+        }
+
+        /* ── Override flex containers ── */
+        .asyncapi-wrapper .aui-root .flex,
+        .asyncapi-wrapper .aui-root .inline-flex {
+          background-color: ${palette.background} !important;
+        }
+
+        /* ── Override specific asyncapi classes ── */
+        .asyncapi-wrapper .aui-root .asyncapi-section,
+        .asyncapi-wrapper .aui-root .channels-section,
+        .asyncapi-wrapper .aui-root .operations-section,
+        .asyncapi-wrapper .aui-root .servers-section,
+        .asyncapi-wrapper .aui-root .schemas-section,
+        .asyncapi-wrapper .aui-root .messages-section {
+          background-color: ${palette.background} !important;
+        }
+
+        /* ── Override description/info sections ── */
+        .asyncapi-wrapper .aui-root .description,
+        .asyncapi-wrapper .aui-root .description-content,
+        .asyncapi-wrapper .aui-root .info {
+          background-color: ${palette.background} !important;
+          color: ${palette.text} !important;
+        }
+
+        /* ── Override collapsible sections ── */
+        .asyncapi-wrapper .aui-root .collapsible,
+        .asyncapi-wrapper .aui-root .collapsible-content {
+          background-color: ${palette.background} !important;
+        }
+
+        /* ── Override headers/titles in content ── */
+        .asyncapi-wrapper .aui-root .content-header,
+        .asyncapi-wrapper .aui-root .content-title {
+          color: ${palette.text} !important;
+        }
+
+        /* ── Override list items ── */
+        .asyncapi-wrapper .aui-root li,
+        .asyncapi-wrapper .aui-root ul,
+        .asyncapi-wrapper .aui-root ol {
+          background-color: ${palette.background} !important;
+          color: ${palette.text} !important;
+        }
+
+        /* ── Override any remaining inline styles with explicit black ── */
+        .asyncapi-wrapper .aui-root [STYLE] {
+          background-color: ${palette.background} !important;
+          color: ${palette.text} !important;
+        }
+
+        /* ── But preserve code block styling ── */
+        .asyncapi-wrapper .aui-root pre[style],
+        .asyncapi-wrapper .aui-root code[style] {
+          background-color: #1e2433 !important;
+          color: #e2e8f0 !important;
+        }
+
+        /* ── Absolute override for any remaining dark elements ── */
+        .asyncapi-wrapper .aui-root div:empty,
+        .asyncapi-wrapper .aui-root span:empty {
+          background-color: ${palette.background} !important;
+        }
+
+        /* ── Override all direct children ── */
+        .asyncapi-wrapper .aui-root > * {
+          background-color: ${palette.background} !important;
+          color: ${palette.text} !important;
+        }
+
+        /* ── Override any shadow DOM elements ── */
+        .asyncapi-wrapper .aui-root ::slotted(*) {
+          background-color: ${palette.background} !important;
+          color: ${palette.text} !important;
+        }
+
+        /* ── Target specific element types ── */
+        .asyncapi-wrapper .aui-root article,
+        .asyncapi-wrapper .aui-root section,
+        .asyncapi-wrapper .aui-root nav,
+        .asyncapi-wrapper .aui-root header,
+        .asyncapi-wrapper .aui-root footer {
+          background-color: ${palette.background} !important;
+        }
+
+        /* ── Override input elements ── */
+        .asyncapi-wrapper .aui-root input,
+        .asyncapi-wrapper .aui-root select,
+        .asyncapi-wrapper .aui-root textarea {
+          background-color: ${palette.background} !important;
+          color: ${palette.text} !important;
+          border-color: ${palette.gridLines} !important;
+        }
+
+        /* ── Override scrollbar ── */
+        .asyncapi-wrapper .aui-root ::-webkit-scrollbar,
+        .asyncapi-wrapper .aui-root ::-webkit-scrollbar-track,
+        .asyncapi-wrapper .aui-root ::-webkit-scrollbar-thumb {
+          background-color: ${palette.gridLines} !important;
+        }
+
+        /* ── Override svg/icons ── */
+        .asyncapi-wrapper .aui-root svg {
+          fill: ${palette.text} !important;
+        }
+
+        /* ── Override anchor links ── */
+        .asyncapi-wrapper .aui-root a {
+          color: ${palette.primary} !important;
+        }
+
+        /* ── Override headings ── */
+        .asyncapi-wrapper .aui-root h1,
+        .asyncapi-wrapper .aui-root h2,
+        .asyncapi-wrapper .aui-root h3,
+        .asyncapi-wrapper .aui-root h4,
+        .asyncapi-wrapper .aui-root h5,
+        .asyncapi-wrapper .aui-root h6 {
+          color: ${palette.text} !important;
+        }
+
+        /* ── Override horizontal rules ── */
+        .asyncapi-wrapper .aui-root hr {
+          border-color: ${palette.gridLines} !important;
+        }
+
+        /* ── Make sure no section has dark background ── */
+        .asyncapi-wrapper .aui-root [class*="panel"],
+        .asyncapi-wrapper .aui-root [class*="sidebar"],
+        .asyncapi-wrapper .aui-root [class*="content"],
+        .asyncapi-wrapper .aui-root [class*="header"],
+        .asyncapi-wrapper .aui-root [class*="footer"] {
+          background-color: ${palette.background} !important;
+        }
+
+        /* ── Override badge/indicator colors ── */
+        .asyncapi-wrapper .aui-root .bg-yellow-600,
+        .asyncapi-wrapper .aui-root .bg-red-600,
+        .asyncapi-wrapper .aui-root .bg-green-600,
+        .asyncapi-wrapper .aui-root .bg-orange-600 {
+          background-color: ${palette.primary} !important;
+        }
+
+        /* ── Override text with specific colors ── */
+        .asyncapi-wrapper .aui-root .text-red-500,
+        .asyncapi-wrapper .aui-root .text-red-600,
+        .asyncapi-wrapper .aui-root .text-yellow-500,
+        .asyncapi-wrapper .aui-root .text-green-500,
+        .asyncapi-wrapper .aui-root .text-orange-500 {
+          color: ${palette.text} !important;
+        }
       `}</style>
     </div>
   );

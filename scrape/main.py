@@ -4,6 +4,7 @@ import io
 import json
 
 import pandas as pd
+
 try:
     import pandas_ta as ta
     PANDAS_TA_AVAILABLE = True
@@ -12,25 +13,6 @@ except ImportError:
     ta = None
 import yaml
 import yfinance as yf
-
-# Import from stocs package
-from stocs import (
-    client,
-    constants,
-    indicators,
-    portfolio,
-)
-
-# Re-export for backward compatibility
-from stocs.constants import (
-    BOND_TICKERS,
-    INTERNATIONAL_TICKERS,
-    STOCK_TICKERS,
-    CRYPTO_TICKERS,
-    STOCK_POOLS,
-    BOND_POOL,
-    CRYPTO_POOL,
-)
 
 # ---------------------------------------------------------------------------
 # WebSocket
@@ -1399,7 +1381,6 @@ def get_portfolio(strategy="balanced", age=30, capital=10000, top_n=5):
 
     # Bond recommendations
     bond_pool = ["TLT", "IEF", "AGG", "BND", "LQD"]
-    intl_pool = ["VEA", "EFA", "VWO"]
 
     # Get stocks
     stocks_key = strategy if strategy in stock_pools else "balanced"
@@ -1597,7 +1578,7 @@ def get_short_indicators(ticker, period="3mo"):
         data.columns = data.columns.get_level_values(0)
 
     df = data.reset_index()
-    n = len(df)
+    len(df)
 
     # Short-term indicators (fast settings)
     df.ta.sma(length=5, close="Close", append=True)

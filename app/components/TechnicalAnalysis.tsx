@@ -883,17 +883,28 @@ export default function TechnicalAnalysis({ isSimpleMode = false }: TechnicalAna
 
       {/* Indicator Toggles (for Momentum tab) - hide in Simple Mode */}
       {activeTab === "momentum" && !isSimpleMode && (
-        <div className="flex flex-wrap gap-2 mb-4 p-3 bg-transparent rounded-lg">
+        <div className="flex flex-wrap gap-4 mb-4 p-3 bg-transparent rounded-lg">
           <span className="text-sm font-medium mr-2" style={{ color: palette.text }}>Indicators:</span>
           {indicators.map((ind) => (
-            <button
-              key={ind.key}
-              onClick={() => toggleIndicator(ind.key)}
-              className="px-3 py-1 text-xs font-medium rounded-full transition-colors"
-              style={ind.enabled ? { backgroundColor: ind.color, color: "white" } : { backgroundColor: palette.gridLines, color: palette.text }}
-            >
-              {ind.title} {ind.enabled ? "✓" : ""}
-            </button>
+            <div key={ind.key} className="flex items-center gap-2">
+              <span className="text-xs" style={{ color: palette.text }}>{ind.title}</span>
+              <button
+                type="button"
+                onClick={() => toggleIndicator(ind.key)}
+                className="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none"
+                style={{
+                  backgroundColor: ind.enabled ? ind.color : palette.gridLines,
+                }}
+              >
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
+                  style={{
+                    transform: ind.enabled ? 'translateX(20px)' : 'translateX(0)',
+                  }}
+                />
+              </button>
+            </div>
           ))}
         </div>
       )}

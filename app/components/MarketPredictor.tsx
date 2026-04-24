@@ -360,8 +360,8 @@ export default function MarketPredictor() {
       .attr("fill", palette.text)
       .text("% Change from Start");
 
-    // Use palette colors for lines
-    const lineColors = [palette.primary, palette.secondary, palette.accent, palette.negative, palette.positive, palette.text];
+    // Distinct line colors for each ticker (colorblind-friendly palette)
+    const lineColors = ["#3B82F6", "#8B5CF6", "#14B8A6", "#F97316", "#EC4899", "#06B6D4"];
 
     // Draw lines for each ticker
     symbols.forEach((symbol, i) => {

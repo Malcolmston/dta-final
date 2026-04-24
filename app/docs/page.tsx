@@ -20,7 +20,16 @@ type Tab = 'rest' | 'async' | 'cron' | 'webhook' | 'plots';
 export default function DocsPage() {
   const [tab, setTab] = useState<Tab>('rest');
   const [plotsContent, setPlotsContent] = useState<string>('');
-  const { palette } = useColorPalette();
+  const { palette, isDarkMode, setIsDarkMode } = useColorPalette();
+
+  // Toggle .dark class on body for CSS variable support
+  useEffect(() => {
+    if (isDarkMode) {
+      document.body.classList.add("dark");
+    } else {
+      document.body.classList.remove("dark");
+    }
+  }, [isDarkMode]);
 
   useEffect(() => {
     if (tab === 'plots' && !plotsContent) {
@@ -49,30 +58,53 @@ export default function DocsPage() {
                 REST, Async API, Cron Jobs &amp; Webhooks reference
               </p>
             </div>
-            <Link
-              href="/"
-              className="flex items-center gap-1.5 text-sm transition-opacity hover:opacity-100"
-              style={{ color: palette.text, opacity: 0.6 }}
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-              Dashboard
-            </Link>
+            <div className="flex items-center gap-3">
+              {/* Theme Toggle */}
+              <button
+                onClick={() => setIsDarkMode(!isDarkMode)}
+                className="flex items-center gap-1.5 text-sm transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-offset-2"
+                style={{ color: palette.text, opacity: 0.6, '--tw-ring-color': palette.primary } as React.CSSProperties}
+                aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+              >
+                {isDarkMode ? (
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                  </svg>
+                ) : (
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                  </svg>
+                )}
+              </button>
+              <Link
+                href="/"
+                className="flex items-center gap-1.5 text-sm transition-opacity hover:opacity-100"
+                style={{ color: palette.text, opacity: 0.6 }}
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+                Dashboard
+              </Link>
+            </div>
           </div>
 
           {/* Tabs */}
-          <nav className="flex gap-1 -mb-px">
+          <nav className="flex gap-1 -mb-px" role="tablist" aria-label="Documentation sections">
             {(['rest', 'async', 'cron', 'webhook', 'plots'] as Tab[]).map((t) => (
               <button
                 key={t}
                 onClick={() => setTab(t)}
-                className="px-5 py-2 text-sm font-medium border-b-2 transition-colors"
+                role="tab"
+                aria-selected={tab === t}
+                aria-controls={`panel-${t}`}
+                className="px-5 py-2 text-sm font-medium border-b-2 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
                 style={{
                   borderBottomColor: tab === t ? palette.primary : 'transparent',
                   color: tab === t ? palette.primary : palette.text,
                   opacity: tab === t ? 1 : 0.6,
-                }}
+                  '--tw-ring-color': palette.primary,
+                } as React.CSSProperties}
               >
                 {t === 'rest' ? 'REST API' : t === 'async' ? 'Async API' : t === 'cron' ? 'Cron Jobs' : t === 'webhook' ? 'Webhooks' : 'Plots'}
               </button>

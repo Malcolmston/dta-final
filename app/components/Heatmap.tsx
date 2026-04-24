@@ -214,7 +214,7 @@ export default function Heatmap() {
 
     svg
       .selectAll(".tick text")
-      .attr("fill", "#6b7280")
+      .attr("fill", palette.text)
       .attr("font-size", "11px");
 
     // Legend - placed below the chart with proper margin
@@ -248,7 +248,7 @@ export default function Heatmap() {
       .append("text")
       .attr("x", legendX)
       .attr("y", legendY + legendHeight + 12)
-      .attr("fill", "#6b7280")
+      .attr("fill", palette.text)
       .attr("font-size", "10px")
       .text(`-${maxAbsValue.toFixed(0)}%`);
 
@@ -257,7 +257,7 @@ export default function Heatmap() {
       .attr("x", legendX + legendWidth / 2)
       .attr("y", legendY + legendHeight + 12)
       .attr("text-anchor", "middle")
-      .attr("fill", "#6b7280")
+      .attr("fill", palette.text)
       .attr("font-size", "10px")
       .text("0%");
 
@@ -266,7 +266,7 @@ export default function Heatmap() {
       .attr("x", legendX + legendWidth)
       .attr("y", legendY + legendHeight + 12)
       .attr("text-anchor", "end")
-      .attr("fill", "#6b7280")
+      .attr("fill", palette.text)
       .attr("font-size", "10px")
       .text(`+${maxAbsValue.toFixed(0)}%`);
 
@@ -277,14 +277,15 @@ export default function Heatmap() {
       .attr("class", "tooltip")
       .style("position", "absolute")
       .style("visibility", "hidden")
-      .style("background", "white")
-      .style("border", "1px solid #e5e7eb")
+      .style("background", palette.background)
+      .style("border", `1px solid ${palette.gridLines}`)
       .style("border-radius", "6px")
       .style("padding", "8px 12px")
       .style("font-size", "12px")
-      .style("box-shadow", "0 2px 8px rgba(0,0,0,0.1)")
+      .style("box-shadow", "0 2px 8px rgba(0,0,0,0.15)")
       .style("pointer-events", "none")
-      .style("z-index", "10");
+      .style("z-index", "10")
+      .style("color", palette.text);
 
     // Add hover interactions to cells
     performanceData.forEach((d) => {
@@ -305,9 +306,9 @@ export default function Heatmap() {
           tooltip
             .style("visibility", "visible")
             .html(
-              `<div style="font-weight: 600;">${d.ticker}</div>
-               <div style="color: #6b7280;">${d.period}</div>
-               <div style="color: ${d.performance >= 0 ? "#22c55e" : "#ef4444"}; font-weight: 600;">
+              `<div style="font-weight: 600; color: ${palette.text};">${d.ticker}</div>
+               <div style="color: ${palette.text}; opacity: 0.7;">${d.period}</div>
+               <div style="color: ${d.performance >= 0 ? palette.positive : palette.negative}; font-weight: 600;">
                  ${d.performance >= 0 ? "+" : ""}${d.performance.toFixed(2)}%
                </div>`
             );
@@ -421,7 +422,8 @@ export default function Heatmap() {
                         key={period}
                         className={`p-2 text-center border-b ${
                           isSelected ? "ring-2 ring-blue-500" : ""
-                        } ${isPositive ? "text-green-600" : "text-red-600"}`}
+                        }`}
+                        style={{ color: isPositive ? palette.positive : palette.negative }}
                         tabIndex={0}
                         onClick={() => setSelectedCell({ ticker, period })}
                         onKeyDown={(e) => {

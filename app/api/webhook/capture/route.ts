@@ -47,9 +47,12 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const chartName = searchParams.get("chart")?.toLowerCase();
   const format = searchParams.get("format") || "png";
-  const tickers = searchParams.get("symbol")?.toUpperCase() || "AAPL";
-  const symbol = tickers.split(",")[0];
-  const period = searchParams.get("period") || "1y";
+  const tickersParam = searchParams.get("symbol")?.toUpperCase() || "AAPL";
+  const tickers = tickersParam.split(",").map(t => t.trim()).filter(t => t);
+  const symbol = tickers[0];
+  // Translate "all" to "max" for Yahoo Finance
+  const rawPeriod = searchParams.get("period") || "1y";
+  const period = rawPeriod === "all" ? "max" : rawPeriod;
   const interval = searchParams.get("interval") || "1d";
   const width = searchParams.get("width") || "800";
   const height = searchParams.get("height") || "400";

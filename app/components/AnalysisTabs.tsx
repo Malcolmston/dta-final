@@ -269,8 +269,12 @@ export default function AnalysisTabs({ showSettings = false }: AnalysisTabsProps
           value={ticker}
           onChange={(e) => setTicker(e.target.value.toUpperCase())}
           onKeyDown={(e) => e.key === "Enter" && handleRefresh()}
-          className="flex-1 px-4 py-2 rounded-lg outline-none"
-          style={{ border: `1px solid ${palette.gridLines}`, color: palette.text, backgroundColor: palette.background }}
+          className="flex-1 px-4 py-2 rounded-lg outline-none transition"
+          style={{
+            border: `1px solid ${palette.gridLines}`,
+            color: palette.text,
+            backgroundColor: palette.background,
+          }}
           placeholder="SPY, AAPL, MSFT, GOOGL, etc."
         />
         <button

@@ -311,7 +311,7 @@ export default function MarketPredictor() {
           .tickFormat(() => "")
       )
       .selectAll("line")
-      .attr("stroke", "#e5e7eb")
+      .attr("stroke", palette.gridLines)
       .attr("stroke-dasharray", "2,2");
 
     svg.selectAll(".grid .domain").remove();
@@ -325,7 +325,7 @@ export default function MarketPredictor() {
         .attr("x2", width - margin.right)
         .attr("y1", zeroY)
         .attr("y2", zeroY)
-        .attr("stroke", "#6b7280")
+        .attr("stroke", palette.text)
         .attr("stroke-width", 1.5)
         .attr("stroke-dasharray", "4,4");
     }
@@ -338,14 +338,14 @@ export default function MarketPredictor() {
       .attr("transform", `translate(0,${height - margin.bottom})`)
       .call(d3.axisBottom(xScale).ticks(xTicks))
       .selectAll("text")
-      .attr("fill", "#6b7280");
+      .attr("fill", palette.text);
 
     // Y Axis
     svg.append("g")
       .attr("transform", `translate(${margin.left},0)`)
       .call(d3.axisLeft(yScale).ticks(6).tickFormat((d) => `${d}%`))
       .selectAll("text")
-      .attr("fill", "#6b7280");
+      .attr("fill", palette.text);
 
     // Y Axis label
     svg.append("text")
@@ -353,7 +353,7 @@ export default function MarketPredictor() {
       .attr("y", 15)
       .attr("x", -(height / 2))
       .attr("text-anchor", "middle")
-      .attr("fill", "#6b7280")
+      .attr("fill", palette.text)
       .text("% Change from Start");
 
     // Use palette colors for lines
@@ -440,7 +440,7 @@ export default function MarketPredictor() {
       g.append("text")
         .attr("x", 18)
         .attr("y", 10)
-        .attr("fill", "#374151")
+        .attr("fill", palette.text)
         .attr("font-size", "12px")
         .text(symbol);
     });
@@ -452,14 +452,15 @@ export default function MarketPredictor() {
       .attr("class", "tooltip")
       .style("position", "absolute")
       .style("visibility", "hidden")
-      .style("background", "white")
-      .style("border", "1px solid #e5e7eb")
+      .style("background", palette.background)
+      .style("border", `1px solid ${palette.gridLines}`)
       .style("border-radius", "6px")
       .style("padding", "8px 12px")
       .style("font-size", "12px")
-      .style("box-shadow", "0 2px 8px rgba(0,0,0,0.1)")
+      .style("box-shadow", "0 2px 8px rgba(0,0,0,0.15)")
       .style("pointer-events", "none")
-      .style("z-index", "10");
+      .style("z-index", "10")
+      .style("color", palette.text);
 
     // Hover overlay
     svg
@@ -546,25 +547,25 @@ export default function MarketPredictor() {
 
       {/* User-friendly description section */}
       <div className="mb-6 p-4 bg-transparent rounded-lg border border-transparent">
-        <p className="text-sm palette.text mb-3">
+        <p className="text-sm mb-3" style={{ color: palette.text }}>
           Not sure what this chart shows? Here's a simple breakdown:
         </p>
         <div className="grid md:grid-cols-3 gap-4">
           <div>
-            <p className="font-bold text-lg palette.text">*Percentage Change*</p>
-            <p className="palette.text">
+            <p className="font-bold text-lg" style={{ color: palette.text }}>*Percentage Change*</p>
+            <p style={{ color: palette.text }}>
               Shows how much each stock has gained or lost from the start of the period.
             </p>
           </div>
           <div>
-            <p className="font-bold text-lg palette.text">*Historical Zones*</p>
-            <p className="palette.text">
+            <p className="font-bold text-lg" style={{ color: palette.text }}>*Historical Zones*</p>
+            <p style={{ color: palette.text }}>
               Colored areas showing historical price ranges. <span className="text-amber-600 font-medium">Not recommendations to buy or sell.</span>
             </p>
           </div>
           <div>
-            <p className="font-bold text-lg palette.text">*Growth Estimate*</p>
-            <p className="palette.text">
+            <p className="font-bold text-lg" style={{ color: palette.text }}>*Growth Estimate*</p>
+            <p style={{ color: palette.text }}>
               The dashed line shows analyst growth estimates - <span className="text-amber-600 font-medium">not a prediction</span>.
             </p>
           </div>
@@ -573,7 +574,7 @@ export default function MarketPredictor() {
 
       <div className="flex flex-wrap gap-4 mb-4">
         <div className="flex-1 min-w-[250px]">
-          <label className="block text-sm font-medium palette.text mb-2">
+          <label className="block text-sm font-medium mb-2" style={{ color: palette.text }}>
             Enter Ticker Symbol
           </label>
           <TickerInput
@@ -615,7 +616,7 @@ export default function MarketPredictor() {
         <svg ref={svgRef} className="w-full" />
       </div>
 
-      <p className="mt-4 text-sm palette.text">
+      <p className="mt-4 text-sm" style={{ color: palette.text }}>
         Chart shows percentage change from the start of the period. Enter multiple tickers separated by commas. Hover over the chart to see exact values.
       </p>
     </div>

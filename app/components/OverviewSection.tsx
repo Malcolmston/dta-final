@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useColorPalette, colorPalettes } from "../context/ColorPaletteContext";
 import MarketPredictor from "./MarketPredictor";
 import PortfolioPieChart from "./PortfolioPieChart";
@@ -41,9 +41,17 @@ const paletteCategories: PaletteCategory[] = [
   },
 ];
 
-export default function OverviewSection() {
+interface OverviewSectionProps {
+  showAccessibility?: boolean;
+}
+
+export default function OverviewSection({ showAccessibility = false }: OverviewSectionProps) {
   const { palette, paletteKey, setPaletteKey, isDarkMode, setIsDarkMode } = useColorPalette();
-  const [showSettings, setShowSettings] = useState(false);
+  const [showSettings, setShowSettings] = useState(showAccessibility);
+
+  useEffect(() => {
+    setShowSettings(showAccessibility);
+  }, [showAccessibility]);
 
   return (
     <div className="space-y-6">

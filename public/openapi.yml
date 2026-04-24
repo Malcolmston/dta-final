@@ -1,0 +1,584 @@
+openapi: 3.1.0
+info:
+  title: DTA Final Stock API
+  description: |
+    Stock market data API providing historical prices, technical indicators,
+    forecasts, momentum signals, and trading signals for various securities.
+  version: 1.0.0
+  contact:
+    name: API Support
+    url: https://github.com/anthropics/claude-code
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://dta-final.vercel.app
+    description: Production server
+  - url: http://localhost:3000
+    description: Development server
+
+tags:
+  - name: Stocks
+    description: Stock market data endpoints
+  - name: Health
+    description: System health checks
+  - name: Queue
+    description: Background job queue
+  - name: Stocs
+    description: Stock data library (new TypeScript implementation)
+
+paths:
+  /api/health:
+    get:
+      summary: Health check
+      description: Returns the health status of the API
+      operationId: getHealth
+      tags:
+        - Health
+      responses:
+        '200':
+          description: API is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: healthy
+
+  /api/stocs-test:
+    get:
+      summary: Stock data test endpoint
+      description: |
+        Test endpoint for the stocs TypeScript library.
+        Supports quote, history, indicators, portfolio, and tickers actions.
+      operationId: getStocsTest
+      tags:
+        - Stocs
+      parameters:
+        - name: action
+          in: query
+          description: Action to perform (quote, history, indicators, portfolio, tickers)
+          schema:
+            type: string
+            enum: [quote, history, indicators, portfolio, tickers]
+            default: quote
+        - name: symbol
+          in: query
+          description: Stock ticker symbol
+          schema:
+            type: string
+            default: AAPL
+        - name: period
+          in: query
+          description: Time period for historical data
+          schema:
+            type: string
+            default: 1y
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                  action:
+                    type: string
+                  symbol:
+                    type: string
+        '400':
+          description: Invalid action parameter
+        '500':
+          description: Internal server error
+
+  /api/stocks/history:
+    get:
+      summary: Get stock historical data
+      description: |
+        Retrieves historical OHLCV (Open, High, Low, Close, Volume) data
+        for a given stock ticker with caching support.
+      operationId: getStockHistory
+      tags:
+        - Stocks
+      parameters:
+        - name: symbol
+          in: query
+          description: Stock ticker symbol (e.g., AAPL, MSFT)
+          required: true
+          schema:
+            type: string
+            example: AAPL
+        - name: period
+          in: query
+          description: |
+            Time period for historical data
+            Options: 1d, 5d, 1mo, 3mo, 6mo, 1y, 2y, 5y, 10y, max
+          schema:
+            type: string
+            default: 1y
+        - name: interval
+          in: query
+          description: |
+            Data interval
+            Options: 1m, 2m, 5m, 15m, 30m, 60m, 1h, 1d, 1wk, 1mo
+          schema:
+            type: string
+            default: 1d
+      responses:
+        '200':
+          description: Historical stock data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OHLCV'
+                  cached:
+                    type: boolean
+        '400':
+          description: Missing required parameter
+        '429':
+          description: Rate limit exceeded
+        '500':
+          description: Internal server error
+
+  /api/stocks/signals:
+    get:
+      summary: Get trading signals
+      description: |
+        Generates trading signals (BUY/SELL/HOLD) based on technical
+        indicators like RSI, MACD, and SMA crossovers.
+      operationId: getTradingSignals
+      tags:
+        - Stocks
+      parameters:
+        - name: ticker
+          in: query
+          description: Stock ticker symbol
+          required: true
+          schema:
+            type: string
+            example: AAPL
+        - name: period
+          in: query
+          description: Time period for analysis
+          schema:
+            type: string
+            default: 6mo
+      responses:
+        '200':
+          description: Trading signals data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SignalData'
+        '400':
+          description: Missing required parameter
+        '429':
+          description: Rate limit exceeded
+        '500':
+          description: Internal server error
+
+  /api/stocks/forecast:
+    get:
+      summary: Get stock price forecast
+      description: |
+        Generates price forecasts using technical analysis and
+        momentum indicators.
+      operationId: getStockForecast
+      tags:
+        - Stocks
+      parameters:
+        - name: ticker
+          in: query
+          description: Stock ticker symbol
+          required: true
+          schema:
+            type: string
+            example: AAPL
+        - name: period
+          in: query
+          description: Time period for historical data
+          schema:
+            type: string
+            default: 3mo
+      responses:
+        '200':
+          description: Forecast data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+        '400':
+          description: Missing required parameter
+        '429':
+          description: Rate limit exceeded
+        '500':
+          description: Internal server error
+
+  /api/stocks/momentum:
+    get:
+      summary: Get momentum indicators
+      description: |
+        Calculates momentum indicators including price changes,
+        RSI, and trend strength.
+      operationId: getMomentum
+      tags:
+        - Stocks
+      parameters:
+        - name: ticker
+          in: query
+          description: Stock ticker symbol
+          required: true
+          schema:
+            type: string
+            example: AAPL
+        - name: period
+          in: query
+          description: Time period for analysis
+          schema:
+            type: string
+            default: 3mo
+      responses:
+        '200':
+          description: Momentum data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+        '400':
+          description: Missing required parameter
+        '429':
+          description: Rate limit exceeded
+        '500':
+          description: Internal server error
+
+  /api/stocks/growth:
+    get:
+      summary: Get growth metrics
+      description: |
+        Calculates growth metrics for a stock including
+        earnings growth, revenue growth, and other financial metrics.
+      operationId: getGrowth
+      tags:
+        - Stocks
+      parameters:
+        - name: ticker
+          in: query
+          description: Stock ticker symbol
+          required: true
+          schema:
+            type: string
+            example: AAPL
+      responses:
+        '200':
+          description: Growth metrics
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+        '400':
+          description: Missing required parameter
+        '429':
+          description: Rate limit exceeded
+        '500':
+          description: Internal server error
+
+  /api/heatmap:
+    get:
+      summary: Get stock heatmap data
+      description: |
+        Retrieves performance data for multiple tickers across
+        different time periods. Supports Redis caching.
+      operationId: getHeatmap
+      tags:
+        - Stocks
+      parameters:
+        - name: tickers
+          in: query
+          description: Comma-separated list of ticker symbols
+          schema:
+            type: string
+            default: AAPL,GOOGL,MSFT,AMZN,NVDA
+      responses:
+        '200':
+          description: Heatmap data
+          headers:
+            X-Cache:
+              schema:
+                type: string
+              description: Cache hit status
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/HeatmapData'
+        '400':
+          description: Invalid input
+        '500':
+          description: Internal server error
+    post:
+      summary: Pre-cache heatmap data
+      description: Warms up the Redis cache for specified tickers
+      operationId: preCacheHeatmap
+      tags:
+        - Stocks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tickers:
+                  type: string
+                  description: Comma-separated list of ticker symbols
+                  default: AAPL,GOOGL,MSFT,AMZN,NVDA
+      responses:
+        '200':
+          description: Cache status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [cached, already_cached]
+                  tickers:
+                    type: array
+                    items:
+                      type: string
+        '400':
+          description: Invalid input
+        '500':
+          description: Internal server error
+
+  /api/queue:
+    get:
+      summary: Get queue status
+      description: Returns the current status of the background job queue
+      operationId: getQueueStatus
+      tags:
+        - Queue
+      responses:
+        '200':
+          description: Queue status
+          content:
+            application/json:
+              schema:
+                type: object
+        '500':
+          description: Internal server error
+    post:
+      summary: Add job to queue
+      description: Adds a new job to the background processing queue
+      operationId: addJob
+      tags:
+        - Queue
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - jobType
+              properties:
+                jobType:
+                  type: string
+                  enum: [lookup, storage, pull]
+                data:
+                  type: object
+      responses:
+        '200':
+          description: Job added successfully
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Invalid job type
+        '500':
+          description: Internal server error
+
+  /api/cron/lookup:
+    get:
+      summary: Cron job for stock lookup
+      description: Scheduled job for performing stock lookups
+      operationId: runLookupCron
+      tags:
+        - Cron
+      responses:
+        '200':
+          description: Job completed
+        '500':
+          description: Job failed
+
+  /api/cron/pull:
+    get:
+      summary: Cron job for data pull
+      description: Scheduled job for pulling stock data
+      operationId: runPullCron
+      tags:
+        - Cron
+      responses:
+        '200':
+          description: Job completed
+        '500':
+          description: Job failed
+
+  /api/cron/storage:
+    get:
+      summary: Cron job for storage management
+      description: Scheduled job for managing data storage
+      operationId: runStorageCron
+      tags:
+        - Cron
+      responses:
+        '200':
+          description: Job completed
+        '500':
+          description: Job failed
+
+components:
+  schemas:
+    OHLCV:
+      type: object
+      description: Open-High-Low-Close-Volume data point
+      properties:
+        date:
+          type: string
+          format: date-time
+          description: Timestamp of the data point
+        open:
+          type: number
+          format: double
+          description: Opening price
+        high:
+          type: number
+          format: double
+          description: Highest price in the period
+        low:
+          type: number
+          format: double
+          description: Lowest price in the period
+        close:
+          type: number
+          format: double
+          description: Closing price
+        volume:
+          type: integer
+          format: int64
+          description: Trading volume
+
+    SignalData:
+      type: object
+      description: Trading signal data point
+      properties:
+        Date:
+          type: string
+          format: date-time
+        Close:
+          type: number
+        rsi:
+          type: number
+          description: Relative Strength Index (0-100)
+        rsi_signal:
+          type: string
+          enum: [oversold, neutral, overbought]
+        macd:
+          type: number
+          description: MACD line value
+        macd_signal:
+          type: number
+          description: MACD signal line value
+        macd_cross:
+          type: string
+          enum: [bullish, bearish, none]
+        sma:
+          type: number
+          description: Simple Moving Average (short)
+        sma_2:
+          type: number
+          description: Simple Moving Average (long)
+
+    HeatmapData:
+      type: object
+      description: Heatmap performance data point
+      properties:
+        ticker:
+          type: string
+          description: Stock symbol
+        period:
+          type: string
+          description: Time period label
+        performance:
+          type: number
+          format: double
+          description: Percentage performance
+
+    QuoteData:
+      type: object
+      description: Real-time quote data
+      properties:
+        symbol:
+          type: string
+        price:
+          type: number
+          format: double
+        change:
+          type: number
+          format: double
+        change_pct:
+          type: number
+          format: double
+        volume:
+          type: integer
+        timestamp:
+          type: string
+          format: date-time
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key for authenticated endpoints
+
+security:
+  - apiKey: []
+
+externalDocs:
+  description: Project Repository
+  url: https://github.com/anthropics/claude-code

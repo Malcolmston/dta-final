@@ -6,6 +6,20 @@ const nextConfig: NextConfig = {
     optimizePackageImports: ['d3', 'three'],
   },
   compress: true,
+  turbopack: {
+    resolveAlias: {
+      fs: { browser: './lib/empty-fs.js' },
+    },
+  },
+  webpack(config, { isServer }) {
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: require.resolve('./lib/empty-fs.js'),
+      };
+    }
+    return config;
+  },
   async headers() {
     return [
       {

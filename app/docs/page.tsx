@@ -1,10 +1,14 @@
 'use client';
 
 import { useState } from 'react';
+import dynamic from 'next/dynamic';
 import SwaggerUI from 'swagger-ui-react';
 import 'swagger-ui-react/swagger-ui.css';
-import AsyncApiComponent from '@asyncapi/react-component';
-import '@asyncapi/react-component/styles/default.min.css';
+
+const AsyncApiComponent = dynamic(
+  () => import('@asyncapi/react-component').then((m) => m.default),
+  { ssr: false, loading: () => <p className="p-6 text-gray-500">Loading AsyncAPI docs…</p> },
+);
 
 type Tab = 'rest' | 'async';
 
@@ -40,9 +44,7 @@ export default function DocsPage() {
       </div>
 
       <div className="p-4">
-        {tab === 'rest' && (
-          <SwaggerUI url="/openapi.yml" />
-        )}
+        {tab === 'rest' && <SwaggerUI url="/openapi.yml" />}
         {tab === 'async' && (
           <AsyncApiComponent
             schema={{ url: '/asyncapi.yml' }}

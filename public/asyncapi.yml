@@ -224,5 +224,9 @@ components:
       location: $message.payload#/ticker
 
     periodParam:
-      description: Time period for data queries
-      enum: [1d, 5d, 1mo, 3mo, 6mo, 1y, 2y, 5y]
+      description: Time period for data queries (all fetches maximum available history)
+      enum: [1d, 5d, 1w, 1mo, 3mo, 6mo, 1y, 2y, 5y, all]
+
+    tickersParam:
+      description: Comma-separated stock ticker symbols
+      location: $message.payload#/tickers

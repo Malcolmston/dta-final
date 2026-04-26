@@ -35,7 +35,7 @@ const CHART_COMPONENTS: Record<string, string> = {
 
 export async function GET(request: NextRequest) {
   const clientIp = getClientIp(request);
-  const limit = rateLimit(`webhook-capture-${clientIp}`, { windowMs: 60000, maxRequests: 50 });
+  const limit = rateLimit(`webhook-capture-${clientIp}`, { windowMs: 60000, maxRequests: 1000 });
 
   if (!limit.success) {
     return NextResponse.json(

@@ -23,7 +23,7 @@ const CACHE_DURATIONS: Record<string, number> = {
 
 export async function GET(request: NextRequest) {
   const clientIp = getClientIp(request);
-  const limit = rateLimit(`webhook-${clientIp}`, { windowMs: 60000, maxRequests: 100 });
+  const limit = rateLimit(`webhook-${clientIp}`, { windowMs: 60000, maxRequests: 1000 });
 
   if (!limit.success) {
     return NextResponse.json(

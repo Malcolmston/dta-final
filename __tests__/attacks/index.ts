@@ -10,6 +10,9 @@ const scripts = [
   "ldap-injection.ts",
   "ssrf.ts",
   "dos-amplification.ts",
+  "xxe.ts",
+  "template-injection.ts",
+  "nosql-injection.ts",
 ];
 
 const reset = "\x1b[0m";

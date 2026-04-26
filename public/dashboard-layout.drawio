@@ -1,0 +1,166 @@
+<mxfile host="app.diagrams.net" modified="2026-04-26T00:00:00.000Z" agent="Claude" version="21.0.0">
+  <diagram name="Stock Market Dashboard Layout" id="layout-v2">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- HEADER -->
+        <mxCell id="header-bg" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e5e7eb;rightWidth=1;leftWidth=1;topWidth=1;bottomWidth=1" vertex="1" parent="1">
+          <mxGeometry x="0" y="0" width="1400" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="logo" value="Stock Market Dashboard" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#3b82f6;fontColor=#ffffff;align=left;spacingLeft=20;fontSize=16;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="20" y="10" width="220" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="search" value="Search ticker..." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f3f4f6;align=left;spacingLeft=10;fontSize=12;fontColor=#6b7280" vertex="1" parent="1">
+          <mxGeometry x="260" y="17" width="200" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="mode-toggle" value="Simple | Detailed" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f3f4f6;align=center;fontSize=12" vertex="1" parent="1">
+          <mxGeometry x="480" y="17" width="120" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="theme-btn" value="Theme Toggle" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f3f4f6;align=center;fontSize=12" vertex="1" parent="1">
+          <mxGeometry x="620" y="17" width="100" height="26" as="geometry" />
+        </mxCell>
+
+        <!-- SIDEBAR -->
+        <mxCell id="sidebar-bg" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e5e7eb;rightWidth=1;leftWidth=1;topWidth=1;bottomWidth=1" vertex="1" parent="1">
+          <mxGeometry x="0" y="60" width="200" height="900" as="geometry" />
+        </mxCell>
+        <mxCell id="nav-header" value="NAVIGATION" style="text;html=1;strokeColor=none;fillColor=none;align=left;spacingLeft=20;fontSize=11;fontStyle=1;fontColor=#6b7280" vertex="1" parent="1">
+          <mxGeometry x="20" y="75" width="160" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="nav-overview" value="Overview" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dbeafe;strokeColor=#3b82f6;align=left;spacingLeft=20;fontSize=13;fontStyle=1;fontColor=#1f2937" vertex="1" parent="1">
+          <mxGeometry x="20" y="100" width="160" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="nav-trends" value="Trends" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e5e7eb;align=left;spacingLeft=20;fontSize=13;fontColor=#1f2937" vertex="1" parent="1">
+          <mxGeometry x="20" y="135" width="160" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="nav-factors" value="Factors" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e5e7eb;align=left;spacingLeft=20;fontSize=13;fontColor=#1f2937" vertex="1" parent="1">
+          <mxGeometry x="20" y="170" width="160" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="nav-sectors" value="Sectors" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e5e7eb;align=left;spacingLeft=20;fontSize=13;fontColor=#1f2937" vertex="1" parent="1">
+          <mxGeometry x="20" y="205" width="160" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="nav-analysis" value="Analysis" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e5e7eb;align=left;spacingLeft=20;fontSize=13;fontColor=#1f2937" vertex="1" parent="1">
+          <mxGeometry x="20" y="240" width="160" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="nav-portfolio" value="Portfolio" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e5e7eb;align=left;spacingLeft=20;fontSize=13;fontColor=#1f2937" vertex="1" parent="1">
+          <mxGeometry x="20" y="275" width="160" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="nav-wealth" value="Wealth" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e5e7eb;align=left;spacingLeft=20;fontSize=13;fontColor=#1f2937" vertex="1" parent="1">
+          <mxGeometry x="20" y="310" width="160" height="35" as="geometry" />
+        </mxCell>
+
+        <!-- MAIN CONTENT AREA -->
+        <mxCell id="main-bg" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f9fafb;strokeColor=#e5e7eb" vertex="1" parent="1">
+          <mxGeometry x="200" y="60" width="1200" height="900" as="geometry" />
+        </mxCell>
+
+        <!-- Overview Tab Content -->
+        <mxCell id="content-area" value="OVERVIEW TAB CONTENT" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=14;fontStyle=1;fontColor=#6b7280" vertex="1" parent="1">
+          <mxGeometry x="220" y="80" width="200" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- Market Sentiment Card -->
+        <mxCell id="card-sentiment" value="Market Sentiment&#xa;&#xa;Bullish +2.4%&#xa;&#xa;██████████░░ 65%" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#22c55e;align=center;fontSize=12;fontColor=#1f2937" vertex="1" parent="1">
+          <mxGeometry x="220" y="120" width="280" height="160" as="geometry" />
+        </mxCell>
+
+        <!-- Portfolio Mix Card -->
+        <mxCell id="card-portfolio" value="Portfolio Mix&#xa;&#xa;Technology 40%&#xa;Healthcare 25%&#xa;Financial 20%&#xa;Other 15%" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#3b82f6;align=center;fontSize=12;fontColor=#1f2937" vertex="1" parent="1">
+          <mxGeometry x="520" y="120" width="280" height="160" as="geometry" />
+        </mxCell>
+
+        <!-- Candlestick Chart -->
+        <mxCell id="chart-candle" value="AAPL Price Chart&#xa;[1D] [5D] [1M] [3M] [6M] [1Y]&#xa;&#xa;Candlestick Chart&#xa;(D3.js Visualization)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e5e7eb;align=center;fontSize=12;fontColor=#6b7280" vertex="1" parent="1">
+          <mxGeometry x="220" y="300" width="580" height="200" as="geometry" />
+        </mxCell>
+
+        <!-- Benefit Cards -->
+        <mxCell id="benefit-1" value="Make Smarter Decisions&#xa;Data-driven insights help you understand market trends" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#3b82f6;align=center;fontSize=11;fontColor=#1f2937" vertex="1" parent="1">
+          <mxGeometry x="220" y="520" width="180" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="benefit-2" value="Track Your Progress&#xa;Monitor portfolio performance over time" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#22c55e;align=center;fontSize=11;fontColor=#1f2937" vertex="1" parent="1">
+          <mxGeometry x="420" y="520" width="180" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="benefit-3" value="Understand the Market&#xa;Learn how factors affect stock performance" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#8b5cf6;align=center;fontSize=11;fontColor=#1f2937" vertex="1" parent="1">
+          <mxGeometry x="620" y="520" width="180" height="120" as="geometry" />
+        </mxCell>
+
+        <!-- FOOTER -->
+        <mxCell id="footer-bg" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e5e7eb;rightWidth=1;leftWidth=1;topWidth=1;bottomWidth=1" vertex="1" parent="1">
+          <mxGeometry x="0" y="960" width="1400" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="footer-docs" value="API Docs Link" style="text;html=1;strokeColor=none;fillColor=none;align=left;spacingLeft=20;fontSize=12;fontColor=#3b82f6" vertex="1" parent="1">
+          <mxGeometry x="20" y="970" width="100" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="footer-copy" value="Stock Market Dashboard - Educational Purpose Only" style="text;html=1;strokeColor=none;fillColor=none;align=right;spacingRight=20;fontSize=12;fontColor=#6b7280" vertex="1" parent="1">
+          <mxGeometry x="1200" y="970" width="300" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- COLOR LEGEND -->
+        <mxCell id="color-legend" value="COLOR SEMANTICS" style="text;html=1;strokeColor=none;fillColor=none;align=left;spacingLeft=10;fontSize=10;fontStyle=1;fontColor=#6b7280" vertex="1" parent="1">
+          <mxGeometry x="850" y="120" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="color-pos" value="Green = Positive/Gains" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#22c55e;fontColor=#ffffff;align=center;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="850" y="145" width="140" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="color-neg" value="Red = Negative/Losses" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ef4444;fontColor=#ffffff;align=center;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="850" y="175" width="140" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="color-neu" value="Blue = Primary/Brand" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#3b82f6;fontColor=#ffffff;align=center;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="850" y="205" width="140" height="25" as="geometry" />
+        </mxCell>
+
+        <!-- VIEW MODES -->
+        <mxCell id="view-modes-title" value="VIEW MODES" style="text;html=1;strokeColor=none;fillColor=none;align=left;spacingLeft=10;fontSize=10;fontStyle=1;fontColor=#6b7280" vertex="1" parent="1">
+          <mxGeometry x="850" y="280" width="100" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="mode-simple" value="SIMPLE MODE&#xa;Basic Charts&#xa;Tooltips Only&#xa;Beginner Friendly" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d1fae5;strokeColor=#22c55e;align=center;fontSize=10;fontColor=#1f2937" vertex="1" parent="1">
+          <mxGeometry x="850" y="305" width="130" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="mode-detailed" value="DETAILED MODE&#xa;Full Features&#xa;Interactive Controls&#xa;Advanced Analysis" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fce7f3;strokeColor=#ec4899;align=center;fontSize=10;fontColor=#1f2937" vertex="1" parent="1">
+          <mxGeometry x="990" y="305" width="130" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- THEME -->
+        <mxCell id="theme-title" value="THEMES" style="text;html=1;strokeColor=none;fillColor=none;align=left;spacingLeft=10;fontSize=10;fontStyle=1;fontColor=#6b7280" vertex="1" parent="1">
+          <mxGeometry x="850" y="440" width="80" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="theme-light" value="LIGHT&#xa;Bg: #ffffff&#xa;Text: #1f2937" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#3b82f6;align=center;fontSize=10;fontColor=#1f2937" vertex="1" parent="1">
+          <mxGeometry x="850" y="465" width="130" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="theme-dark" value="DARK&#xa;Bg: #111827&#xa;Text: #f9fafb" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1f2937;strokeColor=#60a5fa;align=center;fontSize=10;fontColor=#f9fafb" vertex="1" parent="1">
+          <mxGeometry x="990" y="465" width="130" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- TABS LIST -->
+        <mxCell id="tabs-title" value="TAB DESCRIPTIONS" style="text;html=1;strokeColor=none;fillColor=none;align=left;spacingLeft=10;fontSize=10;fontStyle=1;fontColor=#6b7280" vertex="1" parent="1">
+          <mxGeometry x="850" y="580" width="130" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="tab-1" value="Overview: Market sentiment, portfolio mix, price charts" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e5e7eb;align=left;spacingLeft=10;fontSize=9;fontColor=#1f2937" vertex="1" parent="1">
+          <mxGeometry x="850" y="605" width="270" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="tab-2" value="Trends: Candlestick, volume, streamgraph, 3D price" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e5e7eb;align=left;spacingLeft=10;fontSize=9;fontColor=#1f2937" vertex="1" parent="1">
+          <mxGeometry x="850" y="645" width="270" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="tab-3" value="Factors: Market factors, lag correlation, dual axis" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e5e7eb;align=left;spacingLeft=10;fontSize=9;fontColor=#1f2937" vertex="1" parent="1">
+          <mxGeometry x="850" y="685" width="270" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="tab-4" value="Sectors: Heatmap, treemap by market cap" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e5e7eb;align=left;spacingLeft=10;fontSize=9;fontColor=#1f2937" vertex="1" parent="1">
+          <mxGeometry x="850" y="725" width="270" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="tab-5" value="Analysis: RSI, MACD, Bollinger, network graph" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e5e7eb;align=left;spacingLeft=10;fontSize=9;fontColor=#1f2937" vertex="1" parent="1">
+          <mxGeometry x="850" y="765" width="270" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="tab-6" value="Portfolio: Holdings manager, P&L tracking" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e5e7eb;align=left;spacingLeft=10;fontSize=9;fontColor=#1f2937" vertex="1" parent="1">
+          <mxGeometry x="850" y="805" width="270" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="tab-7" value="Wealth: Goals, retirement calc, risk metrics" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e5e7eb;align=left;spacingLeft=10;fontSize=9;fontColor=#1f2937" vertex="1" parent="1">
+          <mxGeometry x="850" y="845" width="270" height="35" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

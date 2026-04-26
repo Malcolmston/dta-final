@@ -1,5 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { rateLimit, getClientIp } from "@/lib/rateLimit";
+import { rateLimit } from "@/lib/rateLimit";
+
+function getClientIp(request: NextRequest): string {
+  return request.headers.get("x-forwarded-for")?.split(",")[0]?.trim()
+    || request.headers.get("x-real-ip")
+    || request.headers.get("cf-connecting-ip")
+    || "unknown";
+}
 
 // Available charts for export (all chart components)
 const AVAILABLE_CHARTS = [
@@ -23,7 +30,7 @@ const CACHE_DURATIONS: Record<string, number> = {
 
 export async function GET(request: NextRequest) {
   const clientIp = getClientIp(request);
-  const limit = rateLimit(`webhook-${clientIp}`, { windowMs: 60000, maxRequests: 1000 });
+  const limit = rateLimit(`webhook-${clientIp}`, { windowMs: 60000, maxRequests: 500 });
 
   if (!limit.success) {
     return NextResponse.json(

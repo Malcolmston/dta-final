@@ -26,13 +26,16 @@ export async function GET(request: NextRequest) {
 
   try {
     // Fetch historical data from history endpoint
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-    const historyResponse = await fetch(
-      `${baseUrl}/api/stocks/history?symbol=${encodeURIComponent(ticker)}&period=${period}&interval=1d`
-    );
+    // In server-to-server calls, use relative path or check if external URL needed
+    const historyUrl = new URL('/api/stocks/history', request.url);
+    historyUrl.searchParams.set('symbol', ticker);
+    historyUrl.searchParams.set('period', period);
+    historyUrl.searchParams.set('interval', '1d');
+
+    const historyResponse = await fetch(historyUrl.toString());
 
     if (!historyResponse.ok) {
-      throw new Error("Failed to fetch history data");
+      throw new Error(`Failed to fetch history data: ${historyResponse.status}`);
     }
 
     const historyResult = await historyResponse.json();

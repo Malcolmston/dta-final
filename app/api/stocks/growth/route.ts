@@ -32,6 +32,28 @@ export async function GET(request: NextRequest) {
       },
     });
 
+    if (response.status === 401 || response.status === 403) {
+      // Yahoo API is blocking unauthorized requests
+      // Return placeholder data with a notice
+      return NextResponse.json({
+        data: {
+          symbol,
+          currentQuarterEarnings: null,
+          nextQuarterEarnings: null,
+          currentYearEarnings: null,
+          nextYearEarnings: null,
+          earningsTrend: null,
+          revenueTrend: null,
+          growthCurrentYear: null,
+          growthNextYear: null,
+          growthNext5Years: null,
+          growthPast5Years: null,
+        },
+        notice: "Yahoo API access restricted. Growth estimates unavailable.",
+        apiBlocked: true,
+      });
+    }
+
     if (!response.ok) {
       throw new Error(`Yahoo API error: ${response.status}`);
     }

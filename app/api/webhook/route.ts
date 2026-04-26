@@ -129,12 +129,14 @@ export async function GET(request: NextRequest) {
           error = err.error || "Failed to fetch quote";
         } else {
           const quoteData = await quoteResponse.json();
-          const latest = quoteData.data?.[quoteData.data.length - 1];
+          const historyItems = Array.isArray(quoteData.data) ? quoteData.data : [];
+          const latest = historyItems[historyItems.length - 1];
+          const previous = historyItems[historyItems.length - 2];
           data = {
             symbol,
             price: latest?.close || 0,
-            change: latest?.close && quoteData.data.length > 1
-              ? ((latest.close - (quoteData.data[quoteData.data.length - 2]?.close || 0)) / (quoteData.data[quoteData.data.length - 2]?.close || 1)) * 100
+            change: latest?.close && previous?.close
+              ? ((latest.close - previous.close) / previous.close) * 100
               : 0,
             volume: latest?.volume || 0,
             timestamp: latest?.date || new Date().toISOString(),
@@ -226,7 +228,8 @@ export async function GET(request: NextRequest) {
               );
               if (quoteRes.ok) {
                 const qd = await quoteRes.json();
-                const latest = qd.data?.[qd.data.length - 1];
+                const historyItems = Array.isArray(qd.data) ? qd.data : [];
+                const latest = historyItems[historyItems.length - 1];
                 batchData.quote = {
                   symbol,
                   price: latest?.close || 0,

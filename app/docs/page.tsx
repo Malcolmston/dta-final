@@ -70,7 +70,7 @@ function MarkdownComponents() {
   };
 }
 
-type Tab = 'rest' | 'async' | 'cron' | 'webhook' | 'plots' | 'layout';
+type Tab = 'rest' | 'async' | 'cron' | 'webhook' | 'plots';
 
 export default function DocsPage() {
   const [tab, setTab] = useState<Tab>('rest');
@@ -116,7 +116,7 @@ export default function DocsPage() {
 
           {/* Tabs */}
           <nav className="flex gap-1 -mb-px" role="tablist" aria-label="Documentation sections">
-            {(['rest', 'async', 'cron', 'webhook', 'plots', 'layout'] as Tab[]).map((t) => (
+            {(['rest', 'async', 'cron', 'webhook', 'plots'] as Tab[]).map((t) => (
               <button
                 key={t}
                 onClick={() => setTab(t)}
@@ -130,7 +130,7 @@ export default function DocsPage() {
                   opacity: tab === t ? 1 : 0.6,
                 } as React.CSSProperties}
               >
-                {t === 'rest' ? 'REST API' : t === 'async' ? 'Async API' : t === 'cron' ? 'Cron Jobs' : t === 'webhook' ? 'Webhooks' : t === 'plots' ? 'Plots' : 'Layout'}
+                {t === 'rest' ? 'REST API' : t === 'async' ? 'Async API' : t === 'cron' ? 'Cron Jobs' : t === 'webhook' ? 'Webhooks' : 'Plots'}
               </button>
             ))}
           </nav>
@@ -199,16 +199,7 @@ export default function DocsPage() {
           </div>
         )}
 
-        {tab === 'layout' && (
-          <div className="h-[calc(100vh-8rem)]">
-            <iframe
-              src="/dashboard-mockup.html"
-              className="w-full h-full border-0"
-              title="Dashboard Layout Mockup"
-            />
-          </div>
-        )}
-      </main>
+              </main>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import SwaggerUI from 'swagger-ui-react';
@@ -8,11 +8,67 @@ import 'swagger-ui-react/swagger-ui.css';
 import '@asyncapi/react-component/styles/default.min.css';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import mermaid from 'mermaid';
 
 const AsyncApiComponent = dynamic(
   () => import('@asyncapi/react-component').then((m) => m.default),
   { ssr: false, loading: () => <p className="p-6 text-sm" style={{ color: '#1f2937', opacity: 0.5 }}>Loading AsyncAPI docs…</p> },
 );
+
+// Initialize mermaid
+mermaid.initialize({
+  startOnLoad: false,
+  theme: 'default',
+  securityLevel: 'loose',
+});
+
+// Mermaid diagram renderer component
+function MermaidDiagram({ code }: { code: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [svg, setSvg] = useState<string>('');
+
+  useEffect(() => {
+    const renderDiagram = async () => {
+      try {
+        const id = `mermaid-${Math.random().toString(36).substr(2, 9)}`;
+        const { svg: renderedSvg } = await mermaid.render(id, code);
+        setSvg(renderedSvg);
+      } catch (err) {
+        console.error('Mermaid render error:', err);
+        setSvg(`<pre class="text-red-500">Error rendering diagram</pre>`);
+      }
+    };
+    renderDiagram();
+  }, [code]);
+
+  return (
+    <div
+      ref={ref}
+      className="mermaid-diagram my-6 p-4 bg-gray-50 rounded-lg overflow-x-auto"
+      dangerouslySetInnerHTML={{ __html: svg }}
+    />
+  );
+}
+
+// Custom components for ReactMarkdown
+function MarkdownComponents() {
+  return {
+    code({ node, className, children, ...props }: any) {
+      const match = /language-(\w+)/.exec(className || '');
+      const codeString = String(children).replace(/\n$/, '');
+
+      if (match && match[1] === 'mermaid') {
+        return <MermaidDiagram code={codeString} />;
+      }
+
+      return (
+        <code className={className} {...props}>
+          {children}
+        </code>
+      );
+    },
+  };
+}
 
 type Tab = 'rest' | 'async' | 'cron' | 'webhook' | 'plots' | 'layout';
 
@@ -134,7 +190,7 @@ export default function DocsPage() {
         {tab === 'plots' && (
           <div className="p-6 max-w-4xl mx-auto" style={{ color: '#1f2937' }}>
             {plotsContent ? (
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              <ReactMarkdown remarkPlugins={[remarkGfm]} components={MarkdownComponents()}>
                 {plotsContent}
               </ReactMarkdown>
             ) : (

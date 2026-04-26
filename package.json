@@ -9,6 +9,7 @@
     "lint": "eslint",
     "test": "vitest",
     "test:run": "vitest run",
+    "test-ai-thing": "node --experimental-strip-types __tests__/firewall/index.ts",
     "docker:up": "docker-compose up -d",
     "docker:down": "docker-compose down",
     "redis:start": "docker run -d --name dta-redis -p 6379:6379 redis:7-alpine",

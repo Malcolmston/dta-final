@@ -70,7 +70,7 @@ function MarkdownComponents() {
   };
 }
 
-type Tab = 'rest' | 'async' | 'cron' | 'webhook' | 'plots';
+type Tab = 'rest' | 'async' | 'cron' | 'webhook' | 'plots' | 'layout';
 
 export default function DocsPage() {
   const [tab, setTab] = useState<Tab>('rest');
@@ -116,7 +116,7 @@ export default function DocsPage() {
 
           {/* Tabs */}
           <nav className="flex gap-1 -mb-px" role="tablist" aria-label="Documentation sections">
-            {(['rest', 'async', 'cron', 'webhook', 'plots'] as Tab[]).map((t) => (
+            {(['rest', 'async', 'cron', 'webhook', 'plots', 'layout'] as Tab[]).map((t) => (
               <button
                 key={t}
                 onClick={() => setTab(t)}
@@ -130,7 +130,7 @@ export default function DocsPage() {
                   opacity: tab === t ? 1 : 0.6,
                 } as React.CSSProperties}
               >
-                {t === 'rest' ? 'REST API' : t === 'async' ? 'Async API' : t === 'cron' ? 'Cron Jobs' : t === 'webhook' ? 'Webhooks' : 'Plots'}
+                {t === 'rest' ? 'REST API' : t === 'async' ? 'Async API' : t === 'cron' ? 'Cron Jobs' : t === 'webhook' ? 'Webhooks' : t === 'plots' ? 'Plots' : 'Layout'}
               </button>
             ))}
           </nav>
@@ -199,7 +199,22 @@ export default function DocsPage() {
           </div>
         )}
 
-              </main>
+                {tab === 'layout' && (
+          <div className="h-[calc(100vh-8rem)] p-4">
+            <div className="h-full rounded-lg border border-gray-200 overflow-hidden">
+              <iframe
+                src="https://app.diagrams.net/?lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=dashboard-layout.drawio#Uhttps%3A%2F%2Fstock-henna-six.vercel.app%2Fdashboard-layout.drawio"
+                className="w-full h-full"
+                title="Dashboard Layout"
+              />
+            </div>
+            <p className="text-sm text-gray-500 mt-2 text-center">
+              Download: <a href="/dashboard-layout.drawio" className="text-blue-600 hover:underline">dashboard-layout.drawio</a>
+            </p>
+          </div>
+        )}
+
+      </main>
     </div>
   );
 }

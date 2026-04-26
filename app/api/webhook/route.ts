@@ -1,6 +1,85 @@
 import { NextRequest, NextResponse } from "next/server";
 import { rateLimit, getClientIp } from "@/lib/rateLimit";
 
+function buildValidatedUrl(
+  baseUrl: string,
+  path: string,
+  symbol?: string,
+  period?: string,
+  interval?: string,
+  ticker?: string,
+  tickers?: string
+): string {
+  try {
+    const url = new URL(baseUrl);
+    
+    // Protocol + host checks
+    const allowedDomains = ['localhost', '127.0.0.1']; // add your allowed domains here
+    if (!allowedDomains.includes(url.hostname)) {
+      throw new Error('Invalid host');
+    }
+    if (!['http:', 'https:'].includes(url.protocol)) {
+      throw new Error('Invalid protocol');
+    }
+    
+    url.pathname = path;
+    
+    // Add query parameters
+    if (symbol) url.searchParams.set('symbol', symbol);
+    if (period) url.searchParams.set('period', period);
+    if (interval) url.searchParams.set('interval', interval);
+    if (ticker) url.searchParams.set('ticker', ticker);
+    if (tickers) url.searchParams.set('tickers', tickers);
+    
+    return url.href;
+  } catch {
+    throw new Error('Invalid URL');
+  }
+}
+
+function buildValidatedCaptureUrl(
+  baseUrl: string,
+  chart: string,
+  format: string,
+  symbol: string,
+  period: string,
+  interval: string,
+  width: string,
+  height: string,
+  theme: string,
+  title: string
+): string {
+  try {
+    const url = new URL(baseUrl);
+    
+    // Protocol + host checks
+    const allowedDomains = ['localhost', '127.0.0.1']; // add your allowed domains here
+    if (!allowedDomains.includes(url.hostname)) {
+      throw new Error('Invalid host');
+    }
+    if (!['http:', 'https:'].includes(url.protocol)) {
+      throw new Error('Invalid protocol');
+    }
+    
+    url.pathname = '/api/webhook/capture';
+    
+    // Add query parameters
+    url.searchParams.set('chart', chart);
+    url.searchParams.set('format', format);
+    url.searchParams.set('symbol', symbol);
+    url.searchParams.set('period', period);
+    url.searchParams.set('interval', interval);
+    url.searchParams.set('width', width);
+    url.searchParams.set('height', height);
+    url.searchParams.set('theme', theme);
+    url.searchParams.set('title', title);
+    
+    return url.href;
+  } catch {
+    throw new Error('Invalid URL');
+  }
+}
+
 // Available charts for export (all chart components)
 const AVAILABLE_CHARTS = [
   "candlestick", "candlestick3d", "heatmap", "volume", "volume3d",
@@ -76,7 +155,7 @@ export async function GET(request: NextRequest) {
       chart: {
         name: chartName,
         format,
-        captureUrl: `${baseUrl}/api/webhook/capture?chart=${chartName}&format=${format}&symbol=${tickers.join(",")}&period=${period}&interval=${interval}&width=${width}&height=${height}&theme=${theme}&title=${encodeURIComponent(title)}`,
+        captureUrl: buildValidatedCaptureUrl(baseUrl, chartName, format, tickers.join(","), period, interval, width, height, theme, title),
         params: {
           tickers,
           period,
@@ -109,7 +188,7 @@ export async function GET(request: NextRequest) {
       case "history":
         // Fetch historical stock data
         const historyResponse = await fetch(
-          `${baseUrl}/api/stocks/history?symbol=${encodeURIComponent(symbol)}&period=${period}&interval=${interval}`
+          buildValidatedUrl(baseUrl, '/api/stocks/history', symbol, period, interval)
         );
         if (!historyResponse.ok) {
           const err = await historyResponse.json();
@@ -122,7 +201,7 @@ export async function GET(request: NextRequest) {
       case "quote":
         // Fetch current quote
         const quoteResponse = await fetch(
-          `${baseUrl}/api/stocks/history?symbol=${encodeURIComponent(symbol)}&period=1d&interval=1m`
+          buildValidatedUrl(baseUrl, '/api/stocks/history', symbol, '1d', '1m')
         );
         if (!quoteResponse.ok) {
           const err = await quoteResponse.json();
@@ -145,7 +224,7 @@ export async function GET(request: NextRequest) {
       case "growth":
         // Fetch growth estimates
         const growthResponse = await fetch(
-          `${baseUrl}/api/stocks/growth?symbol=${encodeURIComponent(symbol)}`
+          buildValidatedUrl(baseUrl, '/api/stocks/growth', symbol)
         );
         if (!growthResponse.ok) {
           const err = await growthResponse.json();
@@ -158,7 +237,7 @@ export async function GET(request: NextRequest) {
       case "forecast":
         // Fetch forecast signals
         const forecastResponse = await fetch(
-          `${baseUrl}/api/stocks/forecast?ticker=${encodeURIComponent(symbol)}&period=${period}`
+          buildValidatedUrl(baseUrl, '/api/stocks/forecast', undefined, period, undefined, symbol)
         );
         if (!forecastResponse.ok) {
           const err = await forecastResponse.json();
@@ -171,7 +250,7 @@ export async function GET(request: NextRequest) {
       case "signals":
         // Fetch trading signals
         const signalsResponse = await fetch(
-          `${baseUrl}/api/stocks/signals?symbol=${encodeURIComponent(symbol)}`
+          buildValidatedUrl(baseUrl, '/api/stocks/signals', symbol)
         );
         if (!signalsResponse.ok) {
           const err = await signalsResponse.json();
@@ -184,7 +263,7 @@ export async function GET(request: NextRequest) {
       case "momentum":
         // Fetch momentum data
         const momentumResponse = await fetch(
-          `${baseUrl}/api/stocks/momentum?symbol=${encodeURIComponent(symbol)}&period=${period}`
+          buildValidatedUrl(baseUrl, '/api/stocks/momentum', symbol, period)
         );
         if (!momentumResponse.ok) {
           const err = await momentumResponse.json();
@@ -198,7 +277,7 @@ export async function GET(request: NextRequest) {
         // Fetch heatmap data for multiple symbols
         const tickers = searchParams.get("tickers")?.split(",").map(s => s.trim().toUpperCase()).filter(s => s) || [symbol];
         const heatmapResponse = await fetch(
-          `${baseUrl}/api/heatmap?tickers=${encodeURIComponent(tickers.join(","))}`
+          buildValidatedUrl(baseUrl, '/api/heatmap', undefined, undefined, undefined, undefined, tickers.join(','))
         );
         if (!heatmapResponse.ok) {
           const err = await heatmapResponse.json();
@@ -217,12 +296,12 @@ export async function GET(request: NextRequest) {
           try {
             if (type === "history") {
               const histRes = await fetch(
-                `${baseUrl}/api/stocks/history?symbol=${encodeURIComponent(symbol)}&period=${period}&interval=${interval}`
+                buildValidatedUrl(baseUrl, '/api/stocks/history', symbol, period, interval)
               );
               if (histRes.ok) batchData.history = await histRes.json();
             } else if (type === "quote") {
               const quoteRes = await fetch(
-                `${baseUrl}/api/stocks/history?symbol=${encodeURIComponent(symbol)}&period=1d&interval=1m`
+                buildValidatedUrl(baseUrl, '/api/stocks/history', symbol, '1d', '1m')
               );
               if (quoteRes.ok) {
                 const qd = await quoteRes.json();
@@ -235,7 +314,7 @@ export async function GET(request: NextRequest) {
               }
             } else if (type === "growth") {
               const growRes = await fetch(
-                `${baseUrl}/api/stocks/growth?symbol=${encodeURIComponent(symbol)}`
+                buildValidatedUrl(baseUrl, '/api/stocks/growth', symbol)
               );
               if (growRes.ok) batchData.growth = await growRes.json();
             }

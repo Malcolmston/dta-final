@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { rateLimit } from "@/lib/rateLimit";
+import { securityCheck, getClientIp as getSecClientIp, secureRateLimit, logSecurityEvent } from "@/lib/security";
 
 function getClientIp(request: NextRequest): string {
   return request.headers.get("x-forwarded-for")?.split(",")[0]?.trim()
@@ -29,8 +30,25 @@ const CACHE_DURATIONS: Record<string, number> = {
 };
 
 export async function GET(request: NextRequest) {
+  // Security check first
+  const securityResult = securityCheck(request);
+  if (!securityResult.allowed) {
+    logSecurityEvent({
+      type: "BLOCK",
+      ip: getSecClientIp(request),
+      userAgent: request.headers.get("user-agent") || "unknown",
+      path: request.nextUrl.pathname,
+      details: `Request blocked: ${securityResult.reason}`,
+      severity: securityResult.severity || "medium",
+    });
+    return NextResponse.json(
+      { error: securityResult.reason || "Request blocked" },
+      { status: 403 }
+    );
+  }
+
   const clientIp = getClientIp(request);
-  const limit = rateLimit(`webhook-${clientIp}`, { windowMs: 60000, maxRequests: 500 });
+  const limit = secureRateLimit(`webhook-${clientIp}`, { windowMs: 60000, maxRequests: 500 });
 
   if (!limit.success) {
     return NextResponse.json(

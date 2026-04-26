@@ -1,6 +1,465 @@
 # Dashboard Plots Documentation
 
-The Stock Market Dashboard is organized into 7 main sections accessible via the left sidebar navigation. Each section contains specific charts and tools for different aspects of stock analysis.
+---
+
+# Project Report: Stock Market Dashboard
+
+## Bid Idea Worksheet (Optional)
+
+| Question | Response |
+|----------|----------|
+| **What problem does this dashboard solve?** | Individual investors and financial enthusiasts need a unified, beginner-friendly interface to analyze stock market data, track portfolios, and make informed investment decisions. Existing tools are either too complex for beginners or lack integrated portfolio management. |
+| **Who is the target audience?** | Individual investors, financial advisors, students learning finance, and researchers needing visual stock analysis tools. |
+| **What makes your approach unique?** | Combines multiple analysis modes (simplified/detailed), integrates portfolio tracking with market analysis, and provides both traditional charts (candlestick, heatmap) alongside 3D visualizations. |
+| **What is the success metric?** | Users can successfully analyze stocks, track portfolios, and understand market trends without needing financial expertise. |
+
+---
+
+## Storyboard (Optional)
+
+### Initial Brainstorming Sketches
+
+```mermaid
+graph TD
+    subgraph HEADER["HEADER"]
+        Logo["Logo"]
+        Ticker["Ticker Search"]
+        ModeToggle["Simple/Detailed Toggle"]
+        Theme["Theme Toggle"]
+    end
+
+    subgraph SIDEBAR["SIDEBAR"]
+        Overview["Overview"]
+        Trends["Trends"]
+        Factors["Factors"]
+        Sectors["Sectors"]
+        Analysis["Analysis"]
+        Portfolio["Portfolio"]
+        Wealth["Wealth"]
+    end
+
+    subgraph MAIN["MAIN CONTENT AREA"]
+        TabContent["Tab Content<br/>Charts, Tables, Tools"]
+    end
+
+    HEADER --- SIDEBAR --- MAIN
+    ModeToggle -->|"Switch"| TabContent
+    Theme -->|"Apply"| TabContent
+```
+
+### User Flow Diagram
+
+```mermaid
+flowchart LR
+    A["User Entry"] --> B{"Select Mode"}
+    B -->|Simple| C[SIMPLE MODE]
+    B -->|Detailed| D[DETAILED MODE]
+
+    C --> C1[Basic Charts]
+    C --> C2[Tooltips Only]
+    C --> C3[Quick Insights]
+
+    D --> D1[Full Features]
+    D --> D2[Interactive Controls]
+    D --> D3[Deep Analysis]
+```
+
+---
+
+## Creation Phase (Brainstorming with AI)
+
+### Initial Concept Generation
+
+The dashboard concept emerged from collaborative brainstorming with AI, focusing on democratizing stock market analysis for retail investors.
+
+**Key Decisions Made:**
+1. **Dual-Mode Architecture** - Create both "Simplified" and "Detailed" view modes to serve beginners and experts alike
+2. **Seven-Section Structure** - Organize content into logical sections: Overview, Trends, Factors, Sectors, Analysis, Portfolio, Wealth
+3. **Interactive Visualizations** - Use D3.js for custom charts, Three.js for 3D price ribbons
+4. **Persistent Settings** - Store user preferences in localStorage for seamless return visits
+
+### AI Collaboration Highlights
+
+- **Color Palette Selection**: AI recommended a professional blue-forward palette with semantic colors (green=positive, red=negative) for financial data
+- **Chart Type Selection**: Suggested candlestick charts as the default for price data due to their widespread use in financial analysis
+- **Navigation Structure**: Proposed sidebar navigation for easy section switching without page reloads
+- **Technical Indicators**: Identified key indicators (RSI, MACD, Bollinger Bands) that balance usefulness with accessibility
+
+---
+
+## Stakeholder Simulation
+
+### Persona 1: Beginner Investor (Sarah)
+
+> *AI playing: Sarah, 28, just started investing with $5,000 in a Roth IRA*
+
+**Critique:** "This is overwhelming. I don't understand what half these charts mean. The simplified mode helps, but I need more guidance on what the colors mean."
+
+**Implemented Response:**
+- Added "Why Stock Analysis Matters" introduction section
+- Created beginner-friendly chart explanations in Overview
+- Added hover tooltips explaining each indicator
+- Included benefit cards explaining value proposition
+
+### Persona 2: Financial Advisor (Marcus)
+
+> *AI playing: Marcus, 45, CFA, manages $50M in client assets*
+
+**Critique:** "The technical analysis is solid, but I need more sophisticated risk metrics and benchmark comparisons for client reporting."
+
+**Implemented Response:**
+- Added comprehensive risk metrics panel (Sharpe Ratio, Volatility, Beta, Max Drawdown, VaR)
+- Implemented benchmark comparison against S&P 500, NASDAQ, Dow Jones
+- Added tax-aware features and fee disclosure sections
+
+### Persona 3: Finance Student (Emily)
+
+> *AI playing: Emily, 21, junior in finance major*
+
+**Critique:** "This is great for learning! I want to understand how the indicators are calculated and see the formulas."
+
+**Implemented Response:**
+- Added educational tooltips explaining each technical indicator
+- Included explanation sections for SMA, EMA, RSI, MACD, Bollinger Bands
+- Created pattern recognition section in Analysis tab
+
+---
+
+## Reflective Analysis
+
+### Before/After Comparison
+
+| Aspect | Before (Initial Concept) | After (Final Dashboard) |
+|--------|--------------------------|--------------------------|
+| **User Modes** | Single view for all users | Dual Simple/Detailed modes |
+| **Chart Types** | Basic line charts | Candlestick, heatmap, treemap, 3D, network graph |
+| **Portfolio** | Not initially planned | Full portfolio manager with P&L tracking |
+| **Wealth Planning** | Not initially planned | Comprehensive goal tracking & retirement calculator |
+| **Technical Indicators** | Basic price only | RSI, MACD, Bollinger Bands, patterns |
+| **Theme** | Light only | Light/Dark toggle |
+| **Navigation** | Top tabs | Sidebar for easier access |
+
+### Key Learnings
+
+1. **Simplicity Scales**: Starting with a simplified view and allowing users to "unlock" detailed features proved more effective than overwhelming users with all options upfront.
+
+2. **Color Semantics Matter**: Consistent use of green (positive/gains) and red (negative/losses) across all charts reduces cognitive load and makes data intuitive.
+
+3. **Interactive Engagement**: Users spend significantly more time when they can hover, zoom, and interact with charts rather than viewing static displays.
+
+4. **Portfolio Integration**: Adding portfolio management transformed the dashboard from an analysis tool to a complete investment companion.
+
+### What I Would Do Differently
+
+- **Earlier Stakeholder Testing**: Would have simulated personas earlier in development to catch usability issues sooner
+- **Mobile-First Design**: Would prioritize responsive design from the start rather than adding it later
+- **Data Source Flexibility**: Would architect for multiple data providers from the beginning to avoid single-source dependency
+
+---
+
+## Code Used for Dashboard Creation
+
+### Core Layout Component
+
+```tsx
+// app/page.tsx - Main dashboard layout
+'use client';
+
+import { useState } from 'react';
+import Sidebar from '@/components/Sidebar';
+import Header from '@/components/Header';
+import OverviewTab from '@/components/tabs/OverviewTab';
+import TrendsTab from '@/components/tabs/TrendsTab';
+import FactorsTab from '@/components/tabs/FactorsTab';
+import SectorsTab from '@/components/tabs/SectorsTab';
+import AnalysisTab from '@/components/tabs/AnalysisTab';
+import PortfolioTab from '@/components/tabs/PortfolioTab';
+import WealthTab from '@/components/tabs/WealthTab';
+
+export default function Dashboard() {
+  const [activeTab, setActiveTab] = useState('overview');
+  const [viewMode, setViewMode] = useState('simplified');
+  const [theme, setTheme] = useState('light');
+
+  const renderTab = () => {
+    switch (activeTab) {
+      case 'overview': return <OverviewTab viewMode={viewMode} />;
+      case 'trends': return <TrendsTab viewMode={viewMode} />;
+      case 'factors': return <FactorsTab viewMode={viewMode} />;
+      case 'sectors': return <SectorsTab viewMode={viewMode} />;
+      case 'analysis': return <AnalysisTab viewMode={viewMode} />;
+      case 'portfolio': return <PortfolioTab viewMode={viewMode} />;
+      case 'wealth': return <WealthTab viewMode={viewMode} />;
+      default: return <OverviewTab viewMode={viewMode} />;
+    }
+  };
+
+  return (
+    <div className={`${theme}`}>
+      <Header
+        viewMode={viewMode}
+        setViewMode={setViewMode}
+        theme={theme}
+        setTheme={setTheme}
+      />
+      <div className="flex">
+        <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+        <main className="flex-1 p-4">{renderTab()}</main>
+      </div>
+    </div>
+  );
+}
+```
+
+### Candlestick Chart Component
+
+```tsx
+// components/charts/CandlestickChart.tsx
+'use client';
+
+import { useEffect, useRef } from 'react';
+import * as d3 from 'd3';
+
+interface CandlestickData {
+  date: Date;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  volume: number;
+}
+
+interface CandlestickChartProps {
+  data: CandlestickData[];
+  width?: number;
+  height?: number;
+}
+
+export default function CandlestickChart({
+  data,
+  width = 800,
+  height = 400
+}: CandlestickChartProps) {
+  const svgRef = useRef<SVGSVGElement>(null);
+
+  useEffect(() => {
+    if (!svgRef.current || !data.length) return;
+
+    const svg = d3.select(svgRef.current);
+    svg.selectAll('*').remove();
+
+    const margin = { top: 20, right: 30, bottom: 30, left: 60 };
+    const innerWidth = width - margin.left - margin.right;
+    const innerHeight = height - margin.top - margin.bottom;
+
+    const xScale = d3.scaleTime()
+      .domain(d3.extent(data, d => d.date) as [Date, Date])
+      .range([0, innerWidth]);
+
+    const yScale = d3.scaleLinear()
+      .domain([
+        d3.min(data, d => d.low) as number * 0.98,
+        d3.max(data, d => d.high) as number * 1.02
+      ])
+      .range([innerHeight, 0]);
+
+    const g = svg.append('g')
+      .attr('transform', `translate(${margin.left},${margin.top})`);
+
+    // Draw candlesticks
+    const candleWidth = Math.max(1, innerWidth / data.length * 0.7);
+
+    g.selectAll('.candle')
+      .data(data)
+      .enter()
+      .append('rect')
+      .attr('class', 'candle')
+      .attr('x', d => xScale(d.date) - candleWidth / 2)
+      .attr('y', d => yScale(Math.max(d.open, d.close)))
+      .attr('width', candleWidth)
+      .attr('height', d => Math.max(1, Math.abs(yScale(d.open) - yScale(d.close))))
+      .attr('fill', d => d.close > d.open ? '#22c55e' : '#ef4444');
+
+    // Draw wicks
+    g.selectAll('.wick')
+      .data(data)
+      .enter()
+      .append('line')
+      .attr('class', 'wick')
+      .attr('x1', d => xScale(d.date))
+      .attr('x2', d => xScale(d.date))
+      .attr('y1', d => yScale(d.high))
+      .attr('y2', d => yScale(d.low))
+      .attr('stroke', d => d.close > d.open ? '#22c55e' : '#ef4444');
+
+    // Add axes
+    g.append('g')
+      .attr('transform', `translate(0,${innerHeight})`)
+      .call(d3.axisBottom(xScale));
+
+    g.append('g')
+      .call(d3.axisLeft(yScale));
+
+  }, [data, width, height]);
+
+  return <svg ref={svgRef} width={width} height={height} />;
+}
+```
+
+### Portfolio Manager Hook
+
+```tsx
+// hooks/usePortfolio.ts
+import { useState, useEffect } from 'react';
+
+export interface PortfolioHolding {
+  id: string;
+  ticker: string;
+  shares: number;
+  purchasePrice: number;
+  purchaseDate: string;
+}
+
+const STORAGE_KEY = 'stock-dashboard-portfolio';
+
+export function usePortfolio() {
+  const [holdings, setHoldings] = useState<PortfolioHolding[]>([]);
+  const [totalValue, setTotalValue] = useState(0);
+
+  useEffect(() => {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      setHoldings(JSON.parse(stored));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(holdings));
+  }, [holdings]);
+
+  const addHolding = (holding: Omit<PortfolioHolding, 'id'>) => {
+    const newHolding = {
+      ...holding,
+      id: crypto.randomUUID(),
+    };
+    setHoldings(prev => [...prev, newHolding]);
+  };
+
+  const removeHolding = (id: string) => {
+    setHoldings(prev => prev.filter(h => h.id !== id));
+  };
+
+  const updateHolding = (id: string, updates: Partial<PortfolioHolding>) => {
+    setHoldings(prev => prev.map(h =>
+      h.id === id ? { ...h, ...updates } : h
+    ));
+  };
+
+  return {
+    holdings,
+    totalValue,
+    addHolding,
+    removeHolding,
+    updateHolding,
+  };
+}
+```
+
+---
+
+## Dashboard Architecture
+
+```mermaid
+graph TB
+    subgraph Components["Dashboard Components"]
+        H[Header]
+        SB[Sidebar]
+        OT[Overview Tab]
+        TT[Trends Tab]
+        FT[Factors Tab]
+        SECT[ Sectors Tab]
+        AT[Analysis Tab]
+        PT[Portfolio Tab]
+        WT[Wealth Tab]
+    end
+
+    subgraph State["State Management"]
+        VM[View Mode: Simple/Detailed]
+        TH[Theme: Light/Dark]
+        TK[Ticker Selection]
+    end
+
+    H --> SB
+    SB --> OT
+    SB --> TT
+    SB --> FT
+    SB --> SECT
+    SB --> AT
+    SB --> PT
+    SB --> WT
+
+    VM -.->|Controls| OT
+    VM -.->|Controls| TT
+    VM -.->|Controls| FT
+    VM -.->|Controls| SECT
+    VM -.->|Controls| AT
+    VM -.->|Controls| PT
+    VM -.->|Controls| WT
+
+    TH -.->|Applies to| H
+    TK -->|Filters| OT
+    TK -->|Filters| TT
+```
+
+---
+
+## AI Color Log
+
+The following color palette was developed through AI collaboration, designed for financial data visualization with optimal contrast and semantic meaning.
+
+### Theme Colors
+
+| Color Name | Usage | Sample |
+|------------|-------|--------|
+| **Primary Blue** | Navigation highlights, primary buttons | [Color Sample](#) |
+| **Primary Dark** | Dark mode primary | [Color Sample](#) |
+| **Positive Green** | Gains, bullish signals, positive changes | [Color Sample](#) |
+| **Negative Red** | Losses, bearish signals, negative changes | [Color Sample](#) |
+| **Background Light** | Light mode background | [Color Sample](#) |
+| **Background Dark** | Dark mode background | [Color Sample](#) |
+| **Text Light** | Light mode text | [Color Sample](#) |
+| **Text Dark** | Dark mode text | [Color Sample](#) |
+| **Grid Light** | Light mode grid lines | [Color Sample](#) |
+| **Grid Dark** | Dark mode grid lines | [Color Sample](#) |
+
+### Chart Palette (Sequential)
+
+| Color Name | Hex Code | Sample |
+|------------|----------|--------|
+| **Teal 1** | #14b8a6 | [Color Sample](#) |
+| **Teal 2** | #2dd4bf | [Color Sample](#) |
+| **Teal 3** | #5eead4 | [Color Sample](#) |
+| **Blue 1** | #3b82f6 | [Color Sample](#) |
+| **Blue 2** | #60a5fa | [Color Sample](#) |
+| **Blue 3** | #93c5fd | [Color Sample](#) |
+| **Purple 1** | #8b5cf6 | [Color Sample](#) |
+| **Purple 2** | #a78bfa | [Color Sample](#) |
+| **Purple 3** | #c4b5fd | [Color Sample](#) |
+
+### Heatmap Gradient
+
+| Performance | Color | Sample |
+|------------|-------|--------|
+| > +5% | Deep Green | [Color Sample](#) |
+| +2% to +5% | Green | [Color Sample](#) |
+| 0% to +2% | Light Green | [Color Sample](#) |
+| -2% to 0% | Light Red | [Color Sample](#) |
+| -5% to -2% | Red | [Color Sample](#) |
+| < -5% | Deep Red | [Color Sample](#) |
+
+---
+
+*The Stock Market Dashboard is organized into 7 main sections accessible via the left sidebar navigation. Each section contains specific charts and tools for different aspects of stock analysis.*
 
 ---
 
@@ -12,20 +471,20 @@ The Stock Market Dashboard is organized into 7 main sections accessible via the 
 
 | Component | Description |
 |-----------|-------------|
-| Market Predictor | Shows overall market sentiment (bullish/bearish). Green = positive, Red = negative |
+| Market Predictor | Shows overall market sentiment. Green = positive, Red = negative |
 | Portfolio Pie Chart | Displays investment distribution across sectors. Larger slice = more invested |
 | Candlestick Chart | Simple price chart with period buttons (1d, 5d, 1mo, 3mo, 6mo, 1y, 2y, 5y) |
 
 ### Key Sections
-- **Why Stock Analysis Matters** — Introduction to data-driven investing
-- **Three Benefit Cards** — Make Smarter Decisions, Track Your Progress, Understand the Market
-- **Who This Is For** — Individual Investors, Financial Advisors, Students & Learners, Researchers
-- **Simple Charts for Everyone** — Beginner-friendly chart explanations
-- **How to Use This Dashboard** — Step-by-step navigation guide
+- **Why Stock Analysis Matters** - Introduction to data-driven investing
+- **Three Benefit Cards** - Make Smarter Decisions, Track Your Progress, Understand the Market
+- **Who This Is For** - Individual Investors, Financial Advisors, Students and Learners, Researchers
+- **Simple Charts for Everyone** - Beginner-friendly chart explanations
+- **How to Use This Dashboard** - Step-by-step navigation guide
 
 ### View Modes
-- **Simplified** — Basic view for beginners
-- **Detailed** — Full features for experienced users
+- **Simplified** - Basic view for beginners
+- **Detailed** - Full features for experienced users
 
 ---
 
@@ -34,8 +493,8 @@ The Stock Market Dashboard is organized into 7 main sections accessible via the 
 **Purpose:** Display historical price data and trading activity.
 
 ### Simplified Mode
-- Price Trends — Candlestick chart
-- Trading Activity — Additional candlestick chart (3-month view)
+- Price Trends - Candlestick chart
+- Trading Activity - Additional candlestick chart (3-month view)
 
 ### Detailed Mode
 
@@ -59,8 +518,8 @@ AAPL, GOOGL, MSFT, AMZN, NVDA
 **Purpose:** Analyze economic and market factors affecting stock performance.
 
 ### Simplified Mode
-- Market Factors — Visual analysis of key indicators
-- DualAxisPlot — Economic trends comparison
+- Market Factors - Visual analysis of key indicators
+- DualAxisPlot - Economic trends comparison
 
 ### Detailed Mode
 
@@ -82,8 +541,8 @@ AAPL, GOOGL, MSFT, AMZN, NVDA
 **Purpose:** Visualize market performance across different sectors.
 
 ### Simplified Mode
-- Sector Performance — Heatmap
-- Market Segments — Treemap
+- Sector Performance - Heatmap
+- Market Segments - Treemap
 
 ### Detailed Mode
 
@@ -107,8 +566,8 @@ Technology, Healthcare, Financial, Consumer, Energy, Utilities, Real Estate, Mat
 **Purpose:** Deep technical analysis and stock relationship visualization.
 
 ### Simplified Mode
-- Technical Analysis — Multi-tab technical analysis (basic view)
-- NetworkGraph — Stock relationships
+- Technical Analysis - Multi-tab technical analysis (basic view)
+- NetworkGraph - Stock relationships
 
 ### Detailed Mode
 
@@ -119,11 +578,11 @@ Technology, Healthcare, Financial, Consumer, Energy, Utilities, Real Estate, Mat
 | ConfusionMatrixPlot | ML model performance matrix showing true/false positives/negatives |
 
 ### Technical Indicators
-- **SMA** — Simple Moving Average
-- **EMA** — Exponential Moving Average
-- **RSI** — Relative Strength Index (overbought/oversold)
-- **MACD** — Moving Average Convergence Divergence
-- **Bollinger Bands** — Price volatility bands
+- **SMA** - Simple Moving Average
+- **EMA** - Exponential Moving Average
+- **RSI** - Relative Strength Index (overbought/oversold)
+- **MACD** - Moving Average Convergence Divergence
+- **Bollinger Bands** - Price volatility bands
 
 ### Network Graph Features
 - Sector clustering
@@ -185,30 +644,30 @@ Emergency Fund, House, Retirement, Education
 S&P 500, NASDAQ, Dow Jones
 
 ### Risk Metrics
-- **Sharpe Ratio** — Risk-adjusted return
-- **Volatility** — Standard deviation of returns
-- **Beta** — vs benchmark (1.0 = same as market)
-- **Maximum Drawdown** — Largest peak-to-trough decline
-- **Value at Risk (VaR)** — Expected maximum loss
+- **Sharpe Ratio** - Risk-adjusted return
+- **Volatility** - Standard deviation of returns
+- **Beta** - vs benchmark (1.0 = same as market)
+- **Maximum Drawdown** - Largest peak-to-trough decline
+- **Value at Risk (VaR)** - Expected maximum loss
 
 ---
 
 ## Global Components
 
 ### Header
-- App Title — "Stock Market Dashboard"
-- Ticker Input — Search and select stock tickers
-- Simple/Detailed Toggle — Switch between view modes
-- Theme Toggle — Light/Dark mode switch
+- App Title - "Stock Market Dashboard"
+- Ticker Input - Search and select stock tickers
+- Simple/Detailed Toggle - Switch between view modes
+- Theme Toggle - Light/Dark mode switch
 
 ### Sidebar Navigation
-- Title — "Dashboard"
-- 7 Section Buttons — Overview, Trends, Factors, Sectors, Analysis, Portfolio, Wealth
-- Active State — Highlighted with primary color
+- Title - "Dashboard"
+- 7 Section Buttons - Overview, Trends, Factors, Sectors, Analysis, Portfolio, Wealth
+- Active State - Highlighted with primary color
 
 ### Footer
-- API Docs Link — "/docs"
-- Copyright — App information
+- API Docs Link - "/docs"
+- Copyright - App information
 
 ---
 
@@ -238,19 +697,19 @@ Accessible via footer link. 5 tabs:
 - This documentation
 
 ### Key Endpoints
-- `/api/health` — Health check
-- `/api/stocks/history` — Historical price data
-- `/api/stocks/signals` — Trading signals
-- `/api/stocks/forecast` — Price forecasts
-- `/api/stocks/growth` — Growth metrics
-- `/api/stocks/momentum` — Momentum indicators
-- `/api/heatmap` — Sector heatmap data
-- `/api/webhook` — Webhook data retrieval
-- `/api/webhook/capture` — Chart image export
+- `/api/health` - Health check
+- `/api/stocks/history` - Historical price data
+- `/api/stocks/signals` - Trading signals
+- `/api/stocks/forecast` - Price forecasts
+- `/api/stocks/growth` - Growth metrics
+- `/api/stocks/momentum` - Momentum indicators
+- `/api/heatmap` - Sector heatmap data
+- `/api/webhook` - Webhook data retrieval
+- `/api/webhook/capture` - Chart image export
 
 ---
 
-## Theme & Settings
+## Theme and Settings
 
 ### Light Mode (Default)
 - Background: #ffffff
@@ -268,17 +727,17 @@ Accessible via footer link. 5 tabs:
 
 ## Important Disclaimers
 
-1. **Data Accuracy** — Stock data from Yahoo Finance. Verify critical data independently.
+1. **Data Accuracy** - Stock data from Yahoo Finance. Verify critical data independently.
 
-2. **Past Performance** — Historical data does not guarantee future results.
+2. **Past Performance** - Historical data does not guarantee future results.
 
-3. **Survivorship Bias** — Backtested strategies may exclude failed funds.
+3. **Survivorship Bias** - Backtested strategies may exclude failed funds.
 
-4. **Not Financial Advice** — For informational and educational purposes only.
+4. **Not Financial Advice** - For informational and educational purposes only.
 
-5. **Real-Time Data** — Data may have 15+ minute delays.
+5. **Real-Time Data** - Data may have 15+ minute delays.
 
-6. **Educational Purpose** — Charts for learning and research only.
+6. **Educational Purpose** - Charts for learning and research only.
 
 ---
 

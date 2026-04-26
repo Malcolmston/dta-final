@@ -421,41 +421,41 @@ The following color palette was developed through AI collaboration, designed for
 
 | Color Name | Usage | Sample |
 |------------|-------|--------|
-| **Primary Blue** | Navigation highlights, primary buttons | [Color Sample](#) |
-| **Primary Dark** | Dark mode primary | [Color Sample](#) |
-| **Positive Green** | Gains, bullish signals, positive changes | [Color Sample](#) |
-| **Negative Red** | Losses, bearish signals, negative changes | [Color Sample](#) |
-| **Background Light** | Light mode background | [Color Sample](#) |
-| **Background Dark** | Dark mode background | [Color Sample](#) |
-| **Text Light** | Light mode text | [Color Sample](#) |
-| **Text Dark** | Dark mode text | [Color Sample](#) |
-| **Grid Light** | Light mode grid lines | [Color Sample](#) |
-| **Grid Dark** | Dark mode grid lines | [Color Sample](#) |
+| **Primary Blue** | Navigation highlights, primary buttons | <span style="display:inline-block;width:24px;height:24px;background:#3b82f6;border-radius:4px;border:1px solid #ccc;"></span> |
+| **Primary Dark** | Dark mode primary | <span style="display:inline-block;width:24px;height:24px;background:#60a5fa;border-radius:4px;border:1px solid #ccc;"></span> |
+| **Positive Green** | Gains, bullish signals, positive changes | <span style="display:inline-block;width:24px;height:24px;background:#22c55e;border-radius:4px;border:1px solid #ccc;"></span> |
+| **Negative Red** | Losses, bearish signals, negative changes | <span style="display:inline-block;width:24px;height:24px;background:#ef4444;border-radius:4px;border:1px solid #ccc;"></span> |
+| **Background Light** | Light mode background | <span style="display:inline-block;width:24px;height:24px;background:#ffffff;border-radius:4px;border:1px solid #ccc;"></span> |
+| **Background Dark** | Dark mode background | <span style="display:inline-block;width:24px;height:24px;background:#111827;border-radius:4px;border:1px solid #444;"></span> |
+| **Text Light** | Light mode text | <span style="display:inline-block;width:24px;height:24px;background:#1f2937;border-radius:4px;border:1px solid #ccc;"></span> |
+| **Text Dark** | Dark mode text | <span style="display:inline-block;width:24px;height:24px;background:#f9fafb;border-radius:4px;border:1px solid #ccc;"></span> |
+| **Grid Light** | Light mode grid lines | <span style="display:inline-block;width:24px;height:24px;background:#e5e7eb;border-radius:4px;border:1px solid #ccc;"></span> |
+| **Grid Dark** | Dark mode grid lines | <span style="display:inline-block;width:24px;height:24px;background:#374151;border-radius:4px;border:1px solid #555;"></span> |
 
 ### Chart Palette (Sequential)
 
 | Color Name | Hex Code | Sample |
 |------------|----------|--------|
-| **Teal 1** | #14b8a6 | [Color Sample](#) |
-| **Teal 2** | #2dd4bf | [Color Sample](#) |
-| **Teal 3** | #5eead4 | [Color Sample](#) |
-| **Blue 1** | #3b82f6 | [Color Sample](#) |
-| **Blue 2** | #60a5fa | [Color Sample](#) |
-| **Blue 3** | #93c5fd | [Color Sample](#) |
-| **Purple 1** | #8b5cf6 | [Color Sample](#) |
-| **Purple 2** | #a78bfa | [Color Sample](#) |
-| **Purple 3** | #c4b5fd | [Color Sample](#) |
+| **Teal 1** | #14b8a6 | <span style="display:inline-block;width:24px;height:24px;background:#14b8a6;border-radius:4px;border:1px solid #ccc;"></span> |
+| **Teal 2** | #2dd4bf | <span style="display:inline-block;width:24px;height:24px;background:#2dd4bf;border-radius:4px;border:1px solid #ccc;"></span> |
+| **Teal 3** | #5eead4 | <span style="display:inline-block;width:24px;height:24px;background:#5eead4;border-radius:4px;border:1px solid #ccc;"></span> |
+| **Blue 1** | #3b82f6 | <span style="display:inline-block;width:24px;height:24px;background:#3b82f6;border-radius:4px;border:1px solid #ccc;"></span> |
+| **Blue 2** | #60a5fa | <span style="display:inline-block;width:24px;height:24px;background:#60a5fa;border-radius:4px;border:1px solid #ccc;"></span> |
+| **Blue 3** | #93c5fd | <span style="display:inline-block;width:24px;height:24px;background:#93c5fd;border-radius:4px;border:1px solid #ccc;"></span> |
+| **Purple 1** | #8b5cf6 | <span style="display:inline-block;width:24px;height:24px;background:#8b5cf6;border-radius:4px;border:1px solid #ccc;"></span> |
+| **Purple 2** | #a78bfa | <span style="display:inline-block;width:24px;height:24px;background:#a78bfa;border-radius:4px;border:1px solid #ccc;"></span> |
+| **Purple 3** | #c4b5fd | <span style="display:inline-block;width:24px;height:24px;background:#c4b5fd;border-radius:4px;border:1px solid #ccc;"></span> |
 
 ### Heatmap Gradient
 
 | Performance | Color | Sample |
 |------------|-------|--------|
-| > +5% | Deep Green | [Color Sample](#) |
-| +2% to +5% | Green | [Color Sample](#) |
-| 0% to +2% | Light Green | [Color Sample](#) |
-| -2% to 0% | Light Red | [Color Sample](#) |
-| -5% to -2% | Red | [Color Sample](#) |
-| < -5% | Deep Red | [Color Sample](#) |
+| > +5% | Deep Green | <span style="display:inline-block;width:24px;height:24px;background:#15803d;border-radius:4px;border:1px solid #ccc;"></span> |
+| +2% to +5% | Green | <span style="display:inline-block;width:24px;height:24px;background:#22c55e;border-radius:4px;border:1px solid #ccc;"></span> |
+| 0% to +2% | Light Green | <span style="display:inline-block;width:24px;height:24px;background:#86efac;border-radius:4px;border:1px solid #ccc;"></span> |
+| -2% to 0% | Light Red | <span style="display:inline-block;width:24px;height:24px;background:#fca5a5;border-radius:4px;border:1px solid #ccc;"></span> |
+| -5% to -2% | Red | <span style="display:inline-block;width:24px;height:24px;background:#f87171;border-radius:4px;border:1px solid #ccc;"></span> |
+| < -5% | Deep Red | <span style="display:inline-block;width:24px;height:24px;background:#dc2626;border-radius:4px;border:1px solid #ccc;"></span> |
 
 ---
 

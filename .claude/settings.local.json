@@ -98,7 +98,14 @@
       "Bash(npx vercel@latest --yes)",
       "Bash(npx vercel@latest --prod --yes)",
       "Bash(mermaid\" /Users/malcolmstone/Downloads/dta-final/public/PLOTS.md)",
-      "Bash(grep -n \"```mermaid\" /Users/malcolmstone/Downloads/dta-final/public/PLOTS.md)"
+      "Bash(grep -n \"```mermaid\" /Users/malcolmstone/Downloads/dta-final/public/PLOTS.md)",
+      "Bash(npx vercel@latest *)",
+      "Bash(chmod +x ~/.claude/statusline-command.sh)",
+      "Bash(python3 -m json.tool)"
     ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash -c 'input=$(cat); model=$(echo \"$input\" | jq -r \".model.display_name\"); remaining=$(echo \"$input\" | jq -r \".context_window.remaining_percentage // empty\"); if [ -n \"$remaining\" ] && [ \"$remaining\" != \"null\" ]; then pct=${remaining%.*}; bar_len=20; filled_len=$((bar_len * pct / 100)); empty_len=$((bar_len - filled_len)); bar=\"\"; for ((i=0; i<filled_len; i++)); do bar+=\"=\"; done; for ((i=0; i<empty_len; i++)); do bar+=\"-\"; done; printf \" %s [%s] %d%%\" \"$model\" \"$bar\" \"$pct\"; else printf \" %s\" \"$model\"; fi'"
   }
 }

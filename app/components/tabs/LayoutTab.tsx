@@ -3,6 +3,66 @@
 import { useEffect, useState, useRef } from 'react';
 import mermaid from 'mermaid';
 
+function AnimatedBackground({ particleCount = 20 }: { particleCount?: number }) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let animationId: number;
+    let particles: Array<{ x: number; y: number; vx: number; vy: number; size: number; opacity: number; char: string }> = [];
+
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+
+    const initParticles = () => {
+      const chars = ['■', '▲', '●', '◆', '★'];
+      particles = [];
+      for (let i = 0; i < particleCount; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          vx: (Math.random() - 0.5) * 0.3,
+          vy: (Math.random() - 0.5) * 0.3,
+          size: Math.random() * 15 + 8,
+          opacity: Math.random() * 0.12 + 0.03,
+          char: chars[Math.floor(Math.random() * chars.length)],
+        });
+      }
+    };
+
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach((p) => {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0) p.x = canvas.width;
+        if (p.x > canvas.width) p.x = 0;
+        if (p.y < 0) p.y = canvas.height;
+        if (p.y > canvas.height) p.y = 0;
+        ctx.font = `${p.size}px Arial`;
+        ctx.fillStyle = `rgba(34, 197, 94, ${p.opacity})`;
+        ctx.fillText(p.char, p.x, p.y);
+      });
+      animationId = requestAnimationFrame(animate);
+    };
+
+    resize();
+    initParticles();
+    animate();
+    window.addEventListener('resize', () => { resize(); initParticles(); });
+    return () => { cancelAnimationFrame(animationId); };
+  }, [particleCount]);
+
+  return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none opacity-25" style={{ zIndex: 0 }} />;
+}
+
 interface MermaidDiagramProps {
   code: string;
 }
@@ -117,7 +177,9 @@ export default function LayoutTab() {
   };
 
   return (
-    <div style={containerStyle}>
+    <div style={{ ...containerStyle, position: 'relative' }}>
+      <AnimatedBackground particleCount={20} />
+      <div style={{ position: 'relative', zIndex: 1 }}>
       <h1 style={h1Style}>Dashboard Layout</h1>
 
       <p style={pStyle}>
@@ -206,6 +268,7 @@ export default function LayoutTab() {
         <a href="/dashboard-layout.drawio" style={downloadStyle}>
           Download dashboard-layout.drawio
         </a>
+      </div>
       </div>
     </div>
   );

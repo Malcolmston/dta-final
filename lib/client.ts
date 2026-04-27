@@ -252,19 +252,15 @@ export async function fetchHistory(
   interval: string = "1d",
   limit?: number
 ): Promise<StockHistory[]> {
-  // Use absolute URL for server-side calls to avoid self-referential fetch issues
-  // Try multiple env vars for compatibility
+  // Use relative URL for client-side to avoid CSP issues
+  // Only use absolute URL when VERCEL_URL is explicitly set (server-side)
   const vercelUrl = process.env.VERCEL_URL || process.env.NEXT_PUBLIC_VERCEL_URL;
-  const baseUrl = vercelUrl
-    ? `https://${vercelUrl}`
-    : process.env.NEXT_PUBLIC_BASE_URL || '';
 
+  // Always use relative URL in browser - avoids CSP and CORS issues
   let url = `/api/stocks/history?symbol=${encodeURIComponent(symbol)}&period=${period}&interval=${interval}`;
-  if (baseUrl) {
-    url = `${baseUrl}${url}`;
-  }
 
-  console.log(`[fetchHistory] Fetching: ${url}`);
+  // Log what's happening
+  console.log(`[fetchHistory] Fetching: ${url}, vercelUrl: ${vercelUrl}`);
 
   const response = await fetch(url);
 

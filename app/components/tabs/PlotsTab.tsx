@@ -192,13 +192,44 @@ export default function PlotsTab() {
     fontWeight: 600,
   };
 
-  const drawioUrl = origin
-    ? `https://app.diagrams.net/?lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=dashboard-layout.drawio#U${origin}/dashboard-layout.drawio`
-    : '';
-
   return (
     <div style={{ padding: '1.5rem', maxWidth: '56rem', margin: '0 auto', color: '#1f2937' }}>
       <h1 style={{ ...h1Style, marginTop: 0 }}>Dashboard Plots Documentation</h1>
+
+      {/* Dashboard Layout Diagram */}
+      <h2 style={h2Style}>Dashboard Layout</h2>
+      <MermaidDiagram code={`graph TB
+    subgraph HEADER["HEADER - Top Bar"]
+        direction LR
+        Logo["Logo/Title"]
+        Ticker["Ticker Search"]
+        Mode["Simple/Detailed Toggle"]
+        Theme["Theme Toggle"]
+    end
+
+    subgraph SIDEBAR["LEFT SIDEBAR"]
+        direction TB
+        O["Overview"]
+        T["Trends"]
+        F["Factors"]
+        S["Sectors"]
+        A["Analysis"]
+        P["Portfolio"]
+        W["Wealth"]
+    end
+
+    subgraph MAIN["MAIN CONTENT"]
+        Charts["Charts & Visualizations"]
+        Tables["Tables & Data"]
+        Tools["Analysis Tools"]
+    end
+
+    HEADER --> SIDEBAR
+    SIDEBAR --> MAIN
+
+    style HEADER fill:#dbeafe,stroke:#3b82f6
+    style SIDEBAR fill:#dcfce7,stroke:#22c55e
+    style MAIN fill:#fef3c7,stroke:#f59e0b`} />
 
       {/* Dashboard Layout Diagram */}
       <h2 style={h2Style}>Dashboard Layout</h2>

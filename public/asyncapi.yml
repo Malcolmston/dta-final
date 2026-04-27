@@ -10,6 +10,21 @@ info:
     - WebSocket connections for live data streaming
 
     The REST endpoints are documented in openapi.yml
+
+    ## Security for Async Operations
+
+    ### Redis Security
+    - Redis connections use credentials from environment variables
+    - Queue operations are validated before processing
+
+    ### SSE Security
+    - Server-Sent Events endpoints inherit REST API security
+    - Rate limiting applies per connection
+    - BotID protection on SSE initiation
+
+    ### WebSocket Security (Future)
+    - WebSocket connections will use BotID verification
+    - Connection tokens required for authentication
   version: 1.0.0
   contact:
     name: API Support
@@ -203,19 +218,90 @@ operations:
 
 components:
   messages:
-    LookupJob: {}
-    PullJob: {}
-    StorageJob: {}
-    QuoteUpdate: {}
-    SignalUpdate: {}
-    HeatmapEvent: {}
-    NotificationEvent: {}
-    CacheInvalidation: {}
+    LookupJob:
+      name: LookupJob
+      payload:
+        type: object
+        properties:
+          ticker:
+            type: string
+          action:
+            type: string
+    PullJob:
+      name: PullJob
+      payload:
+        type: object
+        properties:
+          tickers:
+            type: array
+            items:
+              type: string
+    StorageJob:
+      name: StorageJob
+      payload:
+        type: object
+        properties:
+          operation:
+            type: string
+            enum: [cleanup, archive, optimize]
+    QuoteUpdate:
+      name: QuoteUpdate
+      payload:
+        type: object
+        properties:
+          ticker:
+            type: string
+          price:
+            type: number
+          timestamp:
+            type: string
+    SignalUpdate:
+      name: SignalUpdate
+      payload:
+        type: object
+        properties:
+          ticker:
+            type: string
+          signal:
+            type: string
+          confidence:
+            type: number
+    HeatmapEvent:
+      name: HeatmapEvent
+      payload:
+        type: object
+        properties:
+          tickers:
+            type: array
+          data:
+            type: object
+    NotificationEvent:
+      name: NotificationEvent
+      payload:
+        type: object
+        properties:
+          type:
+            type: string
+          message:
+            type: string
+    CacheInvalidation:
+      name: CacheInvalidation
+      payload:
+        type: object
+        properties:
+          key:
+            type: string
+          reason:
+            type: string
 
   securitySchemes:
     apiKey:
       type: httpApiKey
       name: X-API-Key
+      in: header
+    botid:
+      type: httpApiKey
+      name: X-BotID-Token
       in: header
 
   parameters:

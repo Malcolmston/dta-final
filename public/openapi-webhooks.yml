@@ -4,6 +4,27 @@ info:
   description: |
     Programmatic webhook API for retrieving stock data and exporting charts as images.
     Provides endpoints for historical data, quotes, forecasts, signals, and chart export.
+
+    ## Security
+
+    This API implements the following security measures:
+
+    ### Rate Limiting
+    - **Webhook endpoint**: 500 requests/minute per IP (highest limit)
+
+    ### Attack Detection
+    - SQL injection detection
+    - XSS prevention
+    - Command injection blocking
+    - Path traversal protection
+    - SSRF detection
+
+    ### IP & User Agent Blocking
+    - Private IP ranges blocked
+    - Suspicious user agents blocked
+
+    ### Bot Detection
+    - Vercel BotID protection
   version: 1.0.0
   contact:
     name: API Support

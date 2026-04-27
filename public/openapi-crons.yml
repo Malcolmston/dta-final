@@ -4,6 +4,16 @@ info:
   description: |
     Scheduled cron job endpoints for automated data fetching and maintenance tasks.
     These endpoints are designed to be called by Vercel Cron or external schedulers.
+
+    ## Security
+
+    Cron endpoints are excluded from BotID protection but include:
+
+    - Trusted user agent verification (vercel-cron, vercel-edge)
+    - Attack pattern detection
+    - Request validation
+
+    Rate limits are not applied to cron endpoints as they are internal.
   version: 1.0.0
   contact:
     name: API Support

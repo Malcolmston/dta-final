@@ -4,6 +4,47 @@ info:
   description: |
     Stock market data API providing historical prices, technical indicators,
     forecasts, momentum signals, and trading signals for various securities.
+
+    ## Security Implementation
+
+    This API implements multiple layers of security:
+
+    ### 1. Rate Limiting
+    - **Stocks endpoints**: 100 requests/minute per IP
+    - **Growth endpoint**: 100 requests/minute per IP
+    - **Signals endpoint**: 60 requests/minute per IP
+    - **Forecast endpoint**: 30 requests/minute per IP
+    - **Webhook endpoint**: 500 requests/minute per IP
+    - **Heatmap endpoint**: 60 requests/minute per IP
+
+    ### 2. Bot Detection (Vercel BotID)
+    All API endpoints are protected by BotID middleware that detects and blocks automated traffic.
+
+    ### 3. Attack Detection
+    The following attack patterns are detected and blocked:
+    - **SQL Injection**: Pattern-based detection in query parameters
+    - **XSS**: Script injection, javascript: URLs, event handlers
+    - **Command Injection**: Shell commands, pipe operators, subshell execution
+    - **Path Traversal**: Directory traversal attempts (../, %2e%2e)
+    - **SSRF**: Localhost, private IP ranges, metadata endpoints
+
+    ### 4. IP Blocking
+    Private and reserved IP ranges are blocked:
+    - 10.0.0.0/8
+    - 172.16.0.0/12
+    - 192.168.0.0/16
+    - 127.0.0.0/8
+    - 0.0.0.0/8
+
+    ### 5. User Agent Filtering
+    Blocked user agents:
+    - python-requests, scrapy, curl, wget
+    - bot, spider, crawler (exact matches)
+
+    ### 6. Trusted Components
+    - Vercel Cron jobs (vercel-cron user agent)
+    - Vercel Edge functions (vercel-edge user agent)
+
   version: 1.0.0
   contact:
     name: API Support
@@ -25,12 +66,16 @@ tags:
     description: System health checks
   - name: Stocs
     description: Stock data library (new TypeScript implementation)
+  - name: Security
+    description: Security and monitoring endpoints
 
 paths:
   /api/health:
     get:
       summary: Health check
-      description: Returns the health status of the API
+      description: |
+        Returns the health status of the API.
+        This endpoint is excluded from BotID protection.
       operationId: getHealth
       tags:
         - Health
@@ -45,6 +90,81 @@ paths:
                   status:
                     type: string
                     example: healthy
+
+  /api/security/logs:
+    get:
+      summary: Get security logs
+      description: |
+        Retrieves recent security events and blocked requests.
+        Rate limited to 10 requests/minute.
+      operationId: getSecurityLogs
+      tags:
+        - Security
+      parameters:
+        - name: action
+          in: query
+          description: Action to perform (stats, clear, or default for logs)
+          schema:
+            type: string
+            enum: [stats, clear]
+        - name: limit
+          in: query
+          description: Maximum number of events to return
+          schema:
+            type: integer
+            default: 100
+      responses:
+        '200':
+          description: Security events
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  events:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SecurityEvent'
+                  count:
+                    type: integer
+        '429':
+          description: Rate limit exceeded
+    post:
+      summary: Configure security alerts
+      description: |
+        Configure or test security alert settings.
+        Rate limited to 5 requests/minute.
+      operationId: configureSecurityAlerts
+      tags:
+        - Security
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                alertType:
+                  type: string
+                  enum: [configure, test, stats]
+                config:
+                  type: object
+      responses:
+        '200':
+          description: Alert configured
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+        '400':
+          description: Invalid request
+        '429':
+          description: Rate limit exceeded
 
   /api/stocs-test:
     get:
@@ -144,7 +264,14 @@ paths:
         '400':
           description: Missing required parameter
         '429':
-          description: Rate limit exceeded
+          description: Rate limit exceeded (100 requests/minute)
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+              description: Seconds to wait before retrying
+        '403':
+          description: Request blocked (attack detected or blocked IP/UA)
         '500':
           description: Internal server error
 
@@ -528,12 +655,46 @@ components:
           type: string
           description: Error message
 
+    SecurityEvent:
+      type: object
+      description: Security event log entry
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: Event timestamp
+        type:
+          type: string
+          enum: [BLOCK, ALERT, RATE_LIMIT, ATTACK]
+          description: Event type
+        ip:
+          type: string
+          description: Client IP address
+        userAgent:
+          type: string
+          description: Client user agent
+        path:
+          type: string
+          description: Requested path
+        details:
+          type: string
+          description: Event details
+        severity:
+          type: string
+          enum: [low, medium, high, critical]
+          description: Event severity
+
   securitySchemes:
     apiKey:
       type: apiKey
       in: header
       name: X-API-Key
       description: API key for authenticated endpoints
+    botid:
+      type: apiKey
+      in: header
+      name: X-BotID-Token
+      description: BotID verification token (set by BotID middleware)
 
 security:
   - apiKey: []

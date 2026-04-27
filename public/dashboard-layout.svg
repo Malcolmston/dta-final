@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="1400" height="1000" viewBox="0 0 1400 1000">
+  <defs>
+    <style>
+      .text { font-family: Arial, sans-serif; }
+    </style>
+  </defs>
+  <rect x="0" y="0" width="1400" height="1000" fill="#ffffff" />
+  <rect x="0" y="0" width="1400" height="60" fill="#ffffff" stroke="#e5e7eb" />
+  <rect x="0" y="60" width="200" height="900" fill="#ffffff" stroke="#e5e7eb" />
+  <rect x="200" y="60" width="1200" height="900" fill="#f9fafb" stroke="#e5e7eb" />
+  <rect x="0" y="960" width="1400" height="40" fill="#ffffff" stroke="#e5e7eb" />
+  <rect x="20" y="10" width="220" height="40" fill="#3b82f6" stroke="none" rx="0" />
+  <text x="60" y="34" font-size="16" font-weight="bold" fill="#ffffff" class="text">Stock Market Dashboard</text>
+  <rect x="260" y="17" width="200" height="26" fill="#f3f4f6" stroke="none" rx="4" />
+  <text x="270" y="33" font-size="12" fill="#6b7280" class="text">Search ticker...</text>
+  <rect x="480" y="17" width="120" height="26" fill="#f3f4f6" stroke="none" rx="4" />
+  <text x="540" y="42" font-size="12" font-weight="bold" fill="#1f2937" text-anchor="middle" class="text">Simple | Detailed</text>
+  <rect x="620" y="17" width="100" height="26" fill="#f3f4f6" stroke="none" rx="4" />
+  <text x="670" y="42" font-size="12" font-weight="bold" fill="#1f2937" text-anchor="middle" class="text">Theme Toggle</text>
+  <rect x="20" y="75" width="160" height="20" fill="none" stroke="none" rx="0" />
+  <text x="60" y="89" font-size="11" font-weight="bold" fill="#6b7280" class="text">NAVIGATION</text>
+  <rect x="220" y="80" width="200" height="30" fill="none" stroke="none" />
+  <rect x="20" y="100" width="160" height="35" fill="#dbeafe" stroke="#3b82f6" rx="0" />
+  <text x="60" y="121.5" font-size="13" font-weight="bold" fill="#1f2937" class="text">Overview</text>
+  <rect x="220" y="120" width="280" height="160" fill="#ffffff" stroke="#22c55e" rx="4" />
+  <text x="360" y="150" font-size="14" font-weight="bold" fill="#1f2937" text-anchor="middle" class="text">Market Sentiment</text>
+  <text x="360" y="175" font-size="12" font-weight="normal" fill="#1f2937" text-anchor="middle" class="text">Bullish +2.4%</text>
+  <text x="360" y="200" font-size="12" font-weight="normal" fill="#1f2937" text-anchor="middle" class="text">██████████░░ 65%</text>
+  <rect x="520" y="120" width="280" height="160" fill="#ffffff" stroke="#3b82f6" rx="4" />
+  <text x="660" y="150" font-size="14" font-weight="bold" fill="#1f2937" text-anchor="middle" class="text">Portfolio Mix</text>
+  <text x="660" y="175" font-size="12" font-weight="normal" fill="#1f2937" text-anchor="middle" class="text">Technology 40%</text>
+  <text x="660" y="200" font-size="12" font-weight="normal" fill="#1f2937" text-anchor="middle" class="text">Healthcare 25%</text>
+  <text x="660" y="225" font-size="12" font-weight="normal" fill="#1f2937" text-anchor="middle" class="text">Financial 20%</text>
+  <text x="660" y="250" font-size="12" font-weight="normal" fill="#1f2937" text-anchor="middle" class="text">Other 15%</text>
+  <text x="860" y="135" font-size="10" font-weight="bold" fill="#6b7280" class="text">COLOR SEMANTICS</text>
+  <rect x="20" y="135" width="160" height="35" fill="#ffffff" stroke="#e5e7eb" rx="0" />
+  <text x="60" y="156.5" font-size="13" font-weight="normal" fill="#1f2937" class="text">Trends</text>
+  <rect x="850" y="145" width="140" height="25" fill="#22c55e" stroke="none" rx="4" />
+  <text x="920" y="161.5" font-size="10" fill="#ffffff" text-anchor="middle" class="text">Green = Positive/Gains</text>
+  <rect x="20" y="170" width="160" height="35" fill="#ffffff" stroke="#e5e7eb" rx="0" />
+  <text x="60" y="191.5" font-size="13" font-weight="normal" fill="#1f2937" class="text">Factors</text>
+  <rect x="850" y="175" width="140" height="25" fill="#ef4444" stroke="none" rx="4" />
+  <text x="920" y="191.5" font-size="10" fill="#ffffff" text-anchor="middle" class="text">Red = Negative/Losses</text>
+  <rect x="20" y="205" width="160" height="35" fill="#ffffff" stroke="#e5e7eb" rx="0" />
+  <text x="60" y="226.5" font-size="13" font-weight="normal" fill="#1f2937" class="text">Sectors</text>
+  <rect x="850" y="205" width="140" height="25" fill="#3b82f6" stroke="none" rx="4" />
+  <text x="920" y="221.5" font-size="10" fill="#ffffff" text-anchor="middle" class="text">Blue = Primary/Brand</text>
+  <rect x="20" y="240" width="160" height="35" fill="#ffffff" stroke="#e5e7eb" rx="0" />
+  <text x="60" y="261.5" font-size="13" font-weight="normal" fill="#1f2937" class="text">Analysis</text>
+  <rect x="20" y="275" width="160" height="35" fill="#ffffff" stroke="#e5e7eb" rx="0" />
+  <text x="60" y="296.5" font-size="13" font-weight="normal" fill="#1f2937" class="text">Portfolio</text>
+  <text x="860" y="295" font-size="10" font-weight="bold" fill="#6b7280" class="text">VIEW MODES</text>
+  <rect x="220" y="300" width="580" height="200" fill="#ffffff" stroke="#e5e7eb" rx="4" />
+  <text x="510" y="400" font-size="14" fill="#6b7280" text-anchor="middle" class="text">AAPL Price Chart
+  [1D] [5D] [1M] [3M] [6M] [1Y]
+  
+  Candlestick Chart
+  (D3.js Visualization)</text>
+  <rect x="850" y="305" width="130" height="100" fill="#d1fae5" stroke="#22c55e" rx="4" />
+  <text x="915" y="330" font-size="10" font-weight="bold" fill="#1f2937" text-anchor="middle" class="text">SIMPLE MODE</text>
+  <text x="915" y="350" font-size="10" font-weight="normal" fill="#1f2937" text-anchor="middle" class="text">Basic Charts</text>
+  <text x="915" y="370" font-size="10" font-weight="normal" fill="#1f2937" text-anchor="middle" class="text">Tooltips Only</text>
+  <text x="915" y="390" font-size="10" font-weight="normal" fill="#1f2937" text-anchor="middle" class="text">Beginner Friendly</text>
+  <rect x="990" y="305" width="130" height="100" fill="#fce7f3" stroke="#ec4899" rx="4" />
+  <text x="1055" y="330" font-size="10" font-weight="bold" fill="#1f2937" text-anchor="middle" class="text">DETAILED MODE</text>
+  <text x="1055" y="350" font-size="10" font-weight="normal" fill="#1f2937" text-anchor="middle" class="text">Full Features</text>
+  <text x="1055" y="370" font-size="10" font-weight="normal" fill="#1f2937" text-anchor="middle" class="text">Interactive Controls</text>
+  <text x="1055" y="390" font-size="10" font-weight="normal" fill="#1f2937" text-anchor="middle" class="text">Advanced Analysis</text>
+  <rect x="20" y="310" width="160" height="35" fill="#ffffff" stroke="#e5e7eb" rx="0" />
+  <text x="60" y="331.5" font-size="13" font-weight="normal" fill="#1f2937" class="text">Wealth</text>
+  <text x="860" y="455" font-size="10" font-weight="bold" fill="#6b7280" class="text">THEMES</text>
+  <rect x="850" y="465" width="130" height="80" fill="#ffffff" stroke="#3b82f6" rx="4" />
+  <text x="915" y="490" font-size="10" font-weight="bold" fill="#1f2937" text-anchor="middle" class="text">LIGHT</text>
+  <text x="915" y="510" font-size="10" font-weight="normal" fill="#1f2937" text-anchor="middle" class="text">Bg: #ffffff</text>
+  <text x="915" y="530" font-size="10" font-weight="normal" fill="#1f2937" text-anchor="middle" class="text">Text: #1f2937</text>
+  <rect x="990" y="465" width="130" height="80" fill="#1f2937" stroke="#60a5fa" rx="4" />
+  <text x="1055" y="490" font-size="10" font-weight="bold" fill="#f9fafb" text-anchor="middle" class="text">DARK</text>
+  <text x="1055" y="510" font-size="10" font-weight="normal" fill="#f9fafb" text-anchor="middle" class="text">Bg: #111827</text>
+  <text x="1055" y="530" font-size="10" font-weight="normal" fill="#f9fafb" text-anchor="middle" class="text">Text: #f9fafb</text>
+  <rect x="220" y="520" width="180" height="120" fill="#ffffff" stroke="#3b82f6" rx="4" />
+  <text x="310" y="555" font-size="12" font-weight="bold" fill="#1f2937" text-anchor="middle" class="text">Make Smarter Decisions</text>
+  <text x="310" y="580" font-size="11" font-weight="normal" fill="#1f2937" text-anchor="middle" class="text">Data-driven insights help you understand market trends</text>
+  <rect x="420" y="520" width="180" height="120" fill="#ffffff" stroke="#22c55e" rx="4" />
+  <text x="510" y="555" font-size="12" font-weight="bold" fill="#1f2937" text-anchor="middle" class="text">Track Your Progress</text>
+  <text x="510" y="580" font-size="11" font-weight="normal" fill="#1f2937" text-anchor="middle" class="text">Monitor portfolio performance over time</text>
+  <rect x="620" y="520" width="180" height="120" fill="#ffffff" stroke="#8b5cf6" rx="4" />
+  <text x="710" y="555" font-size="12" font-weight="bold" fill="#1f2937" text-anchor="middle" class="text">Understand the Market</text>
+  <text x="710" y="580" font-size="11" font-weight="normal" fill="#1f2937" text-anchor="middle" class="text">Learn how factors affect stock performance</text>
+  <text x="860" y="595" font-size="10" font-weight="bold" fill="#6b7280" class="text">TAB DESCRIPTIONS</text>
+  <rect x="850" y="605" width="270" height="35" fill="#ffffff" stroke="#e5e7eb" rx="4" />
+  <text x="860" y="625" font-size="9" fill="#1f2937" class="text">Overview: Market sentiment, portfolio mix, price charts</text>
+  <rect x="850" y="645" width="270" height="35" fill="#ffffff" stroke="#e5e7eb" rx="4" />
+  <text x="860" y="665" font-size="9" fill="#1f2937" class="text">Trends: Candlestick, volume, streamgraph, 3D price</text>
+  <rect x="850" y="685" width="270" height="35" fill="#ffffff" stroke="#e5e7eb" rx="4" />
+  <text x="860" y="705" font-size="9" fill="#1f2937" class="text">Factors: Market factors, lag correlation, dual axis</text>
+  <rect x="850" y="725" width="270" height="35" fill="#ffffff" stroke="#e5e7eb" rx="4" />
+  <text x="860" y="745" font-size="9" fill="#1f2937" class="text">Sectors: Heatmap, treemap by market cap</text>
+  <rect x="850" y="765" width="270" height="35" fill="#ffffff" stroke="#e5e7eb" rx="4" />
+  <text x="860" y="785" font-size="9" fill="#1f2937" class="text">Analysis: RSI, MACD, Bollinger, network graph</text>
+  <rect x="850" y="805" width="270" height="35" fill="#ffffff" stroke="#e5e7eb" rx="4" />
+  <text x="860" y="825" font-size="9" fill="#1f2937" class="text">Portfolio: Holdings manager, P&amp;L tracking</text>
+  <rect x="850" y="845" width="270" height="35" fill="#ffffff" stroke="#e5e7eb" rx="4" />
+  <text x="860" y="865" font-size="9" fill="#1f2937" class="text">Wealth: Goals, retirement calc, risk metrics</text>
+  <text x="40" y="984" font-size="12" fill="#3b82f6" text-anchor="start" class="text">API Docs Link</text>
+  <text x="1480" y="984" font-size="12" fill="#6b7280" text-anchor="end" class="text">Stock Market Dashboard - Educational Purpose Only</text>
+</svg>

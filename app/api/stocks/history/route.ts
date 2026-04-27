@@ -5,6 +5,23 @@ import { getRedisClient } from "@/lib/redis";
 // Cache responses for 60 seconds
 export const revalidate = 60;
 
+function processYahooResult(json: any): any[] {
+  const result = json.chart.result[0];
+  const timestamps = result.timestamp as number[];
+  const quote = result.indicators.quote[0];
+
+  return timestamps
+    .map((ts, i) => ({
+      date: new Date(ts * 1000).toISOString(),
+      open: quote.open?.[i] || 0,
+      high: quote.high?.[i] || 0,
+      low: quote.low?.[i] || 0,
+      close: quote.close?.[i] || 0,
+      volume: quote.volume?.[i] || 0,
+    }))
+    .filter((d) => d.close > 0);
+}
+
 export async function GET(request: NextRequest) {
   // Apply rate limiting (100 requests per minute per IP)
   const clientIp = getClientIp(request);
@@ -70,38 +87,53 @@ export async function GET(request: NextRequest) {
     const startDate = new Date();
     startDate.setDate(startDate.getDate() - days);
 
-    const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?period1=${Math.floor(startDate.getTime() / 1000)}&period2=${Math.floor(endDate.getTime() / 1000)}&interval=${usedInterval}`;
-
-    const response = await fetch(url, {
-      headers: {
-        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
+    // Try multiple Yahoo Finance endpoints
+    const endpoints = [
+      {
+        url: `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?period1=${Math.floor(startDate.getTime() / 1000)}&period2=${Math.floor(endDate.getTime() / 1000)}&interval=${usedInterval}`,
+        headers: {
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+          "Accept": "application/json",
+        },
       },
-    });
+      {
+        url: `https://query2.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?period1=${Math.floor(startDate.getTime() / 1000)}&period2=${Math.floor(endDate.getTime() / 1000)}&interval=${usedInterval}`,
+        headers: {
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "Accept": "application/json",
+        },
+      },
+    ];
 
-    if (!response.ok) {
-      throw new Error(`Yahoo API error: ${response.status}`);
+    let data: any[] = [];
+    let lastError: Error | null = null;
+
+    for (const endpoint of endpoints) {
+      try {
+        const response = await fetch(endpoint.url, { headers: endpoint.headers });
+
+        if (!response.ok) {
+          lastError = new Error(`Yahoo API error: ${response.status}`);
+          continue;
+        }
+
+        const json = await response.json();
+
+        if (json.chart?.error) {
+          lastError = new Error(json.chart.error.description || "Failed to fetch data");
+          continue;
+        }
+
+        data = processYahooResult(json);
+        if (data.length > 0) break;
+      } catch (e) {
+        lastError = e instanceof Error ? e : new Error(String(e));
+      }
     }
 
-    const json = await response.json();
-
-    if (json.chart?.error) {
-      throw new Error(json.chart.error.description || "Failed to fetch data");
+    if (data.length === 0) {
+      throw lastError || new Error("Failed to fetch stock data from all endpoints");
     }
-
-    const result = json.chart.result[0];
-    const timestamps = result.timestamp as number[];
-    const quote = result.indicators.quote[0];
-
-    const data = timestamps
-      .map((ts, i) => ({
-        date: new Date(ts * 1000).toISOString(),
-        open: quote.open?.[i] || 0,
-        high: quote.high?.[i] || 0,
-        low: quote.low?.[i] || 0,
-        close: quote.close?.[i] || 0,
-        volume: quote.volume?.[i] || 0,
-      }))
-      .filter((d) => d.close > 0);
 
     // Cache in Redis for 5 minutes (if available)
     if (redis) {

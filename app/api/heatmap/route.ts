@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getRedisClient } from "@/lib/redis";
-import { fetchHistory, StockHistory } from "@/lib/client";
 import { TIME_RANGES_EXTENDED } from "@/lib/constants";
 
 interface PerformanceData {
@@ -9,16 +8,58 @@ interface PerformanceData {
   performance: number;
 }
 
-function calculatePerformance(stockData: StockHistory[]): number {
-  if (!stockData || stockData.length < 2) {
-    console.log(`[Heatmap] Not enough data: ${stockData?.length || 0} points`);
-    return 0;
+// Fetch stock data directly from Yahoo Finance (bypasses internal API)
+async function fetchStockDataFromYahoo(symbol: string, periodValue: string): Promise<number> {
+  const rangeMap: Record<string, number> = {
+    "5d": 5,
+    "1mo": 30,
+    "3mo": 90,
+    "6mo": 180,
+    "1y": 365,
+    "2y": 730,
+  };
+
+  const days = rangeMap[periodValue] || 365;
+  const endDate = new Date();
+  const startDate = new Date();
+  startDate.setDate(startDate.getDate() - days);
+
+  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?period1=${Math.floor(startDate.getTime() / 1000)}&period2=${Math.floor(endDate.getTime() / 1000)}&interval=1d`;
+
+  const response = await fetch(url, {
+    headers: {
+      "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Yahoo API error: ${response.status}`);
   }
 
-  const startPrice = stockData[0].close;
-  const endPrice = stockData[stockData.length - 1].close;
+  const json = await response.json();
 
-  console.log(`[Heatmap] Performance calc: start=${startPrice}, end=${endPrice}, count=${stockData.length}`);
+  if (json.chart?.error) {
+    throw new Error(json.chart.error.description || "Failed to fetch data");
+  }
+
+  const result = json.chart?.result?.[0];
+  if (!result) return 0;
+
+  const timestamps = result.timestamp as number[];
+  const quote = result.indicators?.quote?.[0];
+
+  if (!timestamps || !quote) return 0;
+
+  const data = timestamps
+    .map((ts, i) => ({
+      close: quote.close?.[i] || 0,
+    }))
+    .filter((d) => d.close > 0);
+
+  if (data.length < 2) return 0;
+
+  const startPrice = data[0].close;
+  const endPrice = data[data.length - 1].close;
 
   if (startPrice === 0) return 0;
 
@@ -31,15 +72,7 @@ async function fetchHeatmapData(symbols: string[]): Promise<PerformanceData[]> {
   for (const symbol of symbols) {
     for (const period of TIME_RANGES_EXTENDED) {
       try {
-        console.log(`[Heatmap] Fetching ${symbol} for ${period.label} (${period.value})`);
-        const history = await fetchHistory(symbol, period.value, "1d");
-        console.log(`[Heatmap] Got ${history.length} points for ${symbol} ${period.label}`);
-
-        if (history.length > 0) {
-          console.log(`[Heatmap] First: ${JSON.stringify(history[0])}, Last: ${JSON.stringify(history[history.length - 1])}`);
-        }
-
-        const performance = calculatePerformance(history);
+        const performance = await fetchStockDataFromYahoo(symbol, period.value);
 
         results.push({
           ticker: symbol,

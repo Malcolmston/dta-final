@@ -104,7 +104,8 @@
       "Bash(python3 -m json.tool)",
       "Bash(npm list *)",
       "Bash(node *)",
-      "Bash(npm uninstall *)"
+      "Bash(npm uninstall *)",
+      "Bash(python3 *)"
     ]
   },
   "statusLine": {

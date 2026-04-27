@@ -54,7 +54,10 @@ export default function VolumeChart({ ticker = "AAPL" }: VolumeChartProps) {
       .nice()
       .range([height - margin.bottom, margin.top]);
 
-    const barWidth = Math.max(1, (width - margin.left - margin.right) / data.length - 1);
+    const availableWidth = width - margin.left - margin.right;
+    // Calculate bar width to ensure no overlapping - leave 1px gap between bars
+    const gap = 1;
+    const barWidth = Math.max(2, (availableWidth - gap * (data.length - 1)) / data.length);
 
     svg.append("g")
       .attr("fill", (d, i) => i > 0 && data[i].close < data[i - 1].close ? "#ef4444" : "#22c55e")

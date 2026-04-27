@@ -257,11 +257,11 @@ export default function CandlestickChart({ ticker: initialTicker = "AAPL" }: Can
       .attr("fill", palette.text)
       .attr("font-size", "10px");
 
-    // Legend
+    // Legend - use two rows to avoid overlap
     const legend = svg.append("g")
       .attr("transform", `translate(${margin.left + 10}, ${margin.top})`);
 
-    // Bullish legend
+    // Row 1: Bullish and Bearish
     const legendBullish = legend.append("g").attr("transform", "translate(0, 0)");
     legendBullish.append("rect")
       .attr("width", 12)
@@ -272,10 +272,9 @@ export default function CandlestickChart({ ticker: initialTicker = "AAPL" }: Can
       .attr("y", 10)
       .attr("fill", palette.text)
       .attr("font-size", "11px")
-      .text("Bullish (Close > Open)");
+      .text("Bullish");
 
-    // Bearish legend
-    const legendBearish = legend.append("g").attr("transform", "translate(150, 0)");
+    const legendBearish = legend.append("g").attr("transform", "translate(90, 0)");
     legendBearish.append("rect")
       .attr("width", 12)
       .attr("height", 12)
@@ -285,10 +284,10 @@ export default function CandlestickChart({ ticker: initialTicker = "AAPL" }: Can
       .attr("y", 10)
       .attr("fill", palette.text)
       .attr("font-size", "11px")
-      .text("Bearish (Close < Open)");
+      .text("Bearish");
 
-    // SMA legend
-    const legendSMA = legend.append("g").attr("transform", "translate(300, 0)");
+    // Row 2: SMA
+    const legendSMA = legend.append("g").attr("transform", "translate(0, 20)");
     legendSMA.append("line")
       .attr("x1", 0)
       .attr("x2", 12)

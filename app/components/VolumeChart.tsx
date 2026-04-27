@@ -40,7 +40,7 @@ export default function VolumeChart({ ticker = "AAPL" }: VolumeChartProps) {
     const container = containerRef.current;
     const width = container.clientWidth;
     const height = 300;
-    const margin = { top: 20, right: 30, bottom: 40, left: 60 };
+    const margin = { top: 20, right: 30, bottom: 40, left: 50 };
 
     const svg = d3.select(svgRef.current);
     svg.selectAll("*").remove();

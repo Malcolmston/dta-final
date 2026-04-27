@@ -443,7 +443,7 @@ export default function LagCorrelationPlot() {
             maxPills={1}
           />
         </div>
-        <div className="flex-1 min-w-[200px]">
+        <div className="flex-1 min-w-50">
           <label className="block text-sm font-medium mb-2" style={{ color: palette.text }}>
             Lag Range (days)
           </label>

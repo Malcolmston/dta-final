@@ -1,5 +1,8 @@
 # Dashboard Plots Documentation
 
+<!-- Initialize mermaid with white background -->
+%%{init: {'theme': 'base', 'themeVariables': {'background': '#ffffff', 'darkMode': false}}}%%
+
 ---
 
 # Project Report: Stock Market Dashboard

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import SwaggerUI from 'swagger-ui-react';
@@ -8,13 +8,34 @@ import 'swagger-ui-react/swagger-ui.css';
 import '@asyncapi/react-component/styles/default.min.css';
 import PlotsTab from '../components/tabs/PlotsTab';
 import LayoutTab from '../components/tabs/LayoutTab';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 const AsyncApiComponent = dynamic(
   () => import('@asyncapi/react-component').then((m) => m.default),
   { ssr: false, loading: () => <p className="p-6 text-sm" style={{ color: '#1f2937', opacity: 0.5 }}>Loading AsyncAPI docs…</p> },
 );
 
-type Tab = 'rest' | 'async' | 'cron' | 'webhook' | 'plots' | 'layout';
+type Tab = 'rest' | 'async' | 'cron' | 'webhook' | 'plots' | 'layout' | 'datacache' | 'cachecontrol';
+
+function CachingDoc({ doc }: { doc: 'datacache' | 'cachecontrol' }) {
+  const [content, setContent] = useState<string>('');
+
+  useEffect(() => {
+    fetch(`/docs/${doc}.md`)
+      .then(res => res.text())
+      .then(text => setContent(text))
+      .catch(() => setContent('Failed to load documentation'));
+  }, [doc]);
+
+  if (!content) return <div className="p-6 text-sm" style={{ color: '#1f2937', opacity: 0.5 }}>Loading documentation...</div>;
+
+  return (
+    <div className="p-6 prose max-w-none" style={{ color: '#1f2937' }}>
+      <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
+    </div>
+  );
+}
 
 export default function DocsPage() {
   const [tab, setTab] = useState<Tab>('rest');
@@ -33,7 +54,7 @@ export default function DocsPage() {
                 API Documentation
               </h1>
               <p className="text-sm mt-0.5" style={{ color: '#1f2937', opacity: 0.6 }}>
-                REST, Async API, Cron Jobs &amp; Webhooks reference
+                REST, Async API, Cron Jobs, Webhooks &amp; Caching reference
               </p>
             </div>
             <Link
@@ -50,7 +71,7 @@ export default function DocsPage() {
 
           {/* Tabs */}
           <nav className="flex gap-1 -mb-px" role="tablist" aria-label="Documentation sections">
-            {(['rest', 'async', 'cron', 'webhook', 'plots', 'layout'] as Tab[]).map((t) => (
+            {(['rest', 'async', 'cron', 'webhook', 'plots', 'layout', 'datacache', 'cachecontrol'] as Tab[]).map((t) => (
               <button
                 key={t}
                 onClick={() => setTab(t)}
@@ -64,7 +85,7 @@ export default function DocsPage() {
                   opacity: tab === t ? 1 : 0.6,
                 } as React.CSSProperties}
               >
-                {t === 'rest' ? 'REST API' : t === 'async' ? 'Async API' : t === 'cron' ? 'Cron Jobs' : t === 'webhook' ? 'Webhooks' : t === 'plots' ? 'Plots' : 'Layout'}
+                {t === 'rest' ? 'REST API' : t === 'async' ? 'Async API' : t === 'cron' ? 'Cron Jobs' : t === 'webhook' ? 'Webhooks' : t === 'plots' ? 'Plots' : t === 'layout' ? 'Layout' : t === 'datacache' ? 'Data Cache' : 'Cache-Control'}
               </button>
             ))}
           </nav>
@@ -124,6 +145,12 @@ export default function DocsPage() {
         {tab === 'plots' && <PlotsTab />}
 
         {tab === 'layout' && <LayoutTab />}
+
+        {(tab === 'datacache' || tab === 'cachecontrol') && (
+          <div className="p-6">
+            <CachingDoc doc={tab === 'datacache' ? 'datacache' : 'cachecontrol'} />
+          </div>
+        )}
       </main>
     </div>
   );

@@ -51,24 +51,24 @@ The project began with a challenge: create a stock market analysis dashboard tha
 
 Through AI brainstorming, 16 distinct chart types were identified for the dashboard:
 
-| # | Chart Type | Purpose |
-|---|------------|---------|
-| 1 | MarketPredictor | Real-time market sentiment analysis |
-| 2 | PortfolioPieChart | Portfolio allocation visualization |
-| 3 | Candlestick3DChart | 3D OHLCV price visualization |
-| 4 | PriceRibbon3D | Moving average ribbon |
-| 5 | Volume3DBars | Volume profile analysis |
-| 6 | CandlestickChart | Traditional 2D candlestick |
-| 7 | MarketFactors | Factor analysis |
-| 8 | Heatmap | Sector performance |
-| 9 | Treemap | Market capitalization |
-| 10 | Treemap3DBoxes | 3D treemap |
-| 11 | Streamgraph | Sector performance over time |
-| 12 | AnalysisTabs | Technical indicator panels |
-| 13 | TechnicalAnalysis | Comprehensive indicators |
-| 14 | NetworkGraph | Stock correlation network |
-| 15 | ConfusionMatrixPlot | ML model performance |
-| 16 | DualAxisPlot | Multi-variable comparison |
+| #  | Chart Type          | Purpose                             |
+|----|---------------------|-------------------------------------|
+| 1  | MarketPredictor     | Real-time market sentiment analysis |
+| 2  | PortfolioPieChart   | Portfolio allocation visualization  |
+| 3  | Candlestick3DChart  | 3D OHLCV price visualization        |
+| 4  | PriceRibbon3D       | Moving average ribbon               |
+| 5  | Volume3DBars        | Volume profile analysis             |
+| 6  | CandlestickChart    | Traditional 2D candlestick          |
+| 7  | MarketFactors       | Factor analysis                     |
+| 8  | Heatmap             | Sector performance                  |
+| 9  | Treemap             | Market capitalization               |
+| 10 | Treemap3DBoxes      | 3D treemap                          |
+| 11 | Streamgraph         | Sector performance over time        |
+| 12 | AnalysisTabs        | Technical indicator panels          |
+| 13 | TechnicalAnalysis   | Comprehensive indicators            |
+| 14 | NetworkGraph        | Stock correlation network           |
+| 15 | ConfusionMatrixPlot | ML model performance                |
+| 16 | DualAxisPlot        | Multi-variable comparison           |
 
 ### Key Features Planned
 
@@ -194,25 +194,25 @@ Through AI brainstorming, 16 distinct chart types were identified for the dashbo
 
 ### Before: Initial Dashboard
 
-| Aspect | Before State |
-|--------|-------------|
-| **Mode** | Single mode - all users saw same content |
-| **Chart Context** | No explanations - charts showed data without context |
-| **Beginner Experience** | Intimidated by 3D visualizations and jargon |
-| **Advanced Experience** | Frustrated by oversimplified interface |
-| **Simple Mode** | Only 1-2 charts per tab - felt incomplete |
-| **Accessibility** | Limited - no dark mode, fixed colors |
+| Aspect                  | Before State                                         |
+|-------------------------|------------------------------------------------------|
+| **Mode**                | Single mode - all users saw same content             |
+| **Chart Context**       | No explanations - charts showed data without context |
+| **Beginner Experience** | Intimidated by 3D visualizations and jargon          |
+| **Advanced Experience** | Frustrated by oversimplified interface               |
+| **Simple Mode**         | Only 1-2 charts per tab - felt incomplete            |
+| **Accessibility**       | Limited - no dark mode, fixed colors                 |
 
 ### After: Current Dashboard
 
-| Aspect | After State | Improvement |
-|--------|-------------|-------------|
-| **Mode** | Dual-mode (Simple/Detailed) | ✅ Serves all user levels |
-| **Chart Context** | ChartAnalysis component explains every chart | ✅ Contextual understanding |
-| **Beginner Experience** | Simple Mode with plain language | ✅ No intimidation |
-| **Advanced Experience** | Detailed Mode with all features | ✅ Full data access |
-| **Simple Mode** | 4 charts per tab - consistent with Detailed | ✅ Feels complete |
-| **Accessibility** | Dark mode, palette-based theming | ✅ Full accessibility |
+| Aspect                  | After State                                  | Improvement                |
+|-------------------------|----------------------------------------------|----------------------------|
+| **Mode**                | Dual-mode (Simple/Detailed)                  | ✅ Serves all user levels   |
+| **Chart Context**       | ChartAnalysis component explains every chart | ✅ Contextual understanding |
+| **Beginner Experience** | Simple Mode with plain language              | ✅ No intimidation          |
+| **Advanced Experience** | Detailed Mode with all features              | ✅ Full data access         |
+| **Simple Mode**         | 4 charts per tab - consistent with Detailed  | ✅ Feels complete           |
+| **Accessibility**       | Dark mode, palette-based theming             | ✅ Full accessibility       |
 
 ### Key Transformations
 
@@ -310,42 +310,108 @@ const { palette } = useColorPalette();
 
 ## Dashboard Infographic
 
+### Dashboard Structure
+
+```mermaid
+flowchart TB
+    subgraph Header
+        Ticker["Ticker Input"]
+        Period["Period Selector"]
+        ModeToggle["Simple/Detailed Toggle"]
+        DarkMode["Dark Mode Toggle"]
+    end
+
+    subgraph Analytics
+        SP500["S&P 500"]
+        NASDAQ["NASDAQ"]
+        DOW["DOW"]
+        VIX["VIX"]
+    end
+
+    subgraph Tabs
+        Overview["Overview"]
+        Trends["Trends"]
+        Momentum["Momentum"]
+        Signals["Signals"]
+        Strategy["Strategy"]
+        Wealth["Wealth"]
+    end
+
+    subgraph Charts
+        C1["Chart 1"]
+        C2["Chart 2"]
+        C3["Chart 3"]
+        C4["Chart 4"]
+    end
+
+    Header --> Analytics
+    Analytics --> Tabs
+    Tabs --> Charts
 ```
-┌─────────────────────────────────────────────────────────────────────┐
-│                    STOCK MARKET ANALYSIS DASHBOARD                  │
-├─────────────────────────────────────────────────────────────────────┤
-│  ┌─────────────────────────────────────────────────────────────┐   │
-│  │  [Ticker Input]  [Period Selector]  [Simple/Detailed] 🌙  │   │
-│  └─────────────────────────────────────────────────────────────┘   │
-├─────────────────────────────────────────────────────────────────────┤
-│  ┌─────────────────────────────────────────────────────────────┐   │
-│  │                    SECTION ANALYTICS                         │   │
-│  │  S&P 500: ▲2.3%  NASDAQ: ▲1.8%  DOW: ▲1.2%  VIX: ▼5.4%   │   │
-│  └─────────────────────────────────────────────────────────────┘   │
-├─────────────────────────────────────────────────────────────────────┤
-│  [Overview] [Trends] [Momentum] [Signals] [Strategy] [Wealth]      │
-├─────────────────────────────────────────────────────────────────────┤
-│                                                                     │
-│  ┌──────────────────────┐  ┌──────────────────────┐              │
-│  │    CHART 1          │  │    CHART 2           │              │
-│  │   (Main visualization)│ │   (Secondary chart)  │              │
-│  │                      │  │                      │              │
-│  └──────────────────────┘  └──────────────────────┘              │
-│                                                                     │
-│  ┌──────────────────────┐  ┌──────────────────────┐              │
-│  │    CHART 3          │  │    CHART 4           │              │
-│  │   (Supporting)      │  │   (Additional)       │              │
-│  │                      │  │                      │              │
-│  └──────────────────────┘  └──────────────────────┘              │
-│                                                                     │
-├─────────────────────────────────────────────────────────────────────┤
-│  ┌─────────────────────────────────────────────────────────────┐   │
-│  │                  CHART ANALYSIS                             │   │
-│  │  Simple: This shows which stocks are popular...             │   │
-│  │  Detailed: Real-time market sentiment based on RSI,        │   │
-│  │            MACD, and moving average crossovers...           │   │
-│  └─────────────────────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────────────────────┘
+
+### Dual-Mode Toggle System
+
+```mermaid
+stateDiagram-v2
+    [*] --> SimpleMode
+    SimpleMode --> DetailedMode: Toggle Click
+    DetailedMode --> SimpleMode: Toggle Click
+    
+    state SimpleMode {
+        [*] --> SimpleCharts
+    }
+    
+    state DetailedMode {
+        [*] --> DetailedCharts
+    }
+```
+
+### Component Architecture
+
+```mermaid
+graph TD
+    App["App Root"] --> Dashboard
+    
+    subgraph UI
+        Header
+        Tabs
+        ChartsGrid
+    end
+    
+    subgraph Charts
+        MarketPred
+        Portfolio
+        Candle3D
+        PriceRibbon
+        Volume3D
+        Candle2D
+        Factors
+        Heatmap
+        Treemap
+        Treemap3D
+        Stream
+        Analysis
+        Tech
+        Network
+        Confusion
+        Lag
+        Dual
+    end
+    
+    subgraph Contexts
+        ColorPalette
+        Mode
+    end
+    
+    subgraph Data
+        API
+        Providers
+    end
+    
+    Dashboard --> UI
+    Dashboard --> Charts
+    Dashboard --> Contexts
+    Charts --> Data
 ```
 
 ### Color Legend

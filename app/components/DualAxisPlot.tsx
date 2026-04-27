@@ -200,7 +200,7 @@ export default function DualAxisPlot({ ticker: initialTicker = "AAPL" }: DualAxi
     const container = containerRef.current;
     const width = container.clientWidth;
     const height = 450;
-    const margin = { top: 40, right: 70, bottom: 50, left: 70 };
+    const margin = { top: 70, right: 70, bottom: 70, left: 70 };
 
     // Clear previous chart
     const svg = d3.select(svgRef.current);
@@ -338,15 +338,20 @@ export default function DualAxisPlot({ ticker: initialTicker = "AAPL" }: DualAxi
     const xTicks = period === "1mo" ? 4 : 6;
 
     svg.append("g")
+      .attr("class", "x-axis")
       .attr("transform", `translate(0,${height - margin.bottom})`)
       .call(d3.axisBottom(xScale).ticks(xTicks))
       .selectAll("text")
-      .attr("fill", "palette.text");
+      .attr("fill", "palette.text")
+      .attr("transform", "rotate(-45)")
+      .attr("text-anchor", "end")
+      .attr("dx", "-0.5em")
+      .attr("dy", "0.5em");
 
     // Y Axis (actual price - left)
     svg.append("g")
       .attr("transform", `translate(${margin.left},0)`)
-      .call(d3.axisLeft(yScaleActual).ticks(8).tickFormat((d) => `$${d}`))
+      .call(d3.axisLeft(yScaleActual).ticks(6).tickFormat((d) => `$${d}`))
       .selectAll("text")
       .attr("fill", "palette.text");
 
@@ -364,7 +369,7 @@ export default function DualAxisPlot({ ticker: initialTicker = "AAPL" }: DualAxi
     // Y Axis (predicted price - right)
     svg.append("g")
       .attr("transform", `translate(${width - margin.right},0)`)
-      .call(d3.axisRight(yScalePredicted).ticks(8).tickFormat((d) => `$${d}`))
+      .call(d3.axisRight(yScalePredicted).ticks(6).tickFormat((d) => `$${d}`))
       .selectAll("text")
       .attr("fill", "palette.text");
 
@@ -379,10 +384,11 @@ export default function DualAxisPlot({ ticker: initialTicker = "AAPL" }: DualAxi
       .attr("font-weight", "600")
       .text("Predicted Price ($)");
 
-    // Legend
+    // Legend - use two rows to avoid overlap
     const legend = svg.append("g")
       .attr("transform", `translate(${margin.left + 10}, ${margin.top})`);
 
+    // Row 1: Actual and Predicted
     // Actual line legend
     const legendActual = legend.append("g").attr("transform", "translate(0, 0)");
     legendActual.append("line")
@@ -400,7 +406,7 @@ export default function DualAxisPlot({ ticker: initialTicker = "AAPL" }: DualAxi
       .text("Actual Price");
 
     // Predicted line legend
-    const legendPredicted = legend.append("g").attr("transform", "translate(110, 0)");
+    const legendPredicted = legend.append("g").attr("transform", "translate(130, 0)");
     legendPredicted.append("line")
       .attr("x1", 0)
       .attr("x2", 20)
@@ -416,8 +422,8 @@ export default function DualAxisPlot({ ticker: initialTicker = "AAPL" }: DualAxi
       .attr("font-size", "11px")
       .text("Predicted");
 
-    // Peak/Trough legend
-    const legendPoints = legend.append("g").attr("transform", "translate(220, 0)");
+    // Row 2: Peaks and Troughs
+    const legendPoints = legend.append("g").attr("transform", "translate(0, 20)");
     legendPoints.append("circle")
       .attr("cx", 6)
       .attr("cy", 6)
@@ -431,19 +437,19 @@ export default function DualAxisPlot({ ticker: initialTicker = "AAPL" }: DualAxi
       .text("Peak");
 
     legendPoints.append("circle")
-      .attr("cx", 50)
+      .attr("cx", 55)
       .attr("cy", 6)
       .attr("r", 4)
       .attr("fill", TROUGH_COLOR);
     legendPoints.append("text")
-      .attr("x", 58)
+      .attr("x", 63)
       .attr("y", 10)
       .attr("fill", "palette.text")
       .attr("font-size", "11px")
       .text("Trough");
 
-    // Buy/Sell legend
-    const legendSignals = legend.append("g").attr("transform", "translate(300, 0)");
+    // Buy/Sell legend (on second row)
+    const legendSignals = legend.append("g").attr("transform", "translate(130, 20)");
     legendSignals.append("path")
       .attr("d", d3.symbol().type(d3.symbolTriangle).size(60))
       .attr("transform", "translate(6, 6)")
@@ -457,10 +463,10 @@ export default function DualAxisPlot({ ticker: initialTicker = "AAPL" }: DualAxi
 
     legendSignals.append("path")
       .attr("d", d3.symbol().type(d3.symbolTriangle).size(60))
-      .attr("transform", "translate(40, 6) rotate(180)")
+      .attr("transform", "translate(45, 6) rotate(180)")
       .attr("fill", SELL_COLOR);
     legendSignals.append("text")
-      .attr("x", 48)
+      .attr("x", 53)
       .attr("y", 10)
       .attr("fill", "palette.text")
       .attr("font-size", "11px")

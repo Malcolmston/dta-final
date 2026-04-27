@@ -73,6 +73,22 @@ function parseDrawioToSvg(inputPath, outputPath) {
   svg += `  <rect x="0" y="0" width="${pageWidth}" height="${pageHeight}" fill="#ffffff" />
 `;
 
+  // Draw backgrounds first (header, sidebar, main, footer)
+  const bgCells = cells.filter(c =>
+    c.id === 'header-bg' ||
+    c.id === 'sidebar-bg' ||
+    c.id === 'main-bg' ||
+    c.id === 'footer-bg'
+  );
+
+  for (const bg of bgCells) {
+    const { geometry, style } = bg;
+    const fillColor = extractStyle(style, 'fillColor', '#ffffff');
+    const strokeColor = extractStyle(style, 'strokeColor', 'none');
+    svg += `  <rect x="${geometry.x}" y="${geometry.y}" width="${geometry.width}" height="${geometry.height}" fill="${fillColor}" stroke="${strokeColor}" />
+`;
+  }
+
   // Sort cells by their draw order (y position first, then x)
   const sortedCells = cells
     .filter(c => c.vertex && c.geometry.width > 0)
@@ -135,39 +151,55 @@ function parseDrawioToSvg(inputPath, outputPath) {
 `;
       }
     } else if (value && cell.id?.includes('card-')) {
-      // Cards
+      // Cards - handle multiline content properly
+      const lines = value.split('\n').filter(l => l.trim());
       svg += `  <rect x="${x}" y="${y}" width="${width}" height="${height}" fill="${fillColor}" stroke="${strokeColor}" rx="4" />
-  <text x="${x + width/2}" y="${y + 30}" font-size="14" font-weight="bold" fill="${fontColor}" text-anchor="middle" class="text">${escapeXml(value.split('\n')[0])}</text>
-  <text x="${x + width/2}" y="${y + 60}" font-size="12" fill="${fontColor}" text-anchor="middle" class="text">${escapeXml(value.split('\n').slice(2).join('\n'))}</text>
 `;
+      lines.forEach((line, i) => {
+        svg += `  <text x="${x + width/2}" y="${y + 30 + i * 25}" font-size="${i === 0 ? '14' : '12'}" font-weight="${i === 0 ? 'bold' : 'normal'}" fill="${fontColor}" text-anchor="middle" class="text">${escapeXml(line)}</text>
+`;
+      });
+      continue;
     } else if (value && cell.id?.includes('chart-')) {
       // Chart placeholder
       svg += `  <rect x="${x}" y="${y}" width="${width}" height="${height}" fill="${fillColor}" stroke="${strokeColor}" rx="4" />
   <text x="${x + width/2}" y="${y + height/2}" font-size="14" fill="#6b7280" text-anchor="middle" class="text">${escapeXml(value.replace(/\n/g, '\n  '))}</text>
 `;
     } else if (value && cell.id?.includes('benefit-')) {
-      // Benefit cards
+      // Benefit cards - handle multiline content
+      const lines = value.split('\n').filter(l => l.trim());
       svg += `  <rect x="${x}" y="${y}" width="${width}" height="${height}" fill="${fillColor}" stroke="${strokeColor}" rx="4" />
-  <text x="${x + width/2}" y="${y + 40}" font-size="12" font-weight="bold" fill="${fontColor}" text-anchor="middle" class="text">${escapeXml(value.split('\n')[0])}</text>
-  <text x="${x + width/2}" y="${y + 65}" font-size="11" fill="${fontColor}" text-anchor="middle" class="text">${escapeXml(value.split('\n').slice(2).join('\n'))}</text>
 `;
+      lines.forEach((line, i) => {
+        svg += `  <text x="${x + width/2}" y="${y + 35 + i * 25}" font-size="${i === 0 ? '12' : '11'}" font-weight="${i === 0 ? 'bold' : 'normal'}" fill="${fontColor}" text-anchor="middle" class="text">${escapeXml(line)}</text>
+`;
+      });
+      continue;
     } else if (value && cell.id?.includes('color-') && !cell.id.includes('legend')) {
       // Color legend boxes
       svg += `  <rect x="${x}" y="${y}" width="${width}" height="${height}" fill="${fillColor}" stroke="${strokeColor}" rx="4" />
   <text x="${x + width/2}" y="${y + height/2 + 4}" font-size="${fontSize}" fill="${fontColor}" text-anchor="middle" class="text">${escapeXml(value)}</text>
 `;
     } else if (value && (cell.id?.includes('mode-') || cell.id?.includes('view-'))) {
-      // View mode boxes
+      // View mode boxes - handle multiline content
+      const lines = value.split('\n').filter(l => l.trim());
       svg += `  <rect x="${x}" y="${y}" width="${width}" height="${height}" fill="${fillColor}" stroke="${strokeColor}" rx="4" />
-  <text x="${x + width/2}" y="${y + 25}" font-size="${fontSize}" font-weight="bold" fill="${fontColor}" text-anchor="middle" class="text">${escapeXml(value.split('\n')[0])}</text>
-  <text x="${x + width/2}" y="${y + 50}" font-size="${parseInt(fontSize) - 1}" fill="${fontColor}" text-anchor="middle" class="text">${escapeXml(value.split('\n').slice(1).join('\n'))}</text>
 `;
-    } else if (value && cell.id?.includes('theme-')) {
-      // Theme boxes
+      lines.forEach((line, i) => {
+        svg += `  <text x="${x + width/2}" y="${y + 25 + i * 20}" font-size="${fontSize}" font-weight="${i === 0 ? 'bold' : 'normal'}" fill="${fontColor}" text-anchor="middle" class="text">${escapeXml(line)}</text>
+`;
+      });
+      continue;
+    } else if (value && cell.id?.includes('theme-') && !cell.id.includes('title')) {
+      // Theme boxes - handle multiline content
+      const lines = value.split('\n').filter(l => l.trim());
       svg += `  <rect x="${x}" y="${y}" width="${width}" height="${height}" fill="${fillColor}" stroke="${strokeColor}" rx="4" />
-  <text x="${x + width/2}" y="${y + 25}" font-size="${fontSize}" font-weight="bold" fill="${fontColor}" text-anchor="middle" class="text">${escapeXml(value.split('\n')[0])}</text>
-  <text x="${x + width/2}" y="${y + 50}" font-size="${parseInt(fontSize) - 1}" fill="${fontColor}" text-anchor="middle" class="text">${escapeXml(value.split('\n').slice(1).join('\n'))}</text>
 `;
+      lines.forEach((line, i) => {
+        svg += `  <text x="${x + width/2}" y="${y + 25 + i * 20}" font-size="${fontSize}" font-weight="${i === 0 ? 'bold' : 'normal'}" fill="${fontColor}" text-anchor="middle" class="text">${escapeXml(line)}</text>
+`;
+      });
+      continue;
     } else if (value && cell.id?.startsWith('tab-')) {
       // Tab descriptions
       svg += `  <rect x="${x}" y="${y}" width="${width}" height="${height}" fill="${fillColor}" stroke="${strokeColor}" rx="4" />
@@ -179,10 +211,11 @@ function parseDrawioToSvg(inputPath, outputPath) {
   <text x="${x + 10}" y="${y + 16}" font-size="${fontSize}" fill="${fontColor}" class="text">${escapeXml(value)}</text>
 `;
     } else if (value && (cell.id === 'mode-toggle' || cell.id === 'theme-btn')) {
-      // Buttons
+      // Buttons - handle single line text
       svg += `  <rect x="${x}" y="${y}" width="${width}" height="${height}" fill="${fillColor}" stroke="${strokeColor}" rx="4" />
   <text x="${x + width/2}" y="${y + 16}" font-size="${fontSize}" fill="${fontColor}" text-anchor="middle" class="text">${escapeXml(value)}</text>
 `;
+      continue;
     } else if (value && (cell.id === 'nav-header')) {
       // Navigation header
       svg += `  <text x="${x + 20}" y="${y + 14}" font-size="11" font-weight="bold" fill="${fontColor}" class="text">${escapeXml(value)}</text>

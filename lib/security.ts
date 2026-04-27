@@ -54,13 +54,20 @@ const BLOCKED_IP_PATTERNS = [
   /^0\./,            // Invalid
 ];
 
+// Trusted user agents (allowed without blocking)
+const TRUSTED_USER_AGENTS = [
+  /vercel-cron/i,
+  /vercel-edge/i,
+  /vercel-storage/i,
+];
+
 // Suspicious user agents
 const BLOCKED_USER_AGENTS = [
   /python-requests/i,
   /scrapy/i,
-  /curl/i,
+  /^curl$/i,
   /wget/i,
-  /bot/i,
+  /bot$/i,
   /spider/i,
   /crawler/i,
 ];
@@ -148,8 +155,12 @@ export function isIpBlocked(ip: string): boolean {
   return false;
 }
 
-// Check user agent
+// Check user agent - returns true if blocked, false if allowed
 export function isUserAgentBlocked(userAgent: string): boolean {
+  // Check if it's a trusted agent first
+  if (TRUSTED_USER_AGENTS.some(pattern => pattern.test(userAgent))) {
+    return false;
+  }
   return BLOCKED_USER_AGENTS.some(pattern => pattern.test(userAgent));
 }
 

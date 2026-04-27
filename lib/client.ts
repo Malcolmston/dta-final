@@ -252,7 +252,19 @@ export async function fetchHistory(
   interval: string = "1d",
   limit?: number
 ): Promise<StockHistory[]> {
-  const url = `/api/stocks/history?symbol=${encodeURIComponent(symbol)}&period=${period}&interval=${interval}`;
+  // Use absolute URL for server-side calls to avoid self-referential fetch issues
+  // Try multiple env vars for compatibility
+  const vercelUrl = process.env.VERCEL_URL || process.env.NEXT_PUBLIC_VERCEL_URL;
+  const baseUrl = vercelUrl
+    ? `https://${vercelUrl}`
+    : process.env.NEXT_PUBLIC_BASE_URL || '';
+
+  let url = `/api/stocks/history?symbol=${encodeURIComponent(symbol)}&period=${period}&interval=${interval}`;
+  if (baseUrl) {
+    url = `${baseUrl}${url}`;
+  }
+
+  console.log(`[fetchHistory] Fetching: ${url}`);
 
   const response = await fetch(url);
 

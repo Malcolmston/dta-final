@@ -10,10 +10,15 @@ interface PerformanceData {
 }
 
 function calculatePerformance(stockData: StockHistory[]): number {
-  if (!stockData || stockData.length < 2) return 0;
+  if (!stockData || stockData.length < 2) {
+    console.log(`[Heatmap] Not enough data: ${stockData?.length || 0} points`);
+    return 0;
+  }
 
   const startPrice = stockData[0].close;
   const endPrice = stockData[stockData.length - 1].close;
+
+  console.log(`[Heatmap] Performance calc: start=${startPrice}, end=${endPrice}, count=${stockData.length}`);
 
   if (startPrice === 0) return 0;
 
@@ -26,7 +31,14 @@ async function fetchHeatmapData(symbols: string[]): Promise<PerformanceData[]> {
   for (const symbol of symbols) {
     for (const period of TIME_RANGES_EXTENDED) {
       try {
+        console.log(`[Heatmap] Fetching ${symbol} for ${period.label} (${period.value})`);
         const history = await fetchHistory(symbol, period.value, "1d");
+        console.log(`[Heatmap] Got ${history.length} points for ${symbol} ${period.label}`);
+
+        if (history.length > 0) {
+          console.log(`[Heatmap] First: ${JSON.stringify(history[0])}, Last: ${JSON.stringify(history[history.length - 1])}`);
+        }
+
         const performance = calculatePerformance(history);
 
         results.push({
@@ -35,7 +47,7 @@ async function fetchHeatmapData(symbols: string[]): Promise<PerformanceData[]> {
           performance,
         });
       } catch (err) {
-        console.error(`Failed to fetch ${symbol} for ${period.label}:`, err);
+        console.error(`[Heatmap] Failed to fetch ${symbol} for ${period.label}:`, err);
         results.push({
           ticker: symbol,
           period: period.label,

@@ -86,7 +86,7 @@ export default function CandlestickChart({ ticker: initialTicker = "AAPL" }: Can
     const container = containerRef.current;
     const width = container.clientWidth;
     const height = 500;
-    const margin = { top: 20, right: 60, bottom: 50, left: 60 };
+    const margin = { top: 20, right: 60, bottom: 70, left: 60 };
 
     // Clear previous chart
     const svg = d3.select(svgRef.current);
@@ -224,7 +224,12 @@ export default function CandlestickChart({ ticker: initialTicker = "AAPL" }: Can
       .attr("transform", `translate(0,${priceHeight - margin.bottom})`);
 
     xAxisGroup.call(d3.axisBottom(xScale).ticks(xTicks));
-    xAxisGroup.selectAll("text").attr("fill", palette.text);
+    xAxisGroup.selectAll("text")
+      .attr("fill", palette.text)
+      .attr("transform", "rotate(-45)")
+      .attr("text-anchor", "end")
+      .attr("dx", "-0.5em")
+      .attr("dy", "0.5em");
     xAxisGroup.select(".domain").attr("stroke", palette.gridLines);
 
     // Y Axis (price)
@@ -437,7 +442,12 @@ export default function CandlestickChart({ ticker: initialTicker = "AAPL" }: Can
         // Redraw X axis using class selector
         const xAxisGroup = svg.select<SVGGElement>(".x-axis");
         xAxisGroup.call(d3.axisBottom(newXScale).ticks(xTicks) as any);
-        xAxisGroup.selectAll("text").attr("fill", palette.text);
+        xAxisGroup.selectAll("text")
+          .attr("fill", palette.text)
+          .attr("transform", "rotate(-45)")
+          .attr("text-anchor", "end")
+          .attr("dx", "-0.5em")
+          .attr("dy", "0.5em");
         xAxisGroup.select(".domain").attr("stroke", palette.gridLines);
       });
 

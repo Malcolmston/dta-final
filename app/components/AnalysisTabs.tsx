@@ -7,6 +7,7 @@ import PriceTrendsTab from "./tabs/PriceTrendsTab";
 import MarketFactorsTab from "./tabs/MarketFactorsTab";
 import SignalsTab from "./tabs/SignalsTab";
 import StrategyTab from "./tabs/StrategyTab";
+import TickerInput from "./TickerInput";
 
 type TabId = "overview" | "trends" | "factors" | "signals" | "strategy";
 
@@ -263,27 +264,14 @@ export default function AnalysisTabs({ showSettings = false }: AnalysisTabsProps
       </div>
 
       {/* Ticker Search - Under Tabs */}
-      <div className="flex gap-3 mb-6">
-        <input
-          type="text"
+      <div className="mb-6">
+        <TickerInput
           value={ticker}
-          onChange={(e) => setTicker(e.target.value.toUpperCase())}
-          onKeyDown={(e) => e.key === "Enter" && handleRefresh()}
-          className="flex-1 px-4 py-2 rounded-lg outline-none transition"
-          style={{
-            border: `1px solid ${palette.gridLines}`,
-            color: palette.text,
-            backgroundColor: palette.background,
-          }}
+          onChange={setTicker}
+          onSubmit={handleRefresh}
           placeholder="SPY, AAPL, MSFT, GOOGL, etc."
+          maxPills={1}
         />
-        <button
-          onClick={handleRefresh}
-          className="px-5 py-2 rounded-lg transition"
-          style={{ backgroundColor: palette.primary, color: "#ffffff" }}
-        >
-          Update
-        </button>
       </div>
 
       {/* Tab Content */}

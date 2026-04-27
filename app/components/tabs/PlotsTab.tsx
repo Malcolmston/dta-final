@@ -64,7 +64,6 @@ function MermaidDiagram({ code }: MermaidDiagramProps) {
 
 export default function PlotsTab() {
   const [initialized, setInitialized] = useState(false);
-  const [origin, setOrigin] = useState<string>('');
 
   useEffect(() => {
     mermaid.initialize({
@@ -83,9 +82,6 @@ export default function PlotsTab() {
       securityLevel: 'loose',
     });
     setInitialized(true);
-    if (typeof window !== 'undefined') {
-      setOrigin(window.location.origin);
-    }
   }, []);
 
   if (!initialized) {
@@ -230,18 +226,6 @@ export default function PlotsTab() {
     style HEADER fill:#dbeafe,stroke:#3b82f6
     style SIDEBAR fill:#dcfce7,stroke:#22c55e
     style MAIN fill:#fef3c7,stroke:#f59e0b`} />
-
-      {/* Dashboard Layout Diagram */}
-      <h2 style={h2Style}>Dashboard Layout</h2>
-      <div style={{ height: '500px', border: '1px solid #e5e7eb', borderRadius: '0.5rem', overflow: 'hidden', marginBottom: '1.5rem' }}>
-        {drawioUrl && (
-          <iframe
-            src={drawioUrl}
-            style={{ width: '100%', height: '100%', border: 'none' }}
-            title="Dashboard Layout"
-          />
-        )}
-      </div>
 
       {/* Project Report */}
       <h2 style={h2Style}>Project Report</h2>

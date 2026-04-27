@@ -92,7 +92,10 @@
       "Bash(pnpm remove *)",
       "Bash(vercel inspect *)",
       "Bash(vercel botid *)",
-      "Bash(vercel --help)"
+      "Bash(vercel --help)",
+      "Bash(vercel *)",
+      "Bash(npm i *)",
+      "Bash(npx vercel@latest --yes)"
     ]
   }
 }

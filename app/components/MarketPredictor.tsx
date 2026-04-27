@@ -83,6 +83,8 @@ export default function MarketPredictor() {
     }
 
     try {
+      console.log(`[MarketPredictor] Fetching data for: ${symbols.join(", ")}`);
+
       const results = await Promise.all(
         symbols.map((symbol) =>
           fetchHistory(symbol, period, "1d").catch((err) => {
@@ -91,6 +93,8 @@ export default function MarketPredictor() {
           })
         )
       );
+
+      console.log(`[MarketPredictor] Results:`, results.map((r, i) => ({ symbol: symbols[i], length: r?.length || 0 })));
 
       const dataMap: StockDataMap = {};
       const growthMap: GrowthDataMap = {};
@@ -101,8 +105,10 @@ export default function MarketPredictor() {
       });
 
       const fetchedSymbols = Object.keys(dataMap);
+      console.log(`[MarketPredictor] Fetched symbols:`, fetchedSymbols);
+
       if (fetchedSymbols.length === 0) {
-        throw new Error("No data found for any of the specified tickers");
+        throw new Error(`No data found for tickers: ${symbols.join(", ")}. Please check if the ticker symbols are valid.`);
       }
 
       // Fetch growth estimates for prediction line

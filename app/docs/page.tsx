@@ -16,15 +16,6 @@ const AsyncApiComponent = dynamic(
 
 type Tab = 'rest' | 'async' | 'cron' | 'webhook' | 'plots' | 'layout';
 
-  if (!content) return <div className="p-6 text-sm" style={{ color: '#1f2937', opacity: 0.5 }}>Loading documentation...</div>;
-
-  return (
-    <div className="p-6 prose max-w-none" style={{ color: '#1f2937' }}>
-      <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
-    </div>
-  );
-}
-
 export default function DocsPage() {
   const [tab, setTab] = useState<Tab>('rest');
 

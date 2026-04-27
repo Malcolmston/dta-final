@@ -13,6 +13,32 @@
 
 ## Creation Phase (Brainstorming with AI)
 
+The journey of building this Stock Market Analysis Dashboard began with extensive research and exploration. To start this project, I looked at some publicly available examples of what I was attempting to build. I wanted to understand what made existing stock market dashboards successful and where they fell short in serving different types of users. This initial exploration helped me identify the core problem I wanted to solve: creating a dashboard that could serve both beginners who needed simple explanations and advanced traders who wanted comprehensive analytical tools.
+
+After establishing my project vision, I reviewed five different publicly available datasets and financial APIs. I used AI to rank them from 1 (good and easy to use) to 5 (bad and hard to use) based on their documentation quality, data reliability, ease of integration, and overall developer experience. This ranking process was crucial in helping me select the right tools for the project. I evaluated several options including Alpha Vantage, Finnhub, and various other stock data providers.
+
+I chose the Python Yahoo Finance API plugin at first due to its simplicity and wide availability of data. The library provided easy access to historical stock prices, company information, and market data without requiring complex authentication setups. This made it an ideal starting point for prototyping the dashboard's data layer.
+
+I wrote the initial Python driver for the API and used Claude Code to create a comprehensive plan of how to use the CLI to integrate what I had made into TypeScript. This involved translating the Python-based data fetching logic into a type-safe TypeScript implementation that could work seamlessly with the Next.js frontend. The planning phase was essential because it helped me anticipate potential issues and design a clean architecture.
+
+From there, I used the APIs documentation and created a markdown file with detailed prompts describing all the charts I hoped to add to the dashboard. I prompted the AI to build each visualization component systematically. This approach allowed me to create a diverse set of charts including candlestick charts, heatmaps, treemaps, network graphs, and more. Each chart was designed to serve a specific analytical purpose and provide unique insights into market data.
+
+This process required short structured prompts reducing Claude's context window and resulted in overall lower credit usage. By breaking down the development into smaller, manageable tasks, I could maintain focus and ensure each component received proper attention. The structured approach also made it easier to track progress and identify any issues early in development.
+
+For the refinement of each chart, I used the AI to create possible stakeholder users and explain what and why that user would not like what I had built. This stakeholder simulation was invaluable in identifying usability issues and ensuring the dashboard could serve different types of users effectively. I then used Codex to analyze the site's styling and generate a Google score for the site based on Claude's initial site assessment. With all this information, I then created an XML file with structured coding instructions for Claude's webdesign agent to restructure each chart. The XML file served as a detailed specification document that guided the implementation of each visualization component.
+
+Once this was done, I refactored a large portion of the code in order to make it structured more like a traditional dashboard. This involved organizing the components into logical groups, establishing consistent naming conventions, and implementing a proper state management system. The refactoring improved both the maintainability and performance of the application.
+
+Then, once I liked the look and feel of the project, I worked on the code infrastructure. The project was deployed on Vercel, and through a mix of GitHub's CI/CD and Claude's Vercel plugin, I debugged large parts of the code to fix any API and caching issues. Once all the 4xx errors were removed, I moved onto using the AI to analyze how my project performs compared to other publicly available tools. This comparative analysis helped identify areas where the dashboard excelled and where it could be improved further.
+
+I also had the AI create a comprehensive list of new issues and bugs that I had to fix. I then used this plan to fill in any code-based issues systematically. The AI-generated bug list proved to be remarkably thorough and helped me address problems I might have otherwise missed.
+
+Once the code was finished, I uploaded the project's rubric and had Claude create a README file with any information it could collect for this project. I was able to write most of the report, but I wrote the AI reflection section myself to provide an authentic account of my experience working with AI tools. I then used the AI to create a comprehensive set of documentation for the project, but mainly for me to use in later projects as a reference guide.
+
+The last phase of this project was for me to create a set of access locks for the project, reducing the chances of a DoS attack, cross-site scripting, and other common web vulnerabilities. For security scanning, I used Git Warden, which found issues in my code, the packages, and my deployments. I addressed each vulnerability systematically, implementing proper input validation, rate limiting, and security headers to protect the application.
+
+Altogether, I used AI as a comprehensive tool which designed and created comprehensive plans along with my intervention to create a comprehensive stock market analysis dashboard that serves both beginner and advanced users effectively. 
+
 ### Initial Concept
 
 The project began with a challenge: create a stock market analysis dashboard that serves both beginners and advanced traders. The initial brainstorming with AI identified the need for:

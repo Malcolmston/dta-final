@@ -95,7 +95,10 @@
       "Bash(vercel --help)",
       "Bash(vercel *)",
       "Bash(npm i *)",
-      "Bash(npx vercel@latest --yes)"
+      "Bash(npx vercel@latest --yes)",
+      "Bash(npx vercel@latest --prod --yes)",
+      "Bash(mermaid\" /Users/malcolmstone/Downloads/dta-final/public/PLOTS.md)",
+      "Bash(grep -n \"```mermaid\" /Users/malcolmstone/Downloads/dta-final/public/PLOTS.md)"
     ]
   }
 }

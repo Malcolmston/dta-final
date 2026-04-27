@@ -55,7 +55,7 @@ function MermaidDiagram({ code }: MermaidDiagramProps) {
   return (
     <div
       ref={ref}
-      className="my-6 p-4 rounded-lg overflow-x-auto"
+      className="my-4 p-4 rounded-lg overflow-x-auto"
       style={{ backgroundColor: '#ffffff', border: '1px solid #e5e7eb' }}
       dangerouslySetInnerHTML={{ __html: svg }}
     />
@@ -64,6 +64,7 @@ function MermaidDiagram({ code }: MermaidDiagramProps) {
 
 export default function PlotsTab() {
   const [initialized, setInitialized] = useState(false);
+  const [origin, setOrigin] = useState<string>('');
 
   useEffect(() => {
     mermaid.initialize({
@@ -82,6 +83,9 @@ export default function PlotsTab() {
       securityLevel: 'loose',
     });
     setInitialized(true);
+    if (typeof window !== 'undefined') {
+      setOrigin(window.location.origin);
+    }
   }, []);
 
   if (!initialized) {
@@ -129,7 +133,7 @@ export default function PlotsTab() {
   const tableStyle: React.CSSProperties = {
     width: '100%',
     borderCollapse: 'collapse',
-    marginBottom: '1.5rem',
+    marginBottom: '1rem',
   };
 
   const thStyle: React.CSSProperties = {
@@ -150,22 +154,210 @@ export default function PlotsTab() {
   const h1Style: React.CSSProperties = {
     fontSize: '1.5rem',
     fontWeight: 700,
-    marginBottom: '1.5rem',
+    marginBottom: '1rem',
+    marginTop: '1.5rem',
     color: '#1f2937',
   };
 
   const h2Style: React.CSSProperties = {
-    fontSize: '1.25rem',
+    fontSize: '1.125rem',
     fontWeight: 600,
-    marginTop: '2rem',
-    marginBottom: '1rem',
+    marginTop: '1.5rem',
+    marginBottom: '0.75rem',
     color: '#1f2937',
   };
 
+  const h3Style: React.CSSProperties = {
+    fontSize: '1rem',
+    fontWeight: 600,
+    marginTop: '1rem',
+    marginBottom: '0.5rem',
+    color: '#374151',
+  };
+
+  const pStyle: React.CSSProperties = {
+    color: '#1f2937',
+    lineHeight: 1.6,
+    marginBottom: '0.75rem',
+  };
+
+  const liStyle: React.CSSProperties = {
+    color: '#1f2937',
+    lineHeight: 1.8,
+    marginBottom: '0.25rem',
+  };
+
+  const strongStyle: React.CSSProperties = {
+    color: '#1f2937',
+    fontWeight: 600,
+  };
+
+  const drawioUrl = origin
+    ? `https://app.diagrams.net/?lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=dashboard-layout.drawio#U${origin}/dashboard-layout.drawio`
+    : '';
+
   return (
     <div style={{ padding: '1.5rem', maxWidth: '56rem', margin: '0 auto', color: '#1f2937' }}>
-      <h1 style={h1Style}>Dashboard Plots Documentation</h1>
+      <h1 style={{ ...h1Style, marginTop: 0 }}>Dashboard Plots Documentation</h1>
 
+      {/* Dashboard Layout Diagram */}
+      <h2 style={h2Style}>Dashboard Layout</h2>
+      <div style={{ height: '500px', border: '1px solid #e5e7eb', borderRadius: '0.5rem', overflow: 'hidden', marginBottom: '1.5rem' }}>
+        {drawioUrl && (
+          <iframe
+            src={drawioUrl}
+            style={{ width: '100%', height: '100%', border: 'none' }}
+            title="Dashboard Layout"
+          />
+        )}
+      </div>
+
+      {/* Project Report */}
+      <h2 style={h2Style}>Project Report</h2>
+      <h3 style={h3Style}>Bid Idea Worksheet</h3>
+      <table style={tableStyle}>
+        <thead>
+          <tr>
+            <th style={thStyle}>Question</th>
+            <th style={thStyle}>Response</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style={tdStyle}><strong style={strongStyle}>What problem does this dashboard solve?</strong></td>
+            <td style={tdStyle}>Individual investors and financial enthusiasts need a unified, beginner-friendly interface to analyze stock market data, track portfolios, and make informed investment decisions.</td>
+          </tr>
+          <tr>
+            <td style={tdStyle}><strong style={strongStyle}>Who is the target audience?</strong></td>
+            <td style={tdStyle}>Individual investors, financial advisors, students learning finance, and researchers needing visual stock analysis tools.</td>
+          </tr>
+          <tr>
+            <td style={tdStyle}><strong style={strongStyle}>What makes your approach unique?</strong></td>
+            <td style={tdStyle}>Combines multiple analysis modes (simplified/detailed), integrates portfolio tracking with market analysis, and provides both traditional charts alongside 3D visualizations.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      {/* Storyboard */}
+      <h2 style={h2Style}>Storyboard</h2>
+      <h3 style={h3Style}>Initial Brainstorming Sketches</h3>
+      <MermaidDiagram code={`graph TD
+    subgraph HEADER["HEADER"]
+        Logo["Logo"]
+        Ticker["Ticker Search"]
+        ModeToggle["Simple/Detailed Toggle"]
+        Theme["Theme Toggle"]
+    end
+    subgraph SIDEBAR["SIDEBAR"]
+        Overview["Overview"]
+        Trends["Trends"]
+        Factors["Factors"]
+        Sectors["Sectors"]
+        Analysis["Analysis"]
+        Portfolio["Portfolio"]
+        Wealth["Wealth"]
+    end
+    subgraph MAIN["MAIN CONTENT AREA"]
+        TabContent["Tab Content Charts, Tables, Tools"]
+    end
+    HEADER --- SIDEBAR --- MAIN
+    ModeToggle -->|"Switch"| TabContent
+    Theme -->|"Apply"| TabContent`} />
+
+      {/* Creation Phase */}
+      <h2 style={h2Style}>Creation Phase</h2>
+      <p style={pStyle}>The dashboard concept emerged from collaborative brainstorming with AI, focusing on democratizing stock market analysis for retail investors.</p>
+      <p style={pStyle}><strong style={strongStyle}>Key Decisions Made:</strong></p>
+      <ul style={{ marginLeft: '1.5rem', marginBottom: '1rem' }}>
+        <li style={liStyle}><strong style={strongStyle}>Dual-Mode Architecture</strong> - Create both "Simplified" and "Detailed" view modes</li>
+        <li style={liStyle}><strong style={strongStyle}>Seven-Section Structure</strong> - Overview, Trends, Factors, Sectors, Analysis, Portfolio, Wealth</li>
+        <li style={liStyle}><strong style={strongStyle}>Interactive Visualizations</strong> - D3.js for custom charts, Three.js for 3D</li>
+        <li style={liStyle}><strong style={strongStyle}>Persistent Settings</strong> - localStorage for user preferences</li>
+      </ul>
+
+      {/* Before/After Comparison */}
+      <h2 style={h2Style}>Before/After Comparison</h2>
+      <table style={tableStyle}>
+        <thead>
+          <tr>
+            <th style={thStyle}>Aspect</th>
+            <th style={thStyle}>Before</th>
+            <th style={thStyle}>After</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style={tdStyle}>User Modes</td><td style={tdStyle}>Single view</td><td style={tdStyle}>Dual Simple/Detailed</td></tr>
+          <tr><td style={tdStyle}>Chart Types</td><td style={tdStyle}>Basic line charts</td><td style={tdStyle}>Candlestick, heatmap, 3D</td></tr>
+          <tr><td style={tdStyle}>Portfolio</td><td style={tdStyle}>Not planned</td><td style={tdStyle}>Full manager with P&amp;L</td></tr>
+          <tr><td style={tdStyle}>Technical Indicators</td><td style={tdStyle}>Basic price only</td><td style={tdStyle}>RSI, MACD, Bollinger Bands</td></tr>
+          <tr><td style={tdStyle}>Theme</td><td style={tdStyle}>Light only</td><td style={tdStyle}>Light/Dark toggle</td></tr>
+          <tr><td style={tdStyle}>Navigation</td><td style={tdStyle}>Top tabs</td><td style={tdStyle}>Sidebar</td></tr>
+        </tbody>
+      </table>
+
+      {/* Dashboard Sections */}
+      <h2 style={h2Style}>Dashboard Sections</h2>
+
+      <h3 style={h3Style}>Overview Tab</h3>
+      <p style={pStyle}>Landing page introducing the tool and its benefits to new users.</p>
+      <ul style={{ marginLeft: '1.5rem', marginBottom: '1rem' }}>
+        <li style={liStyle}><strong style={strongStyle}>Market Predictor</strong> - Shows overall market sentiment</li>
+        <li style={liStyle}><strong style={strongStyle}>Portfolio Pie Chart</strong> - Displays investment distribution</li>
+        <li style={liStyle}><strong style={strongStyle}>Candlestick Chart</strong> - Simple price chart with period buttons</li>
+      </ul>
+
+      <h3 style={h3Style}>Trends Tab</h3>
+      <p style={pStyle}>Display historical price data and trading activity.</p>
+      <ul style={{ marginLeft: '1.5rem', marginBottom: '1rem' }}>
+        <li style={liStyle}><strong style={strongStyle}>CandlestickChart</strong> - OHLC data, multiple time periods</li>
+        <li style={liStyle}><strong style={strongStyle}>VolumeChart</strong> - Trading volume bars</li>
+        <li style={liStyle}><strong style={strongStyle}>Streamgraph</strong> - Relative performance of multiple tickers</li>
+        <li style={liStyle}><strong style={strongStyle}>PriceRibbon3D</strong> - 3D visualization of moving averages</li>
+      </ul>
+
+      <h3 style={h3Style}>Factors Tab</h3>
+      <p style={pStyle}>Analyze economic and market factors affecting stock performance.</p>
+      <ul style={{ marginLeft: '1.5rem', marginBottom: '1rem' }}>
+        <li style={liStyle}><strong style={strongStyle}>MarketFactors</strong> - Valuation, Momentum, Quality, Size</li>
+        <li style={liStyle}><strong style={strongStyle}>LagCorrelationPlot</strong> - Correlations over time</li>
+        <li style={liStyle}><strong style={strongStyle}>DualAxisPlot</strong> - Compare two related metrics</li>
+      </ul>
+
+      <h3 style={h3Style}>Sectors Tab</h3>
+      <p style={pStyle}>Visualize market performance across different sectors.</p>
+      <ul style={{ marginLeft: '1.5rem', marginBottom: '1rem' }}>
+        <li style={liStyle}><strong style={strongStyle}>Heatmap</strong> - Color-coded sector performance</li>
+        <li style={liStyle}><strong style={strongStyle}>Treemap</strong> - Hierarchical market structure</li>
+      </ul>
+
+      <h3 style={h3Style}>Analysis Tab</h3>
+      <p style={pStyle}>Deep technical analysis and stock relationship visualization.</p>
+      <ul style={{ marginLeft: '1.5rem', marginBottom: '1rem' }}>
+        <li style={liStyle}><strong style={strongStyle}>AnalysisTabs</strong> - Price, SMA, EMA, RSI, MACD, Bollinger Bands</li>
+        <li style={liStyle}><strong style={strongStyle}>NetworkGraph</strong> - Stock relationships visualization</li>
+        <li style={liStyle}><strong style={strongStyle}>ConfusionMatrixPlot</strong> - ML model performance</li>
+      </ul>
+
+      <h3 style={h3Style}>Portfolio Tab</h3>
+      <p style={pStyle}>Manage investment portfolio with tracking and analysis tools.</p>
+      <ul style={{ marginLeft: '1.5rem', marginBottom: '1rem' }}>
+        <li style={liStyle}><strong style={strongStyle}>PortfolioManager</strong> - Add/remove holdings</li>
+        <li style={liStyle}><strong style={strongStyle}>PortfolioPieChart</strong> - Asset distribution</li>
+        <li style={liStyle}><strong style={strongStyle}>Treemap</strong> - Holdings visualization</li>
+        <li style={liStyle}><strong style={strongStyle}>IncomeTrackingPanel</strong> - Dividend tracking</li>
+      </ul>
+
+      <h3 style={h3Style}>Wealth Tab</h3>
+      <p style={pStyle}>Long-term wealth management and financial planning.</p>
+      <ul style={{ marginLeft: '1.5rem', marginBottom: '1rem' }}>
+        <li style={liStyle}><strong style={strongStyle}>InvestmentGoalsWizard</strong> - Risk tolerance assessment</li>
+        <li style={liStyle}><strong style={strongStyle}>RetirementCalculator</strong> - Project retirement savings</li>
+        <li style={liStyle}><strong style={strongStyle}>GoalTracking</strong> - Financial goal progress</li>
+        <li style={liStyle}><strong style={strongStyle}>RiskMetricsPanel</strong> - Sharpe Ratio, Volatility, Beta, VaR</li>
+        <li style={liStyle}><strong style={strongStyle}>BenchmarkComparison</strong> - S&amp;P 500, NASDAQ, Dow Jones</li>
+      </ul>
+
+      {/* Architecture Diagram */}
       <h2 style={h2Style}>Architecture Diagram</h2>
       <MermaidDiagram code={`graph TB
     subgraph Components["Dashboard Components"]
@@ -188,16 +380,7 @@ export default function PlotsTab() {
     SB --> PT
     SB --> WT`} />
 
-      <h2 style={h2Style}>User Flow</h2>
-      <MermaidDiagram code={`flowchart LR
-    A["User Entry"] --> B{"Select Mode"}
-    B -->|Simple| C[SIMPLE MODE]
-    B -->|Detailed| D[DETAILED MODE]
-    C --> C1[Basic Charts]
-    C --> C2[Tooltips Only]
-    D --> D1[Full Features]
-    D --> D2[Interactive Controls]`} />
-
+      {/* Theme Colors */}
       <h2 style={h2Style}>Theme Colors</h2>
       <table style={tableStyle}>
         <thead>
@@ -221,6 +404,7 @@ export default function PlotsTab() {
         </tbody>
       </table>
 
+      {/* Chart Palette */}
       <h2 style={h2Style}>Chart Palette (Sequential)</h2>
       <table style={tableStyle}>
         <thead>
@@ -242,6 +426,7 @@ export default function PlotsTab() {
         </tbody>
       </table>
 
+      {/* Heatmap Gradient */}
       <h2 style={h2Style}>Heatmap Gradient</h2>
       <table style={tableStyle}>
         <thead>
@@ -263,25 +448,62 @@ export default function PlotsTab() {
         </tbody>
       </table>
 
-      <h2 style={h2Style}>Dashboard Sections</h2>
-      <ul style={{ marginLeft: '1.5rem', marginBottom: '1.5rem', color: '#1f2937', lineHeight: 1.8 }}>
-        <li><strong style={{ color: '#1f2937' }}>Overview</strong> - Landing page with Market Predictor, Portfolio Pie Chart, Candlestick Chart</li>
-        <li><strong style={{ color: '#1f2937' }}>Trends</strong> - Historical price data, candlestick charts, volume charts, streamgraph, 3D price ribbon</li>
-        <li><strong style={{ color: '#1f2937' }}>Factors</strong> - Economic factors, dual-axis plots, lag correlation</li>
-        <li><strong style={{ color: '#1f2937' }}>Sectors</strong> - Heatmap, treemap visualizations</li>
-        <li><strong style={{ color: '#1f2937' }}>Analysis</strong> - Technical indicators (RSI, MACD, Bollinger Bands), network graph</li>
-        <li><strong style={{ color: '#1f2937' }}>Portfolio</strong> - Portfolio manager, holdings tracking, P&amp;L</li>
-        <li><strong style={{ color: '#1f2937' }}>Wealth</strong> - Retirement calculator, goal tracking, risk metrics</li>
+      {/* Theme Settings */}
+      <h2 style={h2Style}>Theme and Settings</h2>
+      <h3 style={h3Style}>Light Mode (Default)</h3>
+      <ul style={{ marginLeft: '1.5rem', marginBottom: '1rem' }}>
+        <li style={liStyle}>Background: #ffffff</li>
+        <li style={liStyle}>Text: #1f2937</li>
+        <li style={liStyle}>Primary: #3b82f6</li>
+        <li style={liStyle}>Grid Lines: #e5e7eb</li>
+      </ul>
+      <h3 style={h3Style}>Dark Mode</h3>
+      <ul style={{ marginLeft: '1.5rem', marginBottom: '1rem' }}>
+        <li style={liStyle}>Background: #111827</li>
+        <li style={liStyle}>Text: #f9fafb</li>
+        <li style={liStyle}>Primary: #60a5fa</li>
+        <li style={liStyle}>Grid Lines: #374151</li>
       </ul>
 
+      {/* API Endpoints */}
+      <h2 style={h2Style}>API Endpoints</h2>
+      <table style={tableStyle}>
+        <thead>
+          <tr>
+            <th style={thStyle}>Endpoint</th>
+            <th style={thStyle}>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style={tdStyle}><code>/api/health</code></td><td style={tdStyle}>Health check</td></tr>
+          <tr><td style={tdStyle}><code>/api/stocks/history</code></td><td style={tdStyle}>Historical price data</td></tr>
+          <tr><td style={tdStyle}><code>/api/stocks/signals</code></td><td style={tdStyle}>Trading signals</td></tr>
+          <tr><td style={tdStyle}><code>/api/stocks/forecast</code></td><td style={tdStyle}>Price forecasts</td></tr>
+          <tr><td style={tdStyle}><code>/api/stocks/growth</code></td><td style={tdStyle}>Growth metrics</td></tr>
+          <tr><td style={tdStyle}><code>/api/stocks/momentum</code></td><td style={tdStyle}>Momentum indicators</td></tr>
+          <tr><td style={tdStyle}><code>/api/heatmap</code></td><td style={tdStyle}>Sector heatmap data</td></tr>
+        </tbody>
+      </table>
+
+      {/* Technical Stack */}
       <h2 style={h2Style}>Technical Stack</h2>
-      <ul style={{ marginLeft: '1.5rem', color: '#1f2937', lineHeight: 1.8 }}>
-        <li><strong style={{ color: '#1f2937' }}>Framework:</strong> Next.js 16 with App Router</li>
-        <li><strong style={{ color: '#1f2937' }}>UI Library:</strong> React 19</li>
-        <li><strong style={{ color: '#1f2937' }}>Charts:</strong> D3.js, Three.js (3D charts)</li>
-        <li><strong style={{ color: '#1f2937' }}>Styling:</strong> Tailwind CSS v4</li>
-        <li><strong style={{ color: '#1f2937' }}>Deployment:</strong> Vercel (Serverless Functions)</li>
+      <ul style={{ marginLeft: '1.5rem', marginBottom: '1.5rem' }}>
+        <li style={liStyle}><strong style={strongStyle}>Framework:</strong> Next.js 16 with App Router</li>
+        <li style={liStyle}><strong style={strongStyle}>UI Library:</strong> React 19</li>
+        <li style={liStyle}><strong style={strongStyle}>Charts:</strong> D3.js, Three.js (3D charts)</li>
+        <li style={liStyle}><strong style={strongStyle}>Styling:</strong> Tailwind CSS v4</li>
+        <li style={liStyle}><strong style={strongStyle}>Deployment:</strong> Vercel (Serverless Functions)</li>
+        <li style={liStyle}><strong style={strongStyle}>Package Manager:</strong> pnpm</li>
       </ul>
+
+      {/* Disclaimers */}
+      <h2 style={h2Style}>Important Disclaimers</h2>
+      <ol style={{ marginLeft: '1.5rem', color: '#1f2937', lineHeight: 1.8 }}>
+        <li style={liStyle}><strong style={strongStyle}>Data Accuracy</strong> - Stock data from Yahoo Finance. Verify critical data independently.</li>
+        <li style={liStyle}><strong style={strongStyle}>Past Performance</strong> - Historical data does not guarantee future results.</li>
+        <li style={liStyle}><strong style={strongStyle}>Not Financial Advice</strong> - For informational and educational purposes only.</li>
+        <li style={liStyle}><strong style={strongStyle}>Real-Time Data</strong> - Data may have 15+ minute delays.</li>
+      </ol>
     </div>
   );
 }

@@ -84,7 +84,14 @@ export async function GET(request: NextRequest) {
       growthPast5Years: growthEstimate?.growthPastFiveYears?.raw || null,
     };
 
-    return NextResponse.json({ data: growthData });
+    return NextResponse.json(
+      { data: growthData },
+      {
+        headers: {
+          "Cache-Control": "public, max-age=60, s-maxage=300, stale-while-revalidate=3600",
+        },
+      }
+    );
   } catch (error) {
     console.error("Growth estimate fetch error:", error);
     return NextResponse.json(

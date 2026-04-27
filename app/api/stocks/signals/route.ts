@@ -5,6 +5,9 @@ import { rateLimit, getClientIp } from "@/lib/rateLimit";
 
 export const dynamic = "force-dynamic";
 
+// Cache-Control: s-maxage=60 (CDN caches for 60s), stale-while-revalidate=300
+export const revalidate = 60;
+
 export async function GET(request: NextRequest) {
   // Apply rate limiting (30 requests per minute per IP - more restrictive due to Python processing)
   const clientIp = getClientIp(request);
@@ -73,7 +76,14 @@ export async function GET(request: NextRequest) {
       };
     });
 
-    return NextResponse.json({ data: dataWithDates });
+    return NextResponse.json(
+      { data: dataWithDates },
+      {
+        headers: {
+          "Cache-Control": "public, max-age=30, s-maxage=60, stale-while-revalidate=300",
+        },
+      }
+    );
   } catch (error) {
     console.error("Signals API error:", error);
     return NextResponse.json(

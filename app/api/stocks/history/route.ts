@@ -60,7 +60,15 @@ export async function GET(request: NextRequest) {
           // Ignore analytics errors
         }
 
-        return NextResponse.json({ data: JSON.parse(cachedData), cached: true });
+        return NextResponse.json(
+          { data: JSON.parse(cachedData), cached: true },
+          {
+            headers: {
+              "Cache-Control": "public, max-age=60, s-maxage=300, stale-while-revalidate=3600",
+              "X-Cache": "HIT",
+            },
+          }
+        );
       }
     }
 
@@ -152,7 +160,14 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    return NextResponse.json({ data });
+    return NextResponse.json(
+      { data },
+      {
+        headers: {
+          "Cache-Control": "public, max-age=60, s-maxage=300, stale-while-revalidate=3600",
+        },
+      }
+    );
   } catch (error) {
     console.error("Stock history fetch error:", error);
     return NextResponse.json(

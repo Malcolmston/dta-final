@@ -48,7 +48,14 @@ export async function GET(request: NextRequest) {
     // Generate simple forecast based on technical analysis
     const forecastData = generateForecast(data, ticker);
 
-    return NextResponse.json({ data: forecastData });
+    return NextResponse.json(
+      { data: forecastData },
+      {
+        headers: {
+          "Cache-Control": "public, max-age=30, s-maxage=60, stale-while-revalidate=300",
+        },
+      }
+    );
   } catch (err) {
     console.error("Forecast generation error:", err);
     return NextResponse.json(

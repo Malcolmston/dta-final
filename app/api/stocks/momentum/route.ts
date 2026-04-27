@@ -56,7 +56,14 @@ export async function GET(request: NextRequest) {
       });
     });
 
-    return NextResponse.json({ data: result });
+    return NextResponse.json(
+      { data: result },
+      {
+        headers: {
+          "Cache-Control": "public, max-age=30, s-maxage=60, stale-while-revalidate=300",
+        },
+      }
+    );
   } catch (error) {
     console.error("Momentum API error:", error);
     return NextResponse.json(

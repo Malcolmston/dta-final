@@ -1,5 +1,8 @@
 # Stock Market Analysis Dashboard - Project Report
 
+**Project:** [stock-henna-six.vercel.app](https://stock-henna-six.vercel.app) 
+**[Code Base](https://github.com/Malcolmston/dta-final)**
+
 ## Table of Contents
 
 1. [Creation Phase (Brainstorming with AI)](#creation-phase-brainstorming-with-ai)

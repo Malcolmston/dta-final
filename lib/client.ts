@@ -16,6 +16,20 @@ export interface StockQuote {
   previousClose: number;
 }
 
+/**
+ * Represents the historical data of a stock for a specific date.
+ *
+ * This interface contains information about market activity for a stock,
+ * including pricing and trading volume.
+ *
+ * Properties:
+ * - `date`: The date corresponding to the stock history data.
+ * - `open`: The price at which the stock opened on the specified date.
+ * - `high`: The highest price the stock reached on the specified date.
+ * - `low`: The lowest price the stock reached on the specified date.
+ * - `close`: The price at which the stock closed on the specified date.
+ * - `volume`: The total number of shares traded for the stock on the specified date.
+ */
 export interface StockHistory {
   date: Date;
   open: number;
@@ -25,6 +39,21 @@ export interface StockHistory {
   volume: number;
 }
 
+/**
+ * Represents information about a stock.
+ *
+ * @interface StockInfo
+ * @property {string} symbol - The unique stock ticker symbol.
+ * @property {string} name - The name of the company or stock.
+ * @property {string} [sector] - The sector to which the company belongs (e.g., Technology, Finance).
+ * @property {string} [industry] - The specific industry in which the company operates.
+ * @property {number} [marketCap] - The market capitalization of the company, typically in USD.
+ * @property {number} [peRatio] - The price-to-earnings ratio of the stock.
+ * @property {number} [dividendYield] - The dividend yield percentage.
+ * @property {number} [beta] - The stock's beta, measuring volatility relative to the market.
+ * @property {number} [week52High] - The highest stock price in the last 52 weeks.
+ * @property {number} [week52Low] - The lowest stock price in the last 52 weeks.
+ */
 export interface StockInfo {
   symbol: string;
   name: string;
@@ -38,6 +67,15 @@ export interface StockInfo {
   week52Low?: number;
 }
 
+/**
+ * Represents the result of a search query, providing details about a specific entity such as a stock or financial instrument.
+ *
+ * @interface SearchResult
+ * @property {string} symbol - The unique ticker or identifier symbol for the entity.
+ * @property {string} name - The full name or description of the entity being represented.
+ * @property {string} exchange - The name or abbreviation of the exchange where the entity is listed or traded.
+ * @property {string} type - The category or classification of the entity (e.g., stock, ETF, etc.).
+ */
 export interface SearchResult {
   symbol: string;
   name: string;
@@ -45,6 +83,23 @@ export interface SearchResult {
   type: string;
 }
 
+/**
+ * Represents the growth estimate for a specific financial entity.
+ * This interface outlines various metrics related to earnings and revenue growth trends.
+ *
+ * Properties:
+ * - `symbol`: The unique identifier or ticker symbol of the entity.
+ * - `currentQuarterEarnings`: The estimated earnings for the current quarter, if available.
+ * - `nextQuarterEarnings`: The estimated earnings for the next quarter, if available.
+ * - `currentYearEarnings`: The estimated earnings for the current fiscal year, if available.
+ * - `nextYearEarnings`: The estimated earnings for the next fiscal year, if available.
+ * - `earningsTrend`: The trend of earnings growth across recent periods, if available.
+ * - `revenueTrend`: The trend of revenue growth across recent periods, if available.
+ * - `growthCurrentYear`: The estimated percentage growth for the current fiscal year, if available.
+ * - `growthNextYear`: The estimated percentage growth for the next fiscal year, if available.
+ * - `growthNext5Years`: The average annual growth rate estimate for the next five years, if available.
+ * - `growthPast5Years`: The average annual growth rate over the past five years, if available.
+ */
 export interface GrowthEstimate {
   symbol: string;
   currentQuarterEarnings?: number;
@@ -59,6 +114,15 @@ export interface GrowthEstimate {
   growthPast5Years?: number;
 }
 
+/**
+ * Represents forecast data used for financial or market predictions.
+ *
+ * @interface ForecastData
+ * @property {Date} date - The date associated with the forecast data.
+ * @property {number} close - The closing value or price used in the forecast.
+ * @property {string} score - A computed or assigned score indicating the confidence or quality of the forecast.
+ * @property {"BUY" | "SELL" | "HOLD"} signal - A signal indicating the recommended action based on the forecast.
+ */
 export interface ForecastData {
   date: Date;
   close: number;
@@ -66,6 +130,39 @@ export interface ForecastData {
   signal: "BUY" | "SELL" | "HOLD";
 }
 
+/**
+ * Interface representing financial signal data.
+ *
+ * This interface is used to hold various technical indicators and related data
+ * useful for financial analysis or trading systems. Most of the properties are
+ * optional or nullable, as the availability of information may vary depending
+ * on the context or computation.
+ *
+ * Properties:
+ * - date: The date associated with the signal data.
+ * - close: The closing price of the financial instrument.
+ * - rsi: Relative Strength Index, a momentum oscillator that measures the speed
+ *   and change of price movements. Can be null if RSI is not calculated.
+ * - rsi_signal: Signal for RSI, indicating "buy", "sell", or null if undecided.
+ * - macd: Moving Average Convergence Divergence value, used to measure momentum.
+ *   Can be null if not computed.
+ * - macd_signal: Signal line for the MACD, used to identify buy or sell signals.
+ *   Can be null if not available.
+ * - macd_cross: Indicates the type of MACD crossover ("bullish", "bearish",
+ *   or null if no crossover).
+ * - sma: Simple Moving Average calculated over a specific period. Can be null
+ *   if unavailable.
+ * - sma_2: Another Simple Moving Average, typically computed using a different
+ *   time frame. Can be null if unavailable.
+ * - cci: Commodity Channel Index, used to assess overbought or oversold conditions.
+ *   Can be null if not calculated.
+ * - willr: Williams %R, a momentum indicator that measures overbought or oversold
+ *   levels. Can be null if unavailable.
+ * - stoch_k: Stochastic %K value, part of the stochastic oscillator. Can be null
+ *   if not provided.
+ * - stoch_d: Stochastic %D value, the signal line of the stochastic oscillator.
+ *   Can be null if not computed.
+ */
 export interface SignalsData {
   date: Date;
   close: number;
@@ -82,6 +179,14 @@ export interface SignalsData {
   stoch_d: number | null;
 }
 
+/**
+ * Represents financial momentum data for a specific date.
+ *
+ * This interface is commonly used to store and access momentum
+ * indicator values, which are derived from a time series of
+ * financial data. Momentum indicators help analyze market trends,
+ * strength, and potential reversals.
+ */
 export interface MomentumData {
   date: Date;
   close: number;
@@ -93,6 +198,21 @@ export interface MomentumData {
   cci: number | null;
 }
 
+/**
+ * Represents a single entry in the raw stock history data.
+ *
+ * This interface defines the structure of a stock history item,
+ * including its date, open price, high price, low price, closing
+ * price, and trading volume.
+ *
+ * Properties:
+ * - `date`: The date of the stock entry, represented as a string or a numeric timestamp.
+ * - `open`: The opening price of the stock on the specified date.
+ * - `high`: The highest price of the stock on the specified date.
+ * - `low`: The lowest price of the stock on the specified date.
+ * - `close`: The closing price of the stock on the specified date.
+ * - `volume`: The volume of shares traded on the specified date.
+ */
 interface RawStockHistoryItem {
   date: string | number;
   open: number;
@@ -102,6 +222,17 @@ interface RawStockHistoryItem {
   volume: number;
 }
 
+/**
+ * Represents a raw search quote object typically returned from financial or stock market data sources.
+ *
+ * @interface RawSearchQuote
+ *
+ * @property {string} symbol - The unique stock ticker or symbol for the financial instrument.
+ * @property {string} [shortname] - The abbreviated name of the financial instrument, if available.
+ * @property {string} [longname] - The full descriptive name of the financial instrument, if available.
+ * @property {string} [exchange] - The stock exchange where the financial instrument is traded, if available.
+ * @property {string} [quoteType] - The type of quote data (e.g., equity, index, mutual fund), if available.
+ */
 interface RawSearchQuote {
   symbol: string;
   shortname?: string;
@@ -110,6 +241,11 @@ interface RawSearchQuote {
   quoteType?: string;
 }
 
+/**
+ * Represents raw signals data for financial analysis.
+ * This interface provides various properties to track different indicators
+ * and statistics used in technical analysis of stock or asset price movements.
+ */
 interface RawSignalsData {
   Date: string | number;
   Close: number;
@@ -126,6 +262,27 @@ interface RawSignalsData {
   stoch_d?: number;
 }
 
+/**
+ * Represents raw momentum data for financial analysis.
+ * This interface contains various technical indicator values calculated for a specific date.
+ *
+ * Properties:
+ * - Date: The date associated with the data, which can be a string or a timestamp.
+ * - Close: The closing price of the asset on the specified date.
+ * - RSI_14: The 14-day Relative Strength Index (RSI), which measures the speed and change of price movements.
+ *   A null value indicates the RSI is unavailable for the respective date.
+ * - MOM_10: The 10-period Momentum indicator, which measures the rate of change in the closing price.
+ *   A null value indicates the Momentum data is unavailable for the respective date.
+ * - STOCHk_14_3_3: The %K value of the 14,3,3 Stochastic Oscillator, which shows the relation of the closing
+ *   price relative to the high-low range over a specified period. A null value indicates the Stochastic Oscillator
+ *   %K value is unavailable for the respective date.
+ * - STOCHd_14_3_3: The %D value of the 14,3,3 Stochastic Oscillator, which is a moving average of %K. A null
+ *   value indicates the Stochastic Oscillator %D value is unavailable for the respective date.
+ * - WILLR_14: The 14-period Williams %R indicator, which measures overbought and oversold levels.
+ *   A null value indicates the Williams %R data is unavailable for the respective date.
+ * - CCI_20_0.015: The 20-period Commodity Channel Index (CCI) with a 0.015 scaling constant, which is used to
+ *   identify cyclical trends. A null value indicates the CCI data is unavailable for the respective date.
+ */
 interface RawMomentumData {
   Date: string | number;
   Close: number;
@@ -137,6 +294,9 @@ interface RawMomentumData {
   "CCI_20_0.015": number | null;
 }
 
+/**
+ * Represents the raw data structure for a financial forecast, including date, closing price, score, and trading signal.
+ */
 interface RawForecastData {
   Date: string | number;
   Close: number;

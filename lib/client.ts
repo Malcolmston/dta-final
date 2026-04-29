@@ -366,6 +366,13 @@ export function downsampleLTTB<T>(
   return sampled;
 }
 
+/**
+ * Reduces the number of data points in a stock history dataset using the Largest Triangle Three Buckets (LTTB) algorithm.
+ *
+ * @param {StockHistory[]} data - The array of stock history objects, each containing date and close information.
+ * @param {number} [targetPoints=252] - The desired number of data points in the downsampled dataset. Defaults to 252.
+ * @return {StockHistory[]} The downsampled array of stock history objects.
+ */
 export function downsampleStockHistory(
   data: StockHistory[],
   targetPoints: number = 252
@@ -378,6 +385,13 @@ export function downsampleStockHistory(
   );
 }
 
+/**
+ * Fetches stock quote data for the given symbol from Yahoo Finance.
+ *
+ * @param {string} symbol The stock ticker symbol to retrieve quote data for.
+ * @return {Promise<StockQuote>} A promise that resolves to a StockQuote object containing the stock's data.
+ * @throws {Error} Throws an error if the fetch operation fails or if the response indicates an error.
+ */
 export async function fetchQuote(symbol: string): Promise<StockQuote> {
   const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?interval=1d&range=1d`;
 
@@ -406,6 +420,15 @@ export async function fetchQuote(symbol: string): Promise<StockQuote> {
   };
 }
 
+/**
+ * Fetches historical stock data for a given symbol with specified parameters.
+ *
+ * @param {string} symbol - The stock symbol to fetch history for.
+ * @param {string} [period="1y"] - The time period for which historical data is requested (e.g., "1y", "6m").
+ * @param {string} [interval="1d"] - The interval between data points (e.g., "1d", "1h").
+ * @param {number} [limit] - Optional parameter to limit the number of data points returned.
+ * @return {Promise<StockHistory[]>} A promise that resolves to an array of stock history objects, each containing date, open, high, low, close, and volume values.
+ */
 export async function fetchHistory(
   symbol: string,
   period: string = "1y",
@@ -451,6 +474,15 @@ export async function fetchHistory(
   return data;
 }
 
+/**
+ * Fetches detailed stock information for a given symbol from Yahoo Finance.
+ *
+ * @param {string} symbol - The stock symbol to fetch information for.
+ * @return {Promise<StockInfo>} A promise that resolves to an object containing stock information,
+ *                              including details such as name, sector, industry, market cap,
+ *                              P/E ratio, dividend yield, beta, and 52-week high/low values.
+ * @throws {Error} If the API response contains an error or fails to fetch stock information.
+ */
 export async function fetchStockInfo(symbol: string): Promise<StockInfo> {
   const url = `https://query1.finance.yahoo.com/v10/finance/quoteSummary/${encodeURIComponent(symbol)}?modules=summaryDetail,price,quoteType,defaultKeyStatistics`;
 
@@ -480,10 +512,23 @@ export async function fetchStockInfo(symbol: string): Promise<StockInfo> {
   };
 }
 
+/**
+ * Validates if the given ticker symbol is valid based on the specified criteria.
+ * A valid ticker must consist of 1 to 5 uppercase English letters.
+ *
+ * @param {string} ticker - The ticker symbol to validate.
+ * @return {boolean} Returns `true` if the ticker is valid, otherwise returns `false`.
+ */
 export function isValidTicker(ticker: string): boolean {
   return /^[A-Z]{1,5}$/.test(ticker);
 }
 
+/**
+ * Searches for stocks based on the provided query and returns a list of matching stock results.
+ *
+ * @param {string} query - The search term used to find relevant stocks.
+ * @return {Promise<SearchResult[]>} A promise that resolves to an array of stock search results. Each result contains details such as symbol, name, exchange, and type.
+ */
 export async function searchStocks(query: string): Promise<SearchResult[]> {
   const url = `https://query1.finance.yahoo.com/v1/finance/search?q=${encodeURIComponent(query)}&quotesCount=10&newsCount=0`;
 
@@ -502,6 +547,12 @@ export async function searchStocks(query: string): Promise<SearchResult[]> {
   }));
 }
 
+/**
+ * Fetches stock quotes for the provided list of stock symbols.
+ *
+ * @param {string[]} symbols - An array of stock symbols to fetch quotes for.
+ * @return {Promise<StockQuote[]>} A promise that resolves to an array of StockQuote objects for successfully fetched symbols.
+ */
 export async function fetchQuotes(symbols: string[]): Promise<StockQuote[]> {
   const results = await Promise.allSettled(
     symbols.map(s => fetchQuote(s))
@@ -512,6 +563,13 @@ export async function fetchQuotes(symbols: string[]): Promise<StockQuote[]> {
     .map(r => r.value);
 }
 
+/**
+ * Fetches the growth estimate for a given stock symbol.
+ *
+ * @param {string} symbol - The stock symbol for which to fetch the growth estimate.
+ * @return {Promise<GrowthEstimate | null>} A promise resolving to the growth estimate data for the given stock symbol,
+ * or null if the operation fails or no data is available.
+ */
 export async function fetchGrowthEstimate(symbol: string): Promise<GrowthEstimate | null> {
   const url = `/api/stocks/growth?symbol=${encodeURIComponent(symbol)}`;
 
@@ -534,6 +592,10 @@ export async function fetchGrowthEstimate(symbol: string): Promise<GrowthEstimat
   }
 }
 
+/**
+ * Retrieves a list of ticker symbols that are considered popular.
+ * @return {string[]} An array of popular ticker symbols.
+ */
 export function getPopularTickers(): string[] {
   return [
     "AAPL", "GOOGL", "MSFT", "AMZN", "NVDA", "META", "TSLA", "BRK.B",
@@ -542,6 +604,12 @@ export function getPopularTickers(): string[] {
   ];
 }
 
+/**
+ * Maps raw signal data fields from the input object to a formatted signals data object.
+ *
+ * @param {RawSignalsData} d - The raw signals data containing various market signal properties.
+ * @return {SignalsData} The formatted signals data with mapped and transformed fields.
+ */
 function mapSignalsFields(d: RawSignalsData): SignalsData {
   return {
     date: new Date(d.Date),
@@ -560,6 +628,12 @@ function mapSignalsFields(d: RawSignalsData): SignalsData {
   };
 }
 
+/**
+ * Maps raw momentum data fields to structured momentum data format.
+ *
+ * @param {RawMomentumData} d - Raw momentum data containing unprocessed field names and values.
+ * @return {MomentumData} A structured object with processed momentum indicators and their respective values.
+ */
 function mapMomentumFields(d: RawMomentumData): MomentumData {
   return {
     date: new Date(d.Date),
@@ -573,6 +647,14 @@ function mapMomentumFields(d: RawMomentumData): MomentumData {
   };
 }
 
+/**
+ * Fetches the forecast data for a given stock symbol and period.
+ *
+ * @param {string} symbol - The stock ticker symbol for which to fetch the forecast.
+ * @param {string} [period="3mo"] - The forecast period (e.g., "3mo", "6mo", "1y"). Defaults to "3mo".
+ * @return {Promise<ForecastData[]>} A promise that resolves to an array of forecast data objects.
+ * @throws {Error} Throws an error if the fetch operation fails or the response contains an error.
+ */
 export async function fetchForecast(symbol: string, period: string = "3mo"): Promise<ForecastData[]> {
   const url = `/api/stocks/forecast?ticker=${encodeURIComponent(symbol)}&period=${period}`;
 
@@ -597,6 +679,14 @@ export async function fetchForecast(symbol: string, period: string = "3mo"): Pro
   }));
 }
 
+/**
+ * Fetches signal data for the specified stock symbol and time period.
+ *
+ * @param {string} symbol - The stock ticker symbol for which to fetch signals.
+ * @param {string} [period="6mo"] - The time period for the requested signals (default is "6 months").
+ * @return {Promise<SignalsData[]>} A promise that resolves to an array of signal data.
+ * @throws {Error} If the fetch request fails or if the API returns an error.
+ */
 export async function fetchSignals(symbol: string, period: string = "6mo"): Promise<SignalsData[]> {
   const url = `/api/stocks/signals?ticker=${encodeURIComponent(symbol)}&period=${period}`;
 
@@ -616,6 +706,14 @@ export async function fetchSignals(symbol: string, period: string = "6mo"): Prom
   return result.data.map(mapSignalsFields);
 }
 
+/**
+ * Fetches momentum data for a given stock symbol and period.
+ *
+ * @param {string} symbol - The stock ticker symbol to fetch momentum data for.
+ * @param {string} [period="3mo"] - The time period for which momentum data is required (default is 3 months).
+ * @return {Promise<MomentumData[]>} A promise that resolves to an array of momentum data objects.
+ * @throws {Error} If the request fails or the server returns an error response.
+ */
 export async function fetchMomentum(symbol: string, period: string = "3mo"): Promise<MomentumData[]> {
   const url = `/api/stocks/momentum?ticker=${encodeURIComponent(symbol)}&period=${period}`;
 
@@ -635,6 +733,15 @@ export async function fetchMomentum(symbol: string, period: string = "3mo"): Pro
   return result.data.map(mapMomentumFields);
 }
 
+/**
+ * Fetches historical stock data for a given symbol by first attempting to retrieve it from cache.
+ * If the cached data is unavailable, it falls back to fetching the data directly from the API.
+ *
+ * @param {string} symbol - The stock symbol to fetch historical data for.
+ * @param {string} [period="1y"] - The time period for which to retrieve the historical data (e.g., "1d", "1mo", "1y").
+ * @param {string} [interval="1d"] - The interval between data points (e.g., "1m", "1h", "1d").
+ * @return {Promise<StockHistory[]>} A promise that resolves to an array of stock history objects, each containing date, open, high, low, close, and volume values.
+ */
 export async function fetchHistoryCached(
   symbol: string,
   period: string = "1y",
@@ -667,6 +774,14 @@ export async function fetchHistoryCached(
   }
 }
 
+/**
+ * Fetches signals data, using cached results if available. If the cache is unavailable,
+ * it falls back to a direct API call.
+ *
+ * @param {string} symbol - The symbol for which to fetch signals.
+ * @param {string} [period="3mo"] - The time period for the signals. Defaults to "3mo".
+ * @return {Promise<SignalsData[]>} - A promise that resolves to an array of signals data.
+ */
 export async function fetchSignalsCached(symbol: string, period: string = "3mo"): Promise<SignalsData[]> {
   try {
     const response = await fetch("/api/queue", {
@@ -687,6 +802,14 @@ export async function fetchSignalsCached(symbol: string, period: string = "3mo")
   }
 }
 
+/**
+ * Fetches momentum data for a given symbol and period, utilizing a caching mechanism.
+ * If the queue fetch fails, it falls back to a direct API call.
+ *
+ * @param {string} symbol - The financial instrument's symbol for which momentum data is retrieved.
+ * @param {string} [period="3mo"] - The time period for which the momentum data is fetched (e.g., "1d", "1mo"). Defaults to "3mo".
+ * @return {Promise<MomentumData[]>} A promise resolving to an array of momentum data.
+ */
 export async function fetchMomentumCached(symbol: string, period: string = "3mo"): Promise<MomentumData[]> {
   try {
     const response = await fetch("/api/queue", {
@@ -707,6 +830,13 @@ export async function fetchMomentumCached(symbol: string, period: string = "3mo"
   }
 }
 
+/**
+ * Fetches the growth estimate for a given symbol, leveraging caching through a queue endpoint.
+ * If the queue is unavailable, it falls back to using the direct API.
+ *
+ * @param {string} symbol - The stock or asset symbol for which the growth estimate is to be fetched.
+ * @return {Promise<GrowthEstimate | null>} A promise that resolves to the growth estimate object if successful, or null if no data is available.
+ */
 export async function fetchGrowthCached(symbol: string): Promise<GrowthEstimate | null> {
   try {
     const response = await fetch("/api/queue", {
@@ -727,6 +857,14 @@ export async function fetchGrowthCached(symbol: string): Promise<GrowthEstimate 
   }
 }
 
+/**
+ * Fetches the forecast data for a given symbol and period, utilizing a cached queue mechanism.
+ * Falls back to direct API requests if the cached mechanism is unavailable.
+ *
+ * @param {string} symbol - The stock symbol or identifier for which to fetch the forecast data.
+ * @param {string} [period="3mo"] - The time period for the forecast data, defaulting to 3 months if not specified.
+ * @return {Promise<ForecastData[]>} A promise that resolves to an array of forecast data.
+ */
 export async function fetchForecastCached(symbol: string, period: string = "3mo"): Promise<ForecastData[]> {
   try {
     const response = await fetch("/api/queue", {
